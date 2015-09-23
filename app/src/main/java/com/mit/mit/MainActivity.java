@@ -7,6 +7,14 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    public DAO_Participant daoparticipant = new DAO_Participant(this);
+    public DAO_Projet daoProjet = new DAO_Projet(this);
+    public DAO_Jour daoJour = new DAO_Jour(this);
+    public DAO_Sujet daoSujet = new DAO_Sujet(this);
+    public DAO_Message daoMessage = new DAO_Message(this);
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
