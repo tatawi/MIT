@@ -59,24 +59,11 @@ public class C_Jour {
     public C_Jour( String id, String id_projet, Date jour, float prixJournee, String sujets)
     {
         super();
-
-        List<C_Sujet> list_sujets=new ArrayList<C_Sujet>();
-        DAO_Sujet daoSujet = new DAO_Sujet(this.pContext);
-        String[] parts;
-
-        //gestion liste sujets
-        parts = sujets.split(";");
-        for(int i = 0; i < parts.length; i++)
-        {
-            list_sujets.add(daoSujet.getSujetById(parts[i]));
-        }
-
         this.id = id;
         this.id_projet = id_projet;
         this.jour = jour;
         this.prixJournee = prixJournee;
         this.sujetsToString=sujets;
-        this.liste_sujets=list_sujets;
     }
 
     /**
@@ -106,6 +93,25 @@ public class C_Jour {
             }
         }
         return false;
+    }
+
+    public void setContext(Context context)
+    {
+        this.pContext=context;
+    }
+
+    public void creerLesListes()
+    {
+        List<C_Sujet> list_sujets=new ArrayList<C_Sujet>();
+        DAO_Sujet daoSujet = new DAO_Sujet(this.pContext);
+        String[] parts;
+
+        //gestion liste sujets
+        parts = this.sujetsToString.split(";");
+        for(int i = 0; i < parts.length; i++)
+        {
+            list_sujets.add(daoSujet.getSujetById(parts[i]));
+        }
     }
 
 

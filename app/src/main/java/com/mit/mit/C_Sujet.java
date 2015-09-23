@@ -82,26 +82,7 @@ public class C_Sujet {
     public C_Sujet( String id, String titre, String description, String type, String localisation, Date heure, int duree, String auFeeling, float prix, String messagesToString, String personnesAyantAccepteToString)
     {
         super();
-        List<C_Message> list_messages=new ArrayList<C_Message>();
-        List<C_Participant> list_part=new ArrayList<C_Participant>();
-        DAO_Message daoMessage = new DAO_Message(this.pContext);
-        DAO_Participant daoParticipant = new DAO_Participant(this.pContext);
         boolean v_feel=false;
-        String[] parts;
-
-        //gestion liste messages
-        parts = messagesToString.split(";");
-        for(int i = 0; i < parts.length; i++)
-        {
-            list_messages.add(daoMessage.getMessageById(parts[i]));
-        }
-
-        //gestion liste participants
-        parts = personnesAyantAccepteToString.split(";");
-        for(int i = 0; i < parts.length; i++)
-        {
-            list_part.add(daoParticipant.getParticipantById(parts[i]));
-        }
 
         //gestion feeling
         if (auFeeling=="oui")
@@ -120,8 +101,6 @@ public class C_Sujet {
         this.prix=prix;
         this.messagesToString=messagesToString;
         this.personnesAyantAccepteToString=personnesAyantAccepteToString;
-        this.liste_messages=list_messages;
-        this.personnesAyantAccepte=list_part;
     }
 
     /**
@@ -176,6 +155,36 @@ public class C_Sujet {
         }
         return false;
     }
+
+
+    public void setContext(Context context)
+    {
+        this.pContext=context;
+    }
+
+    public void creerLesListes()
+    {
+        List<C_Message> list_messages=new ArrayList<C_Message>();
+        List<C_Participant> list_part=new ArrayList<C_Participant>();
+        DAO_Message daoMessage = new DAO_Message(this.pContext);
+        DAO_Participant daoParticipant = new DAO_Participant(this.pContext);
+        String[] parts;
+
+        //gestion liste messages
+        parts = this.messagesToString.split(";");
+        for(int i = 0; i < parts.length; i++)
+        {
+            list_messages.add(daoMessage.getMessageById(parts[i]));
+        }
+
+        //gestion liste participants
+        parts = this.personnesAyantAccepteToString.split(";");
+        for(int i = 0; i < parts.length; i++)
+        {
+            list_part.add(daoParticipant.getParticipantById(parts[i]));
+        }
+    }
+
 
 //---------------------------------------------------------------------------------------
 //	BDD GESTION

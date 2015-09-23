@@ -67,24 +67,6 @@ public class C_Projet {
     public C_Projet( String id, String nom, String description, Date dateDebut, Date dateFin, float prixSejour, String participants, String jours)
     {
         super();
-        DAO_Participant daoPart = new DAO_Participant(this.pContext);
-        DAO_Jour daoJour = new DAO_Jour(this.pContext);
-        List<C_Participant> list_participants=new ArrayList<C_Participant>();
-        List<C_Jour> list_jours=new ArrayList<C_Jour>();
-        String[] parts;
-
-        //gestion liste participants
-        parts = participants.split(";");
-        for(int i = 0; i < parts.length; i++)
-        {
-            list_participants.add(daoPart.getParticipantById(parts[i]));
-        }
-        //gestion liste jours
-        parts = jours.split(";");
-        for(int i = 0; i < parts.length; i++)
-        {
-            list_jours.add(daoJour.getJourById(parts[i]));
-        }
 
         this.id = id;
         this.nom = nom;
@@ -92,9 +74,10 @@ public class C_Projet {
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
         this.prixSejour=prixSejour;
-        this.liste_jours=list_jours;
-        this.liste_participants=list_participants;
+        this.joursToString=jours;
+        this.participantsToString=participants;
     }
+
 
     /**
      *Empty builder
@@ -109,7 +92,32 @@ public class C_Projet {
 //	FONCTIONS 
 //---------------------------------------------------------------------------------------
 
+    public void setContext(Context context)
+    {
+        this.pContext=context;
+    }
 
+    public void creerLesListes()
+    {
+        DAO_Participant daoPart = new DAO_Participant(this.pContext);
+        DAO_Jour daoJour = new DAO_Jour(this.pContext);
+        List<C_Participant> list_participants=new ArrayList<C_Participant>();
+        List<C_Jour> list_jours=new ArrayList<C_Jour>();
+        String[] parts;
+
+        //gestion liste participants
+        parts = this.participantsToString.split(";");
+        for(int i = 0; i < parts.length; i++)
+        {
+            list_participants.add(daoPart.getParticipantById(parts[i]));
+        }
+        //gestion liste jours
+        parts = this.joursToString.split(";");
+        for(int i = 0; i < parts.length; i++)
+        {
+            list_jours.add(daoJour.getJourById(parts[i]));
+        }
+    }
 
 
 
