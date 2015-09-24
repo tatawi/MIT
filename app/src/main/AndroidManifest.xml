@@ -16,6 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".A_newUser"
+            android:label="@string/title_activity_a_new_user" >
+        </activity>
     </application>
 
 </manifest>

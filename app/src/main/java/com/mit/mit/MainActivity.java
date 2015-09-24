@@ -1,5 +1,7 @@
 package com.mit.mit;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -7,12 +9,12 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
-
-    public DAO_Participant daoparticipant = new DAO_Participant(this);
-    public DAO_Projet daoProjet = new DAO_Projet(this);
-    public DAO_Jour daoJour = new DAO_Jour(this);
-    public DAO_Sujet daoSujet = new DAO_Sujet(this);
-    public DAO_Message daoMessage = new DAO_Message(this);
+    protected Context pContext = this;
+    protected DAO_Participant daoparticipant = new DAO_Participant(this);
+    protected DAO_Projet daoProjet = new DAO_Projet(this);
+    protected DAO_Jour daoJour = new DAO_Jour(this);
+    protected DAO_Sujet daoSujet = new DAO_Sujet(this);
+    protected DAO_Message daoMessage = new DAO_Message(this);
 
 
     @Override
@@ -21,6 +23,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+//---------------------------------------------------------------------------------------
+//	MENU
+//---------------------------------------------------------------------------------------
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -28,16 +45,17 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        //ON NEW USER
+        if (id == R.id.menu_new)
+        {
+            Intent intent = new Intent(MainActivity.this, A_newUser.class);
+
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

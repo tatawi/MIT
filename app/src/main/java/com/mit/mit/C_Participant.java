@@ -21,7 +21,7 @@ public class C_Participant {
     /**
      *DAO builder
      *@param id			User's Id
-     *@param nom			User's name
+     *@param nom		User's name
      *@param prenom		User's surname
      */
     public C_Participant(String id, String nom, String prenom) {
@@ -33,7 +33,7 @@ public class C_Participant {
 
     /**
      *Application builder
-     *@param nom			User's name
+     *@param nom		User's name
      *@param prenom		User's surname
      */
     public C_Participant(String nom, String prenom) {
