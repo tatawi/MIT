@@ -19,12 +19,20 @@
         <activity
             android:name=".A_newUser"
             android:label="@string/title_activity_a_new_user"
-            android:parentActivityName="com.mit.mit.MainActivity">
+            android:parentActivityName=".MainActivity" >
         </activity>
         <activity
             android:name=".A_projets"
             android:label="@string/title_activity_a_projets"
-            android:parentActivityName="com.mit.mit.MainActivity">
+            android:parentActivityName=".MainActivity" >
+        </activity>
+        <activity
+            android:name=".A_gestionParticipants"
+            android:label="@string/title_activity_a_gestion_participants"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mit.mit.MainActivity" />
         </activity>
     </application>
 

@@ -76,13 +76,19 @@ public class MainActivity extends AppCompatActivity {
             mdp=tb_mdp.getText().toString();
             me=daoparticipant.getParticipantById(userID);
 
-            if (me.mdp.length()>2) {
-                if(me.mdp.equals(mdp)) {
-                    Intent intent = new Intent(MainActivity.this, A_projets.class);
-                    startActivity(intent);
+            if(me!=null)
+            {
+                if (me.mdp.length()>2) {
+                    if(me.mdp.equals(mdp)) {
+                        Intent intent = new Intent(MainActivity.this, A_projets.class);
+                        startActivity(intent);
+                    }
+                    else{
+                        tb_userID.setText("mot de passe incorrect");
+                    }
                 }
-                else{
-                    tb_userID.setText("mot de passe incorrect");
+                else {
+                    tb_userID.setText("Utilisateur inconnu");
                 }
             }
             else {
@@ -120,7 +126,13 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.menu_new)
         {
             Intent intent = new Intent(MainActivity.this, A_newUser.class);
+            startActivity(intent);
+        }
 
+        //ON GO TO LIST PARTICIPANTS
+        if (id == R.id.menu_participants)
+        {
+            Intent intent = new Intent(MainActivity.this, A_gestionParticipants.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);

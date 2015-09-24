@@ -5,4 +5,5 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_a_new_user">Créer un utilisateur</string>
     <string name="title_activity_a_projets">Projets</string>
+    <string name="title_activity_a_gestion_participants">Gestion des participants</string>
 </resources>

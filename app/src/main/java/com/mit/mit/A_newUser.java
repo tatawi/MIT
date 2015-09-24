@@ -36,7 +36,6 @@ public class A_newUser extends MainActivity {
 
         //initialisations
         super.onCreate(savedInstanceState);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_a_new_user);
         tb_nom = (EditText) findViewById(R.id.newUser_tb_nom);
         tb_prenom = (EditText) findViewById(R.id.newUser_tb_prenom);
