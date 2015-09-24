@@ -6,58 +6,6 @@
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:id="@+id/tb_user"
-        android:layout_above="@+id/textView2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="26dp"
-        android:textAlignment="center"
-        android:textColor="#ac035d" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/btn_connect"
-        android:layout_above="@+id/button"
-        android:layout_alignLeft="@+id/tb_user"
-        android:layout_alignStart="@+id/tb_user"
-        android:layout_marginBottom="28dp"
-        android:textColor="#ac035d" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Utilisateur :"
-        android:id="@+id/textView"
-        android:layout_above="@+id/tb_user"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Mot de passe :"
-        android:id="@+id/textView2"
-        android:layout_above="@+id/btn_connect"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Se connecter"
-        android:id="@+id/button"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/textView2"
-        android:layout_alignEnd="@+id/textView2"
-        android:textColor="#ac035d" />
-
     <ImageView
         android:src="@drawable/main_logo"
         android:layout_width="wrap_content"
@@ -67,6 +15,68 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="250dp" />
+
+
+    <TextView
+        android:id="@+id/main_lb_user"
+        android:text="Utilisateur :"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_above="@+id/main_tb_user"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:id="@+id/main_tb_user"
+        android:inputType="textEmailAddress"
+        android:textAlignment="center"
+        android:textColor="#ac035d"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_above="@+id/main_lb_mdp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="26dp" />
+
+
+
+    <TextView
+        android:id="@+id/main_lb_mdp"
+        android:text="Mot de passe :"
+        android:hint="password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_above="@+id/main_tb_mdp"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:id="@+id/main_tb_mdp"
+        android:inputType="textPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_above="@+id/main_btn_connect"
+        android:layout_alignLeft="@+id/main_tb_user"
+        android:layout_alignStart="@+id/main_tb_user"
+        android:layout_marginBottom="28dp"
+        android:textColor="#ac035d" />
+
+
+
+
+
+    <Button
+        android:id="@+id/main_btn_connect"
+        android:text="Se connecter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/main_lb_mdp"
+        android:layout_alignEnd="@+id/main_lb_mdp"
+        android:textColor="#ac035d" />
+
+
 
 
 </RelativeLayout>

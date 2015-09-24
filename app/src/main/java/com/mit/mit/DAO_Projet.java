@@ -30,13 +30,13 @@ public class DAO_Projet extends DAO_Bdd {
     public static final String ATTR_JOURS = "jours";
     public static final String TABLE_CREATE =
             "CREATE TABLE " + TABLE + "("
-                    + ATTR_ID + " TEXT PRIMARY KEY AUTOINCREMENT, "
+                    + ATTR_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + ATTR_NOM + " TEXT, "
                     + ATTR_DESCRIPTION + " TEXT, "
                     + ATTR_DATEDEBUT + " TEXT, "
                     + ATTR_DATEFIN + " TEXT, "
                     + ATTR_PRIXSEJOUR + " FLOAT, "
-                    + ATTR_PARTICIPANTS + " TEXT), "
+                    + ATTR_PARTICIPANTS + " TEXT, "
                     + ATTR_JOURS + " TEXT);";
     public static final String TABLE_DROP = "DROP TABLE IF EXISTS " + TABLE + ";";
 

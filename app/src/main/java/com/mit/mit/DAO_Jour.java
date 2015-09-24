@@ -28,7 +28,7 @@ public class DAO_Jour extends DAO_Bdd {
     public static final String ATTR_SUJETS = "sujets";
     public static final String TABLE_CREATE =
             "CREATE TABLE " + TABLE + "("
-                    + ATTR_ID + " TEXT PRIMARY KEY AUTOINCREMENT, "
+                    + ATTR_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + ATTR_IDPROJET + " TEXT, "
                     + ATTR_DATE + " TEXT, "
                     + ATTR_PRIXJOURNEE + " FLOAT, "

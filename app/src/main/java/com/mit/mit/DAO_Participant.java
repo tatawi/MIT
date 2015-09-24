@@ -21,11 +21,15 @@ public class DAO_Participant extends DAO_Bdd {
     public static final String ATTR_ID = "_id";
     public static final String ATTR_NOM = "nom";
     public static final String ATTR_PRENOM = "prenom";
+    public static final String ATTR_MAIL = "mail";
+    public static final String ATTR_MDP = "mdp";
     public static final String TABLE_CREATE =
             "CREATE TABLE " + TABLE + "("
                     + ATTR_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + ATTR_NOM + " TEXT, "
-                    + ATTR_PRENOM + " TEXT);";
+                    + ATTR_PRENOM + " TEXT, "
+                    + ATTR_MAIL + " TEXT, "
+                    + ATTR_MDP + " TEXT);";
     public static final String TABLE_DROP = "DROP TABLE IF EXISTS " + TABLE + ";";
 
 
@@ -49,11 +53,12 @@ public class DAO_Participant extends DAO_Bdd {
         this.open();
 
         ContentValues value = new ContentValues();
-        value.put(ATTR_ID, p.id);
+        //value.put(ATTR_ID, p.id);
         value.put(ATTR_NOM, p.nom);
         value.put(ATTR_PRENOM, p.prenom);
+        value.put(ATTR_MAIL, p.mail);
+        value.put(ATTR_MDP, p.mdp);
         bdd.insert(TABLE, null, value);
-
         this.close();
     }
 
@@ -83,6 +88,8 @@ public class DAO_Participant extends DAO_Bdd {
         ContentValues value = new ContentValues();
         value.put(ATTR_NOM, p.nom);
         value.put(ATTR_PRENOM, p.prenom);
+        value.put(ATTR_MAIL, p.mail);
+        value.put(ATTR_MDP, p.mdp);
 
         bdd.update(
                 TABLE,
@@ -104,7 +111,7 @@ public class DAO_Participant extends DAO_Bdd {
         List<C_Participant> listParticipants = new ArrayList<C_Participant>();
         Cursor cursor = bdd.query(
                 TABLE,
-                new String[] { ATTR_ID, ATTR_NOM, ATTR_PRENOM },
+                new String[] { ATTR_ID, ATTR_NOM, ATTR_PRENOM , ATTR_MAIL , ATTR_MDP },
                 null,
                 null,
                 null,
@@ -118,7 +125,9 @@ public class DAO_Participant extends DAO_Bdd {
                     new C_Participant(
                             cursor.getString(cursor.getColumnIndex(ATTR_ID)),
                             cursor.getString(cursor.getColumnIndex(ATTR_NOM)),
-                            cursor.getString(cursor.getColumnIndex(ATTR_PRENOM))
+                            cursor.getString(cursor.getColumnIndex(ATTR_PRENOM)),
+                            cursor.getString(cursor.getColumnIndex(ATTR_MAIL)),
+                            cursor.getString(cursor.getColumnIndex(ATTR_MDP))
                     )
             );
         }
@@ -139,8 +148,8 @@ public class DAO_Participant extends DAO_Bdd {
         C_Participant p = null;
         Cursor cursor = bdd.query(
                 TABLE,
-                new String[] { ATTR_ID, ATTR_NOM, ATTR_PRENOM },
-                ATTR_ID + " = ?",
+                new String[] { ATTR_ID, ATTR_NOM, ATTR_PRENOM , ATTR_MAIL , ATTR_MDP },
+                ATTR_MAIL + " = ?",
                 new String[] { id },
                 null,
                 null,
@@ -153,7 +162,9 @@ public class DAO_Participant extends DAO_Bdd {
             p= new C_Participant(
                     cursor.getString(cursor.getColumnIndex(ATTR_ID)),
                     cursor.getString(cursor.getColumnIndex(ATTR_NOM)),
-                    cursor.getString(cursor.getColumnIndex(ATTR_PRENOM))
+                    cursor.getString(cursor.getColumnIndex(ATTR_PRENOM)),
+                    cursor.getString(cursor.getColumnIndex(ATTR_MAIL)),
+                    cursor.getString(cursor.getColumnIndex(ATTR_MDP))
             );
         }
         this.close();

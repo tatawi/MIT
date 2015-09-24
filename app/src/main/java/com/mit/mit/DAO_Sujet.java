@@ -32,7 +32,7 @@ public class DAO_Sujet extends DAO_Bdd {
     public static final String ATTR_PERSONNESOK = "personnesAyantAccepte";
     public static final String TABLE_CREATE =
             "CREATE TABLE " + TABLE + "("
-                    + ATTR_ID + " TEXT PRIMARY KEY AUTOINCREMENT, "
+                    + ATTR_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + ATTR_TITRE + " TEXT, "
                     + ATTR_DESCRIPTION + " TEXT, "
                     + ATTR_TYPE + " TEXT, "

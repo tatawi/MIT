@@ -27,11 +27,11 @@ public class DAO_Message extends DAO_Bdd {
     public static final String ATTR_PERSONNESAYANTVUES = "personnesAyantVuesToString";
     public static final String TABLE_CREATE =
             "CREATE TABLE " + TABLE + "("
-                    + ATTR_ID + " TEXT PRIMARY KEY AUTOINCREMENT, "
+                    + ATTR_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + ATTR_HEURE + " TEXT, "
                     + ATTR_MESSAGE + " TEXT, "
                     + ATTR_EMETTEUR + " TEXT, "
-                    + ATTR_PERSONNESAYANTVUES + " TEXT;";
+                    + ATTR_PERSONNESAYANTVUES + " TEXT);";
     public static final String TABLE_DROP = "DROP TABLE IF EXISTS " + TABLE + ";";
 
 //---------------------------------------------------------------------------------------
