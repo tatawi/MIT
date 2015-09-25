@@ -29,7 +29,7 @@ public class A_gestionParticipants extends MainActivity {
 
 
         setContentView(R.layout.activity_a_gestion_participants);
-        lvListe = (ListView)findViewById(R.id.listView);
+        lvListe = (ListView)findViewById(R.id.gestionPart_listView);
 
         for(C_Participant p:list_parts)
         {
@@ -41,6 +41,15 @@ public class A_gestionParticipants extends MainActivity {
 
 
     }
+
+
+
+
+//---------------------------------------------------------------------------------------
+//	MENU
+//---------------------------------------------------------------------------------------
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

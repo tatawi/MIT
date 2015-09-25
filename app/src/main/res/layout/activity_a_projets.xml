@@ -7,44 +7,62 @@
 
 
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="70dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/linearLayout">
 
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-
-
-
-            >
-
-            <ImageButton
-                android:id="@+id/imageButton"
-                android:src="@drawable/ic_project_prepare"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                 />
+        <ImageButton
+            android:id="@+id/projets_ibtn_enPreparation"
+            android:src="@drawable/ic_project_prepare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"/>
 
 
 
-            <ImageButton
-                android:id="@+id/imageButton2"
-                android:src="@drawable/ic_project_current"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-/>
+        <ImageButton
+            android:id="@+id/projets_ibtn_enCours"
+            android:src="@drawable/ic_project_current"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"/>
 
 
-            <ImageButton
-                android:id="@+id/imageButton3"
-                android:src="@drawable/ic_project_ended"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </TableRow>
+        <ImageButton
+            android:id="@+id/projets_ibtn_finis"
+            android:src="@drawable/ic_project_ended"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"/>
+
+
+
+
+
+
     </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/linearLayout">
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/projets_listViw"
+            android:layout_weight="1" />
+    </LinearLayout>
+
 </RelativeLayout>

@@ -36,12 +36,11 @@ public class C_Message {
 
     /**
      *Application builder - create a new message
-     *@param id				Message's Id
      *@param heure			Message's time
      *@param message			Message's body
      *@param emetteur		User who has send the message
      */
-    public C_Message( String id, Date heure, String message, C_Participant emetteur)
+    public C_Message( Date heure, String message, C_Participant emetteur)
     {
         super();
         Date today = new Date();

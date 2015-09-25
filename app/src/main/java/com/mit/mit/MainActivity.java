@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -53,7 +54,28 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+private void CASdeTESTS()
+{
+    C_Participant part1 = new C_Participant("PART1","part1","part1","aaaa");
+    daoparticipant.ajouter(part1);
 
+    //projet 1
+    C_Projet proj1= new C_Projet(this,"proj1","ceci est un test",new Date(), new Date());
+    proj1.creerLesListes();
+
+    C_Jour proj1_jour1;
+
+    C_Message proj1_jour1_suj1_msg1=new C_Message(new Date(),"Premier message !",part1);
+    C_Message proj1_jour1_suj1_msg2=new C_Message(new Date(),"Second  message !",part1);
+    C_Sujet proj1_jour1_suj1;
+
+    C_Message proj1_jour1_suj2_msg1;
+    C_Message proj1_jour1_suj2_msg2;
+    C_Sujet proj1_jour1_suj2;
+
+
+
+}
 
 
 
