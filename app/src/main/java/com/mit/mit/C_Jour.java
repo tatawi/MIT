@@ -20,7 +20,7 @@ public class C_Jour {
 //---------------------------------------------------------------------------------------
     public Context pContext;
     public String id;
-    public String id_projet;
+    public String nomJour;
     public Date jour;
     public float prixJournee;
     public String sujetsToString;
@@ -33,16 +33,15 @@ public class C_Jour {
 //---------------------------------------------------------------------------------------
     /**
      *Application builder - create a new day
-     *@param id_projet 		Project id containing the day
+     *@param nomJour 		Project id containing the day
      *@param jour			Day in date format
      */
-    public C_Jour(String id_projet, Date jour)
+    public C_Jour(String nomJour, Date jour)
     {
         super();
         List<C_Sujet> liste_sujets=new ArrayList<C_Sujet>();
 
-        this.id = id_projet + "_" + jour.getDay();
-        this.id_projet = id_projet;
+        this.nomJour = nomJour;
         this.jour = jour;
         this.prixJournee=0;
         this.sujetsToString="";
@@ -51,16 +50,16 @@ public class C_Jour {
     /**
      *DAO builder - load a day from bdd
      *@param id				Day's Id
-     *@param id_projet		Project's day Id
+     *@param nomJour		Project's day Id
      *@param jour			Day in date format
      *@param prixJournee		Day's current cost in float
      *@param sujets			String containing all C_Sujet's Is separated by ";"
      */
-    public C_Jour( String id, String id_projet, Date jour, float prixJournee, String sujets)
+    public C_Jour( String id, String nomJour, Date jour, float prixJournee, String sujets)
     {
         super();
         this.id = id;
-        this.id_projet = id_projet;
+        this.nomJour = nomJour;
         this.jour = jour;
         this.prixJournee = prixJournee;
         this.sujetsToString=sujets;

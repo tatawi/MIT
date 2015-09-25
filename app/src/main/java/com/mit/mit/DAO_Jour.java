@@ -22,14 +22,14 @@ public class DAO_Jour extends DAO_Bdd {
 //---------------------------------------------------------------------------------------
     public static final String TABLE = " JOUR";
     public static final String ATTR_ID = "_id";
-    public static final String ATTR_IDPROJET = "idProjet";
+    public static final String ATTR_NOMJOUR = "nomJour";
     public static final String ATTR_DATE = "jour";
     public static final String ATTR_PRIXJOURNEE = "prixJournee";
     public static final String ATTR_SUJETS = "sujets";
     public static final String TABLE_CREATE =
             "CREATE TABLE " + TABLE + "("
                     + ATTR_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + ATTR_IDPROJET + " TEXT, "
+                    + ATTR_NOMJOUR + " TEXT, "
                     + ATTR_DATE + " TEXT, "
                     + ATTR_PRIXJOURNEE + " FLOAT, "
                     + ATTR_SUJETS + " TEXT);";
@@ -56,8 +56,8 @@ public class DAO_Jour extends DAO_Bdd {
         this.open();
 
         ContentValues value = new ContentValues();
-        value.put(ATTR_ID, j.id);
-        value.put(ATTR_IDPROJET, j.id_projet);
+        //value.put(ATTR_ID, j.id);
+        value.put(ATTR_NOMJOUR, j.nomJour);
         value.put(ATTR_DATE, j.jour.toString());
         value.put(ATTR_PRIXJOURNEE, j.prixJournee);
         value.put(ATTR_SUJETS, j.sujetsToString);
@@ -76,7 +76,7 @@ public class DAO_Jour extends DAO_Bdd {
 
         bdd.delete(
                 TABLE,
-                ATTR_ID + " = ?",
+                ATTR_NOMJOUR + " = ?",
                 new String[] { id }
         );
         this.close();
@@ -92,7 +92,7 @@ public class DAO_Jour extends DAO_Bdd {
 
         ContentValues value = new ContentValues();
         value.put(ATTR_ID, j.id);
-        value.put(ATTR_IDPROJET, j.id_projet);
+        value.put(ATTR_NOMJOUR, j.nomJour);
         value.put(ATTR_DATE, j.jour.toString());
         value.put(ATTR_PRIXJOURNEE, j.prixJournee);
         value.put(ATTR_SUJETS, j.sujetsToString);
@@ -100,7 +100,7 @@ public class DAO_Jour extends DAO_Bdd {
         bdd.update(
                 TABLE,
                 value,
-                ATTR_ID + " = ?",
+                ATTR_NOMJOUR + " = ?",
                 new String[] { String.valueOf(j.id) }
         );
         this.close();
@@ -118,7 +118,7 @@ public class DAO_Jour extends DAO_Bdd {
         Date day = new Date();
         Cursor cursor = bdd.query(
                 TABLE,
-                new String[] { ATTR_ID, ATTR_IDPROJET, ATTR_DATE, ATTR_PRIXJOURNEE, ATTR_SUJETS },
+                new String[] { ATTR_ID, ATTR_NOMJOUR, ATTR_DATE, ATTR_PRIXJOURNEE, ATTR_SUJETS },
                 null,
                 null,
                 null,
@@ -140,7 +140,7 @@ public class DAO_Jour extends DAO_Bdd {
             liste_jours.add(
                     new C_Jour(
                             cursor.getString(cursor.getColumnIndex(ATTR_ID)),
-                            cursor.getString(cursor.getColumnIndex(ATTR_IDPROJET)),
+                            cursor.getString(cursor.getColumnIndex(ATTR_NOMJOUR)),
                             day,
                             cursor.getFloat(cursor.getColumnIndex(ATTR_PRIXJOURNEE)),
                             cursor.getString(cursor.getColumnIndex(ATTR_SUJETS))
@@ -166,8 +166,8 @@ public class DAO_Jour extends DAO_Bdd {
         Date day = new Date();
         Cursor cursor = bdd.query(
                 TABLE,
-                new String[] { ATTR_ID, ATTR_IDPROJET, ATTR_DATE, ATTR_PRIXJOURNEE, ATTR_SUJETS },
-                ATTR_ID + " = ?",
+                new String[] { ATTR_ID, ATTR_NOMJOUR, ATTR_DATE, ATTR_PRIXJOURNEE, ATTR_SUJETS },
+                ATTR_NOMJOUR + " = ?",
                 new String[] { id },
                 null,
                 null,
@@ -187,7 +187,7 @@ public class DAO_Jour extends DAO_Bdd {
 
             p=new C_Jour(
                     cursor.getString(cursor.getColumnIndex(ATTR_ID)),
-                    cursor.getString(cursor.getColumnIndex(ATTR_IDPROJET)),
+                    cursor.getString(cursor.getColumnIndex(ATTR_NOMJOUR)),
                     day,
                     cursor.getFloat(cursor.getColumnIndex(ATTR_PRIXJOURNEE)),
                     cursor.getString(cursor.getColumnIndex(ATTR_SUJETS))

@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
         tb_userID.setOnClickListener(onUserClick);
         btn_connect.setOnClickListener(onConnectClick);
 
+        CASdeTESTS();
+
     }
 
 
@@ -60,18 +62,24 @@ private void CASdeTESTS()
     daoparticipant.ajouter(part1);
 
     //projet 1
-    C_Projet proj1= new C_Projet(this,"proj1","ceci est un test",new Date(), new Date());
+  /*  C_Projet proj1= new C_Projet(this,"proj1","ceci est un test",new Date(), new Date());
     proj1.creerLesListes();
 
-    C_Jour proj1_jour1;
+
+    C_Jour proj1_jour1=new C_Jour("date1", new Date()); //String nomJour, Date jour)
+    proj1_jour1.creerLesListes();
+
+    C_Sujet proj1_jour1_suj1=new C_Sujet("proj1_jour1_suj1","Mon premier sujet", "description vide", "visite", "ici", new Date(), 60, false, 10); //( String idSujet, String titre, String description, String type, String localisation, Date heure, int duree, boolean auFeeling, float prix)
+    proj1_jour1_suj1.creerLesListes();
 
     C_Message proj1_jour1_suj1_msg1=new C_Message(new Date(),"Premier message !",part1);
     C_Message proj1_jour1_suj1_msg2=new C_Message(new Date(),"Second  message !",part1);
-    C_Sujet proj1_jour1_suj1;
 
-    C_Message proj1_jour1_suj2_msg1;
-    C_Message proj1_jour1_suj2_msg2;
-    C_Sujet proj1_jour1_suj2;
+    C_Sujet proj1_jour1_suj2=new C_Sujet("proj1_jour1_suj2","Mon second sujet", "description vide", "visite", "ici", new Date(), 60, false, 10);
+    proj1_jour1_suj2.creerLesListes();
+
+    C_Message proj1_jour1_suj2_msg1=new C_Message(new Date(),"Premier message !",part1);
+    C_Message proj1_jour1_suj2_msg2=new C_Message(new Date(),"Second  message !",part1);*/
 
 
 

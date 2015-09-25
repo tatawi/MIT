@@ -20,6 +20,7 @@ public class DAO_Sujet extends DAO_Bdd {
 //---------------------------------------------------------------------------------------
     public static final String TABLE = " SUJET";
     public static final String ATTR_ID = "_id";
+    public static final String ATTR_IDSUJET = "idSujet";
     public static final String ATTR_TITRE = "titre";
     public static final String ATTR_DESCRIPTION = "description";
     public static final String ATTR_TYPE = "type";
@@ -33,6 +34,7 @@ public class DAO_Sujet extends DAO_Bdd {
     public static final String TABLE_CREATE =
             "CREATE TABLE " + TABLE + "("
                     + ATTR_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + ATTR_IDSUJET + " TEXT, "
                     + ATTR_TITRE + " TEXT, "
                     + ATTR_DESCRIPTION + " TEXT, "
                     + ATTR_TYPE + " TEXT, "
@@ -64,7 +66,7 @@ public class DAO_Sujet extends DAO_Bdd {
         this.open();
 
         ContentValues value = new ContentValues();
-        value.put(ATTR_ID, s.id);
+        value.put(ATTR_IDSUJET, s.id);
         value.put(ATTR_TITRE, s.titre);
         value.put(ATTR_DESCRIPTION, s.description);
         value.put(ATTR_TYPE, s.type);
@@ -89,7 +91,7 @@ public class DAO_Sujet extends DAO_Bdd {
 
         bdd.delete(
                 TABLE,
-                ATTR_ID + " = ?",
+                ATTR_IDSUJET + " = ?",
                 new String[] { id }
         );
 
@@ -118,7 +120,7 @@ public class DAO_Sujet extends DAO_Bdd {
         bdd.update(
                 TABLE,
                 value,
-                ATTR_ID + " = ?",
+                ATTR_IDSUJET + " = ?",
                 new String[]{String.valueOf(s.id)}
         );
 
@@ -157,6 +159,7 @@ public class DAO_Sujet extends DAO_Bdd {
             list_sujets.add(
                     new C_Sujet(
                             cursor.getString(cursor.getColumnIndex(ATTR_ID)),
+                            cursor.getString(cursor.getColumnIndex(ATTR_IDSUJET)),
                             cursor.getString(cursor.getColumnIndex(ATTR_TITRE)),
                             cursor.getString(cursor.getColumnIndex(ATTR_DESCRIPTION)),
                             cursor.getString(cursor.getColumnIndex(ATTR_TYPE)),
@@ -189,7 +192,7 @@ public class DAO_Sujet extends DAO_Bdd {
         Cursor cursor = bdd.query(
                 TABLE,
                 new String[] { ATTR_ID, ATTR_TITRE, ATTR_DESCRIPTION, ATTR_TYPE, ATTR_LOC, ATTR_HEURE, ATTR_DUREE, ATTR_FEELLING, ATTR_PRIX, ATTR_MESSAGES, ATTR_PERSONNESOK},
-                ATTR_ID + " = ?",
+                ATTR_IDSUJET + " = ?",
                 new String[] { id },
                 null,
                 null,
@@ -209,6 +212,7 @@ public class DAO_Sujet extends DAO_Bdd {
 
             p=new C_Sujet(
                     cursor.getString(cursor.getColumnIndex(ATTR_ID)),
+                    cursor.getString(cursor.getColumnIndex(ATTR_IDSUJET)),
                     cursor.getString(cursor.getColumnIndex(ATTR_TITRE)),
                     cursor.getString(cursor.getColumnIndex(ATTR_DESCRIPTION)),
                     cursor.getString(cursor.getColumnIndex(ATTR_TYPE)),

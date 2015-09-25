@@ -6,4 +6,5 @@
     <string name="title_activity_a_new_user">Créer un utilisateur</string>
     <string name="title_activity_a_projets">Projets</string>
     <string name="title_activity_a_gestion_participants">Gestion des participants</string>
+    <string name="title_activity_a_new_project">Nouveau Project</string>
 </resources>
