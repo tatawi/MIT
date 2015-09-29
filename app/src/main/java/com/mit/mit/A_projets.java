@@ -141,8 +141,10 @@ private void viderTableau()
         int id = item.getItemId();
 
         //CREATE A NEW PROJECT
-        if (id == R.id.project_new) {
-
+        if (id == R.id.project_new)
+        {
+            Intent intent = new Intent(A_projets.this, A_newProject.class);
+            startActivity(intent);
 
 
 
