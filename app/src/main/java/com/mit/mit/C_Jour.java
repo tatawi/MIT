@@ -19,7 +19,7 @@ public class C_Jour {
 //	VARIABLES
 //---------------------------------------------------------------------------------------
     public Context pContext;
-    public String id;
+    public int id;
     public String nomJour;
     public Date jour;
     public float prixJournee;
@@ -40,7 +40,7 @@ public class C_Jour {
     {
         super();
         List<C_Sujet> liste_sujets=new ArrayList<C_Sujet>();
-
+        this.id=setID(nomJour);
         this.nomJour = nomJour;
         this.jour = jour;
         this.prixJournee=0;
@@ -55,7 +55,7 @@ public class C_Jour {
      *@param prixJournee		Day's current cost in float
      *@param sujets			String containing all C_Sujet's Is separated by ";"
      */
-    public C_Jour( String id, String nomJour, Date jour, float prixJournee, String sujets)
+    public C_Jour( int id, String nomJour, Date jour, float prixJournee, String sujets)
     {
         super();
         this.id = id;
@@ -114,39 +114,7 @@ public class C_Jour {
     }
 
 
-//---------------------------------------------------------------------------------------
-//	BDD GESTION
-//---------------------------------------------------------------------------------------
-    /**
-     *Add class to DAO bdd
-     */
-    public void BDDajouter()
-    {
-        DAO_Jour daoJour = new DAO_Jour(this.pContext);
-        listeToString();
 
-        daoJour.ajouter(this);
-    }
-
-    /**
-     *Modify class in DAO bdd
-     */
-    public void BDDmodifier()
-    {
-        DAO_Jour daoJour = new DAO_Jour(this.pContext);
-        listeToString();
-
-        daoJour.modifier(this);
-    }
-
-    /**
-     *Remove class from DAO bdd
-     */
-    public void BDDsuprimer()
-    {
-        DAO_Jour daoJour = new DAO_Jour(this.pContext);
-        daoJour.supprimer(this.id);
-    }
 
 
 //---------------------------------------------------------------------------------------
@@ -171,5 +139,20 @@ public class C_Jour {
             }
         }
     }
+
+
+    private int setID(String stringID)
+    {
+        int i=0;
+        int ascii=0;
+        while( i < stringID.length())
+        {
+            char character = stringID.charAt(i);
+            ascii =ascii+ (int) character;
+            i++;
+        }
+        return ascii;
+    }
+
 
 }

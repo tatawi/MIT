@@ -53,7 +53,7 @@ public class DAO_Participant extends DAO_Bdd {
         this.open();
 
         ContentValues value = new ContentValues();
-        //value.put(ATTR_ID, p.id);
+        value.put(ATTR_ID, p.id);
         value.put(ATTR_NOM, p.nom);
         value.put(ATTR_PRENOM, p.prenom);
         value.put(ATTR_MAIL, p.mail);
@@ -123,7 +123,7 @@ public class DAO_Participant extends DAO_Bdd {
         for (cursor.moveToFirst() ; !cursor.isAfterLast() ; cursor.moveToNext()) {
             listParticipants.add(
                     new C_Participant(
-                            cursor.getString(cursor.getColumnIndex(ATTR_ID)),
+                            cursor.getInt(cursor.getColumnIndex(ATTR_ID)),
                             cursor.getString(cursor.getColumnIndex(ATTR_NOM)),
                             cursor.getString(cursor.getColumnIndex(ATTR_PRENOM)),
                             cursor.getString(cursor.getColumnIndex(ATTR_MAIL)),
@@ -160,7 +160,7 @@ public class DAO_Participant extends DAO_Bdd {
         for (cursor.moveToFirst() ; !cursor.isAfterLast() ; cursor.moveToNext()) {
 
             p= new C_Participant(
-                    cursor.getString(cursor.getColumnIndex(ATTR_ID)),
+                    cursor.getInt(cursor.getColumnIndex(ATTR_ID)),
                     cursor.getString(cursor.getColumnIndex(ATTR_NOM)),
                     cursor.getString(cursor.getColumnIndex(ATTR_PRENOM)),
                     cursor.getString(cursor.getColumnIndex(ATTR_MAIL)),

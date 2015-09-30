@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class A_projets extends MainActivity {
@@ -21,10 +22,9 @@ public class A_projets extends MainActivity {
     private ImageButton btn_projFinis;
 
     //variables
-    private List<C_Projet> list_projEnPreparation;
-    private List<C_Projet> list_projEnCours;
-    private List<C_Projet> list_projFinis;
-    private String[] tab_listViewElements= {" "};
+    private List<C_Projet> list_projets;
+
+    private List<String> listeStringParticipants;
 
 
     @Override
@@ -40,6 +40,9 @@ public class A_projets extends MainActivity {
         btn_projEnCours = (ImageButton)findViewById(R.id.projets_ibtn_enCours);
         btn_projFinis = (ImageButton)findViewById(R.id.projets_ibtn_finis);
 
+        listeStringParticipants= new ArrayList<String>();
+        list_projets=daoProjet.getProjets();
+
         //listeners
         btn_enPreparation.setOnClickListener(onPreparationProjets);
         btn_projEnCours.setOnClickListener(onEnCoursProjets);
@@ -50,19 +53,17 @@ public class A_projets extends MainActivity {
 
 
 
-private void majAdapter()
-{
-    lv_listeAffichage.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, tab_listViewElements));
-}
 
-private void viderTableau()
-{
-    for(String str:tab_listViewElements)
+    private void majListe()
     {
-        str=null;
-    }
 
-}
+        if(listeStringParticipants.isEmpty())
+        {
+            listeStringParticipants.add("Pas de projet");
+        }
+
+        lv_listeAffichage.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listeStringParticipants));
+    }
 
 
 //---------------------------------------------------------------------------------------
@@ -72,24 +73,18 @@ private void viderTableau()
     //click projets en préparation
     View.OnClickListener onPreparationProjets = new View.OnClickListener() {
         public void onClick(View v) {
-            int i=0;
-            viderTableau();
-            list_projEnPreparation=daoProjet.getProjets();
 
+            listeStringParticipants.clear();
 
-
-            for(C_Projet p:list_projEnPreparation)
+            for(C_Projet p:list_projets)
             {
-                //if(p.xx=="preparation"){
-                tab_listViewElements[i]=p.nom;
-                i++;
+                if(p.statut=="Preparation")
+                {
+                    listeStringParticipants.add(p.nom);
+                }
             }
-            if (tab_listViewElements[0]==null)
-            {
-                tab_listViewElements[0]="Pas de projets";
-            }
+            majListe();
 
-            majAdapter();
 
         }
     };
@@ -97,20 +92,33 @@ private void viderTableau()
     //click projets en cours
     View.OnClickListener onEnCoursProjets = new View.OnClickListener() {
         public void onClick(View v) {
-            tab_listViewElements=null;
-            tab_listViewElements[0]="Pas de projets";
-            majAdapter();
+            listeStringParticipants.clear();
 
+            for(C_Projet p:list_projets)
+            {
+                if(p.statut=="Actuel")
+                {
+                    listeStringParticipants.add(p.nom);
+                }
+            }
+            majListe();
         }
     };
 
     //click projets terminés
     View.OnClickListener onTerminesProjets = new View.OnClickListener() {
         public void onClick(View v) {
-            tab_listViewElements=null;
-            tab_listViewElements[0]="Pas de projets";
-            majAdapter();
 
+            listeStringParticipants.clear();
+
+            for(C_Projet p:list_projets)
+            {
+                if(p.statut=="Fini")
+                {
+                    listeStringParticipants.add(p.nom);
+                }
+            }
+            majListe();
         }
     };
 

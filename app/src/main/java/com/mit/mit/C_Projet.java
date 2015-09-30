@@ -18,12 +18,13 @@ public class C_Projet {
 //	VARIABLES
 //---------------------------------------------------------------------------------------
     public Context pContext;
-    public String id;
+    public int id;
     public String nom;
     public String description;
     public Date dateDebut;
     public Date dateFin;
     public float prixSejour;
+    public String statut;
     public String participantsToString;
     public String joursToString;
 
@@ -44,11 +45,13 @@ public class C_Projet {
     {
         super();
         this.pContext= pContext;
-        this.id = nom;
+        this.id=setID(nom);
+        this.nom = nom;
         this.description = description;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
         this.prixSejour=0;
+        this.statut="Preparation";
         liste_jours=new ArrayList<C_Jour>();
         liste_participants=new ArrayList<C_Participant>();
     }
@@ -64,7 +67,7 @@ public class C_Projet {
      *@param participants	List of project's ids members in string separated by ";"
      *@param jours			List of C_Jour ids in string separated by ";"
      */
-    public C_Projet( String id, String nom, String description, Date dateDebut, Date dateFin, float prixSejour, String participants, String jours)
+    public C_Projet( int id, String nom, String description, Date dateDebut, Date dateFin, float prixSejour, String statut, String participants, String jours)
     {
         super();
 
@@ -75,6 +78,7 @@ public class C_Projet {
         this.dateFin = dateFin;
         this.prixSejour=prixSejour;
         this.joursToString=jours;
+        this.statut=statut;
         this.participantsToString=participants;
     }
 
@@ -120,79 +124,78 @@ public class C_Projet {
     }
 
 
-
-
-
-//---------------------------------------------------------------------------------------
-//	BDD GESTION
-//---------------------------------------------------------------------------------------
     /**
-     *Add class to DAO bdd
+     *Convert class list in string (separated with ";") in order to store data in DAO bdd
      */
-    public void BDDajouter()
+    public void listeToString()
     {
-        DAO_Projet daoProj = new DAO_Projet(this.pContext);
-        listeToString();
-        daoProj.ajouter(this);
+        this.participantsToString="";
+        this.joursToString="";
+
+        if(!liste_jours.isEmpty())
+        {
+            for(C_Jour j:this.liste_jours)
+            {
+                if (joursToString.equals(""))
+                {
+                    joursToString = j.nomJour;
+                }
+                else
+                {
+                    joursToString = joursToString + ";" + j.nomJour;
+                }
+            }
+        }
+
+        if(!liste_participants.isEmpty())
+        {
+            for(C_Participant p:this.liste_participants)
+            {
+                if (participantsToString.equals(""))
+                {
+                    participantsToString = p.mail;
+                }
+                else
+                {
+                    participantsToString = participantsToString + ";" + p.mail;
+                }
+            }
+        }
+
+
     }
 
-    /**
-     *Modify class in DAO bdd
-     */
-    public void BDDmodifier()
-    {
-        DAO_Projet daoProj = new DAO_Projet(this.pContext);
-        listeToString();
-        daoProj.modifier(this);
+
+    public void setListe_jours(List<C_Jour> liste_jours) {
+        this.liste_jours = liste_jours;
     }
 
-    /**
-     *Remove class from DAO bdd
-     */
-    public void BDDsuprimer()
-    {
-        DAO_Projet daoProj = new DAO_Projet(this.pContext);
-        daoProj.supprimer(this.id);
+    public void setListe_participants(List<C_Participant> liste_participants) {
+        this.liste_participants = liste_participants;
     }
+
+
+
 
 
 //---------------------------------------------------------------------------------------
 //	FONCTIONS PRIVATES 
 //---------------------------------------------------------------------------------------	
-    /**
-     *Convert class list in string (separated with ";") in order to store data in DAO bdd
-     */
-    private void listeToString()
+
+
+
+    private int setID(String stringID)
     {
-        this.participantsToString="";
-        this.joursToString="";
-
-        for(C_Jour j:this.liste_jours)
+        int i=0;
+        int ascii=0;
+        while( i < stringID.length())
         {
-            if (joursToString=="")
-            {
-                joursToString = j.id;
-            }
-            else
-            {
-                joursToString = joursToString + ";" + j.id;
-            }
+            char character = stringID.charAt(i);
+            ascii =ascii+ (int) character;
+            i++;
         }
-
-        for(C_Participant p:this.liste_participants)
-        {
-            if (participantsToString=="")
-            {
-                participantsToString = p.id;
-            }
-            else
-            {
-                participantsToString = participantsToString + ";" + p.id;
-            }
-        }
-
+        return ascii;
     }
-
 
 
 

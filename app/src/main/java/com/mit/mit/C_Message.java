@@ -49,7 +49,7 @@ public class C_Message {
         this.heure = heure;
         this.message = message;
         this.emetteur = emetteur;
-        this.id_participantEmetteur = emetteur.id;
+        this.id_participantEmetteur = emetteur.mail;
         this.personnesAyantVuesToString = "";
         this.liste_personnesAyantVues= new ArrayList<C_Participant>();
     }
@@ -163,11 +163,11 @@ public class C_Message {
         {
             if (personnesAyantVuesToString=="")
             {
-                personnesAyantVuesToString = p.id;
+                personnesAyantVuesToString = p.mail;
             }
             else
             {
-                personnesAyantVuesToString = liste_personnesAyantVues + ";" + p.id;
+                personnesAyantVuesToString = liste_personnesAyantVues + ";" + p.mail;
             }
         }
     }

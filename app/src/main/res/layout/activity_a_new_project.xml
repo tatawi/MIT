@@ -7,39 +7,42 @@
     tools:context="com.mit.mit.A_newProject">
 
     <GridLayout
+        android:id="@+id/newProject_gridLayout"
         android:layout_width="match_parent"
         android:layout_height="230dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/newProject_gridLayout">
+        >
 
         <TextView
+            android:id="@+id/newProject_lb_nom"
+            android:text="Nom :"
+            android:textColor="#ac035d"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Nom :"
-            android:id="@+id/newProject_lb_nom"
             android:layout_row="0"
             android:layout_column="0"
-            android:textColor="#ac035d"/>
+            />
 
         <EditText
+            android:id="@+id/newProject_tb_nom"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:id="@+id/newProject_tb_nom"
             android:layout_row="0"
             android:layout_column="1" />
 
         <TextView
+            android:id="@+id/newProject_lb_description"
+            android:text="Description :"
+            android:textColor="#ac035d"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Description :"
-            android:id="@+id/newProject_lb_description"
             android:layout_row="1"
             android:layout_column="0"
-            android:textColor="#ac035d"/>
+            />
 
         <EditText
             android:layout_width="200dp"
@@ -49,101 +52,123 @@
             android:layout_column="1" />
 
         <TextView
+            android:id="@+id/newProject_lb_debut"
+            android:text="Début :"
+            android:textColor="#ac035d"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Début :"
-            android:id="@+id/newProject_lb_debut"
             android:layout_row="2"
             android:layout_column="0"
-            android:textColor="#ac035d"/>
+            />
 
         <EditText
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:inputType="date"
-            android:ems="10"
             android:id="@+id/newProject_tb_debut"
             android:hint="select date ->"
+            android:inputType="date"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
             android:layout_row="2"
             android:layout_column="1"
             android:enabled="false"
             android:editable="false" />
 
         <ImageButton
+            android:id="@+id/newProject_btn_dateDebut"
+            android:text="Add"
+            android:src="@drawable/ic_addproject_adddate"
+            android:background="@null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_addproject_adddate"
-            android:text="Add"
-            android:id="@+id/newProject_btn_dateDebut"
             android:layout_row="2"
             android:layout_column="2"
             />
 
         <TextView
+            android:id="@+id/newProject_lb_fin"
+            android:text="Fin :"
+            android:textColor="#ac035d"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Fin :"
-            android:id="@+id/newProject_lb_fin"
             android:layout_row="3"
             android:layout_column="0"
-            android:textColor="#ac035d"/>
+            />
 
         <EditText
+            android:id="@+id/newProject_tb_fin"
+            android:hint="select date ->"
+            android:inputType="date"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:inputType="date"
             android:ems="10"
-            android:id="@+id/newProject_tb_fin"
             android:layout_row="3"
-            android:hint="select date ->"
             android:layout_column="1"
             android:enabled="false" />
 
         <ImageButton
+            android:id="@+id/newProject_btn_dateFin"
+            android:text="Add"
+            android:src="@drawable/ic_addproject_adddate"
+            android:background="@null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_addproject_adddate"
-            android:text="Add"
-            android:id="@+id/newProject_btn_dateFin"
             android:layout_row="3"
             android:layout_column="2"
             />
 
         <TextView
+            android:id="@+id/newProject_lb_participants"
+            android:text="Participants :"
+            android:textColor="#ac035d"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Participants :"
-            android:id="@+id/newProject_lb_participants"
             android:layout_row="4"
             android:layout_column="0"
-            android:textColor="#ac035d"/>
+            />
 
         <EditText
+            android:id="@+id/newProject_tb_participants"
+            android:hint="adresse mail"
+            android:inputType="textPersonName"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:hint="adresse mail"
             android:ems="10"
-            android:id="@+id/newProject_tb_participants"
             android:layout_row="4"
             android:layout_column="1" />
 
         <ImageButton
+            android:id="@+id/newProject_btn_addParticipant"
+            android:src="@drawable/ic_addproject_adduser"
+            android:background="@null"
+            android:text="Add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_addproject_adduser"
-            android:text="Add"
-            android:id="@+id/newProject_btn_addParticipant"
             android:layout_row="4"
             android:layout_column="2"
             />
     </GridLayout>
 
 
+    <ListView
+        android:id="@+id/newProject_lv_listView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/newProject_gridLayout"
+        />
 
+    <ImageButton
+        android:id="@+id/newProject_btn_addProject"
+        android:text="New Button"
+        android:src="@drawable/ic_addproject_create"
+        android:background="@null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"/>
 
     <RelativeLayout
             android:id="@+id/Layout22"
@@ -152,23 +177,13 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_centerHorizontal="true"
-            android:gravity="center"
+            android:gravity="right"
             >
 
 
-        <ListView
-            android:layout_width="fill_parent"
-            android:layout_height="190dp"
-            android:id="@+id/newProject_lv_listView" />
 
-        <ImageButton
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/newProject_lv_listView"
-            android:text="New Button"
-            android:src="@drawable/ic_addproject_create"
-            android:id="@+id/newProject_btn_addProject"
-            android:layout_centerInParent="true"/>
+
+
 
 
         </RelativeLayout>

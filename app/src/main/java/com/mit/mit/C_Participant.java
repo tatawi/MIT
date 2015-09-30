@@ -7,7 +7,7 @@ package com.mit.mit;
  *@version 0.1
  */
 public class C_Participant {
-    public String id;
+    public int id;
     public String nom;
     public String prenom;
     public String mail;
@@ -28,7 +28,7 @@ public class C_Participant {
      *@param mail		User's mail adress
      *@param mdp		User's password
      */
-    public C_Participant(String id, String nom, String prenom, String mail, String mdp) {
+    public C_Participant(int id, String nom, String prenom, String mail, String mdp) {
         super();
         this.id = id;
         this.nom = nom;
@@ -46,25 +46,26 @@ public class C_Participant {
      */
     public C_Participant(String nom, String prenom, String mail, String mdp) {
         super();
-        this.id = mail;
+        this.id = this.setID(nom);
         this.nom = nom;
         this.prenom = prenom;
         this.mail = mail;
         this.mdp = mdp;
     }
 
-    /**
-     *Application builder
-     *@param mail		User's name
-     *@param mdp		User's surname
-     */
-    public C_Participant(String mail, String mdp) {
-        super();
-        this.id = mail;
-        this.nom = "";
-        this.prenom = "";
-        this.mail = mail;
-        this.mdp = mdp;
+
+
+    private int setID(String stringID)
+    {
+        int i=0;
+        int ascii=0;
+        while( i < stringID.length())
+        {
+            char character = stringID.charAt(i);
+            ascii =ascii+ (int) character;
+            i++;
+        }
+        return ascii;
     }
 
 }

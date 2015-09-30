@@ -19,6 +19,7 @@
         <ImageButton
             android:id="@+id/projets_ibtn_enPreparation"
             android:src="@drawable/ic_project_prepare"
+            android:background="@null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="30dp"
@@ -29,6 +30,7 @@
         <ImageButton
             android:id="@+id/projets_ibtn_enCours"
             android:src="@drawable/ic_project_current"
+            android:background="@null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="40dp"
@@ -38,6 +40,7 @@
         <ImageButton
             android:id="@+id/projets_ibtn_finis"
             android:src="@drawable/ic_project_ended"
+            android:background="@null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="30dp"

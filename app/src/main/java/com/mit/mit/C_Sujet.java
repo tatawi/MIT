@@ -240,11 +240,11 @@ public class C_Sujet {
         {
             if (messagesToString=="")
             {
-                messagesToString = p.id;
+                messagesToString = p.mail;
             }
             else
             {
-                messagesToString = messagesToString + ";" + p.id;
+                messagesToString = messagesToString + ";" + p.mail;
             }
         }
 

@@ -49,14 +49,16 @@ public class D_DatePickerFragment extends DialogFragment
 
         if(cas.equals("newproject_debut"))
         {
+            int mois = month+1;
             EditText activityObject = (EditText)getActivity().findViewById(R.id.newProject_tb_debut);
-            activityObject.setText (day+"/"+month+1+"/"+year);
+            activityObject.setText (day+"/"+mois+"/"+year);
         }
 
         if(cas.equals("newproject_fin"))
         {
+            int mois = month+1;
             EditText activityObject = (EditText)getActivity().findViewById(R.id.newProject_tb_fin);
-            activityObject.setText (day+"/"+month+1+"/"+year);
+            activityObject.setText (day+"/"+mois+"/"+year);
         }
     }
 

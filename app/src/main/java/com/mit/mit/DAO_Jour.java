@@ -139,7 +139,7 @@ public class DAO_Jour extends DAO_Bdd {
 
             liste_jours.add(
                     new C_Jour(
-                            cursor.getString(cursor.getColumnIndex(ATTR_ID)),
+                            cursor.getInt(cursor.getColumnIndex(ATTR_ID)),
                             cursor.getString(cursor.getColumnIndex(ATTR_NOMJOUR)),
                             day,
                             cursor.getFloat(cursor.getColumnIndex(ATTR_PRIXJOURNEE)),
@@ -186,7 +186,7 @@ public class DAO_Jour extends DAO_Bdd {
             }
 
             p=new C_Jour(
-                    cursor.getString(cursor.getColumnIndex(ATTR_ID)),
+                    cursor.getInt(cursor.getColumnIndex(ATTR_ID)),
                     cursor.getString(cursor.getColumnIndex(ATTR_NOMJOUR)),
                     day,
                     cursor.getFloat(cursor.getColumnIndex(ATTR_PRIXJOURNEE)),

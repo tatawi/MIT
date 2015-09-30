@@ -61,6 +61,9 @@ private void CASdeTESTS()
     C_Participant part1 = new C_Participant("PART1","part1","part1","aaaa");
     daoparticipant.ajouter(part1);
 
+    C_Participant part2 = new C_Participant("BAUDRAIS","Maxime","cnero@hotmail.f","azerty");
+    daoparticipant.ajouter(part2);
+
     //projet 1
   /*  C_Projet proj1= new C_Projet(this,"proj1","ceci est un test",new Date(), new Date());
     proj1.creerLesListes();

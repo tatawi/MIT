@@ -26,6 +26,7 @@ public class DAO_Projet extends DAO_Bdd {
     public static final String ATTR_DATEDEBUT = "dateDebut";
     public static final String ATTR_DATEFIN = "dateFin";
     public static final String ATTR_PRIXSEJOUR = "prixSejour";
+    public static final String ATTR_STATUT = "statut";
     public static final String ATTR_PARTICIPANTS = "participants";
     public static final String ATTR_JOURS = "jours";
     public static final String TABLE_CREATE =
@@ -36,6 +37,7 @@ public class DAO_Projet extends DAO_Bdd {
                     + ATTR_DATEDEBUT + " TEXT, "
                     + ATTR_DATEFIN + " TEXT, "
                     + ATTR_PRIXSEJOUR + " FLOAT, "
+                    + ATTR_STATUT + " TEXT, "
                     + ATTR_PARTICIPANTS + " TEXT, "
                     + ATTR_JOURS + " TEXT);";
     public static final String TABLE_DROP = "DROP TABLE IF EXISTS " + TABLE + ";";
@@ -66,6 +68,7 @@ public class DAO_Projet extends DAO_Bdd {
         value.put(ATTR_DATEDEBUT, p.dateDebut.toString());
         value.put(ATTR_DATEFIN, p.dateFin.toString());
         value.put(ATTR_PRIXSEJOUR, p.prixSejour);
+        value.put(ATTR_STATUT, p.statut);
         value.put(ATTR_PARTICIPANTS, p.participantsToString);
         value.put(ATTR_JOURS, p.joursToString);
 
@@ -102,6 +105,7 @@ public class DAO_Projet extends DAO_Bdd {
         value.put(ATTR_DATEDEBUT, p.dateDebut.toString());
         value.put(ATTR_DATEFIN, p.dateFin.toString());
         value.put(ATTR_PRIXSEJOUR, p.prixSejour);
+        value.put(ATTR_STATUT, p.statut);
         value.put(ATTR_PARTICIPANTS, p.participantsToString);
         value.put(ATTR_JOURS, p.joursToString);
 
@@ -127,7 +131,7 @@ public class DAO_Projet extends DAO_Bdd {
         Date datefin=new Date();
         Cursor cursor = bdd.query(
                 TABLE,
-                new String[] { ATTR_ID, ATTR_NOM, ATTR_DESCRIPTION, ATTR_DATEDEBUT, ATTR_DATEFIN, ATTR_PRIXSEJOUR, ATTR_PARTICIPANTS, ATTR_JOURS },
+                new String[] { ATTR_ID, ATTR_NOM, ATTR_DESCRIPTION, ATTR_DATEDEBUT, ATTR_DATEFIN, ATTR_PRIXSEJOUR, ATTR_STATUT, ATTR_PARTICIPANTS, ATTR_JOURS },
                 null,
                 null,
                 null,
@@ -148,12 +152,13 @@ public class DAO_Projet extends DAO_Bdd {
             }
             list_projets.add(
                     new C_Projet(
-                            cursor.getString(cursor.getColumnIndex(ATTR_ID)),
+                            cursor.getInt(cursor.getColumnIndex(ATTR_ID)),
                             cursor.getString(cursor.getColumnIndex(ATTR_NOM)),
                             cursor.getString(cursor.getColumnIndex(ATTR_DESCRIPTION)),
                             datedebut,
                             datefin,
                             cursor.getFloat(cursor.getColumnIndex(ATTR_PRIXSEJOUR)),
+                            cursor.getString(cursor.getColumnIndex(ATTR_STATUT)),
                             cursor.getString(cursor.getColumnIndex(ATTR_PARTICIPANTS)),
                             cursor.getString(cursor.getColumnIndex(ATTR_JOURS))
                     )
@@ -179,7 +184,7 @@ public class DAO_Projet extends DAO_Bdd {
         Date datefin=new Date();
         Cursor cursor = bdd.query(
                 TABLE,
-                new String[] { ATTR_ID, ATTR_NOM, ATTR_DESCRIPTION, ATTR_DATEDEBUT, ATTR_DATEFIN, ATTR_PRIXSEJOUR, ATTR_PARTICIPANTS, ATTR_JOURS },
+                new String[] { ATTR_ID, ATTR_NOM, ATTR_DESCRIPTION, ATTR_DATEDEBUT, ATTR_DATEFIN, ATTR_PRIXSEJOUR, ATTR_STATUT, ATTR_PARTICIPANTS, ATTR_JOURS },
                 ATTR_ID + " = ?",
                 new String[] { String.valueOf(id) },
                 null,
@@ -199,12 +204,13 @@ public class DAO_Projet extends DAO_Bdd {
 
             }
             p=new C_Projet(
-                    cursor.getString(cursor.getColumnIndex(ATTR_ID)),
+                    cursor.getInt(cursor.getColumnIndex(ATTR_ID)),
                     cursor.getString(cursor.getColumnIndex(ATTR_NOM)),
                     cursor.getString(cursor.getColumnIndex(ATTR_DESCRIPTION)),
                     datedebut,
                     datefin,
                     cursor.getFloat(cursor.getColumnIndex(ATTR_PRIXSEJOUR)),
+                    cursor.getString(cursor.getColumnIndex(ATTR_STATUT)),
                     cursor.getString(cursor.getColumnIndex(ATTR_PARTICIPANTS)),
                     cursor.getString(cursor.getColumnIndex(ATTR_JOURS))
             );

@@ -22,7 +22,8 @@ public class A_gestionParticipants extends MainActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String[] listeStrings = {""};
+        //String[] listeStrings = {""};
+        List<String> listeStringParticipants = new ArrayList<String>();
         List<C_Participant>list_parts=new ArrayList<C_Participant>();
         list_parts=daoparticipant.getParticipants();
         int i=0;
@@ -33,11 +34,13 @@ public class A_gestionParticipants extends MainActivity {
 
         for(C_Participant p:list_parts)
         {
-            listeStrings[i]=p.mail;
+            listeStringParticipants.add(p.mail);
         }
 
-        lvListe.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listeStrings));
 
+
+        //lvListe.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listeStrings));
+        lvListe.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,listeStringParticipants));
 
 
     }
