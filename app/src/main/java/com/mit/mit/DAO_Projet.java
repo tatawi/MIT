@@ -87,7 +87,7 @@ public class DAO_Projet extends DAO_Bdd {
         bdd.delete(
                 TABLE,
                 ATTR_ID + " = ?",
-                new String[] { id }
+                new String[]{id}
         );
         this.close();
     }
@@ -113,7 +113,7 @@ public class DAO_Projet extends DAO_Bdd {
                 TABLE,
                 value,
                 ATTR_ID + " = ?",
-                new String[] { String.valueOf(p.id) }
+                new String[]{String.valueOf(p.id)}
         );
         this.close();
     }
@@ -220,6 +220,56 @@ public class DAO_Projet extends DAO_Bdd {
         return p;
     }
 
+
+
+    /**
+     *Get one project from the bdd
+     *@param nom			project's id to got
+     *@return 			return the project with the id
+     */
+    public C_Projet getProjetByName(String nom) {
+        this.open();
+        C_Projet p = null;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date datedebut=new Date();
+        Date datefin=new Date();
+        Cursor cursor = bdd.query(
+                TABLE,
+                new String[] { ATTR_ID, ATTR_NOM, ATTR_DESCRIPTION, ATTR_DATEDEBUT, ATTR_DATEFIN, ATTR_PRIXSEJOUR, ATTR_STATUT, ATTR_PARTICIPANTS, ATTR_JOURS },
+                ATTR_NOM + " = ?",
+                new String[] { nom },
+                null,
+                null,
+                null,
+                null
+        );
+
+        for (cursor.moveToFirst() ; !cursor.isAfterLast() ; cursor.moveToNext())
+        {
+            try {
+                datedebut = formatter.parse(cursor.getString(cursor.getColumnIndex(ATTR_DATEDEBUT)));
+                datefin= formatter.parse(cursor.getString(cursor.getColumnIndex(ATTR_DATEFIN)));
+            }
+            catch(Exception e)
+            {
+
+            }
+            p=new C_Projet(
+                    cursor.getInt(cursor.getColumnIndex(ATTR_ID)),
+                    cursor.getString(cursor.getColumnIndex(ATTR_NOM)),
+                    cursor.getString(cursor.getColumnIndex(ATTR_DESCRIPTION)),
+                    datedebut,
+                    datefin,
+                    cursor.getFloat(cursor.getColumnIndex(ATTR_PRIXSEJOUR)),
+                    cursor.getString(cursor.getColumnIndex(ATTR_STATUT)),
+                    cursor.getString(cursor.getColumnIndex(ATTR_PARTICIPANTS)),
+                    cursor.getString(cursor.getColumnIndex(ATTR_JOURS))
+            );
+        }
+        this.close();
+        cursor.close();
+        return p;
+    }
 
 
 

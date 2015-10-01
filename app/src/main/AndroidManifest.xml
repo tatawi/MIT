@@ -42,6 +42,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mit.mit.A_projets" />
         </activity>
+        <activity
+            android:name=".A_projet_Preparation"
+            android:label="@string/title_activity_a_projet__preparation"
+            android:parentActivityName=".A_projets" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mit.mit.A_projets" />
+        </activity>
     </application>
 
 </manifest>

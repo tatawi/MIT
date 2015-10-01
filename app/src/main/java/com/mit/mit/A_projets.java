@@ -1,11 +1,14 @@
 package com.mit.mit;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -47,6 +50,18 @@ public class A_projets extends MainActivity {
         btn_enPreparation.setOnClickListener(onPreparationProjets);
         btn_projEnCours.setOnClickListener(onEnCoursProjets);
         btn_projFinis.setOnClickListener(onTerminesProjets);
+        lv_listeAffichage.setOnItemClickListener(onListClick);
+
+        //initialisation de la liste
+        for(C_Projet p:list_projets)
+        {
+            if(p.statut.equals("Preparation"))
+            {
+                listeStringParticipants.add(p.nom);
+            }
+        }
+        majListe();
+
 
     }
 
@@ -78,7 +93,7 @@ public class A_projets extends MainActivity {
 
             for(C_Projet p:list_projets)
             {
-                if(p.statut=="Preparation")
+                if(p.statut.equals("Preparation"))
                 {
                     listeStringParticipants.add(p.nom);
                 }
@@ -96,7 +111,7 @@ public class A_projets extends MainActivity {
 
             for(C_Projet p:list_projets)
             {
-                if(p.statut=="Actuel")
+                if(p.statut.equals("Actuel"))
                 {
                     listeStringParticipants.add(p.nom);
                 }
@@ -113,7 +128,7 @@ public class A_projets extends MainActivity {
 
             for(C_Projet p:list_projets)
             {
-                if(p.statut=="Fini")
+                if(p.statut.equals("Fini"))
                 {
                     listeStringParticipants.add(p.nom);
                 }
@@ -122,6 +137,36 @@ public class A_projets extends MainActivity {
         }
     };
 
+    //liste on click
+    AdapterView.OnItemClickListener onListClick =new AdapterView.OnItemClickListener(){
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+        {
+            C_Projet p=daoProjet.getProjetByName(listeStringParticipants.get(position));
+
+            //Intent intent = new Intent(A_projets.this, A_affichageProjet.class);
+            //intent.putExtra("idEntry", p.nom);
+            //startActivity(intent);
+
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(pContext);
+                    alertDialogBuilder.setTitle(p.nom);
+                    alertDialogBuilder
+                            .setCancelable(false)
+                            .setNegativeButton("Fermer", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+
+            Intent inte = new Intent(A_projets.this, A_projet_Preparation.class);
+            startActivity(inte);
+
+
+        }
+
+    };
 
 
 

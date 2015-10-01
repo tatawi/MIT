@@ -7,4 +7,6 @@
     <string name="title_activity_a_projets">Projets</string>
     <string name="title_activity_a_gestion_participants">Gestion des participants</string>
     <string name="title_activity_a_new_project">Nouveau Project</string>
+    <string name="title_activity_a_affichage_projet">A_affichageProjet</string>
+    <string name="title_activity_a_projet__preparation">A_projet_Preparation</string>
 </resources>

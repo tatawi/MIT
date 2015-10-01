@@ -114,11 +114,13 @@ public class A_newProject extends MainActivity {
 
             //CREATION DU PROJET
             C_Projet newprojet=new C_Projet(pContext, v_nom, v_description, v_dateDebut, v_dateFin);
-            //newprojet.liste_participants=v_liste_participants;
-            //newprojet.liste_jours=v_liste_jours;
             newprojet.setListe_jours(v_liste_jours);
             newprojet.setListe_participants(v_liste_participants);
             newprojet.listeToString();
+
+
+
+
 
 
             //SAUVEGARDE
@@ -164,7 +166,7 @@ public class A_newProject extends MainActivity {
                     v_liste_participants.add(p);
                     majListView();
 
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(pContext);
+                    /*AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(pContext);
                     alertDialogBuilder.setTitle(" "+v_liste_participants.size()+ " "+p.mail+" "+tb_participant.getText().toString());
                     alertDialogBuilder
                             .setCancelable(false)
@@ -175,7 +177,7 @@ public class A_newProject extends MainActivity {
                             });
 
                     AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
+                    alertDialog.show();*/
 
                 }
             }
