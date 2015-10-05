@@ -143,11 +143,11 @@ public class A_projets extends MainActivity {
         {
             C_Projet p=daoProjet.getProjetByName(listeStringParticipants.get(position));
 
-            //Intent intent = new Intent(A_projets.this, A_affichageProjet.class);
-            //intent.putExtra("idEntry", p.nom);
-            //startActivity(intent);
+            Intent intent = new Intent(A_projets.this, A_projet_Preparation.class);
+            intent.putExtra("idEntry", p.nom);
+            startActivity(intent);
 
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(pContext);
+             /*       AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(pContext);
                     alertDialogBuilder.setTitle(p.nom);
                     alertDialogBuilder
                             .setCancelable(false)
@@ -158,10 +158,10 @@ public class A_projets extends MainActivity {
                             });
 
                     AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
+                    alertDialog.show();*/
 
-            Intent inte = new Intent(A_projets.this, A_projet_Preparation.class);
-            startActivity(inte);
+            //Intent inte = new Intent(A_projets.this, A_projet_Preparation.class);
+            //startActivity(inte);
 
 
         }

@@ -105,6 +105,9 @@ private void CASdeTESTS()
     //BTN_Connect
     View.OnClickListener onConnectClick = new View.OnClickListener() {
         public void onClick(View v) {
+
+            tb_userID.setText("part1");
+            tb_mdp.setText("aaaa");
             userID =tb_userID.getText().toString();
             mdp=tb_mdp.getText().toString();
             me=daoparticipant.getParticipantById(userID);

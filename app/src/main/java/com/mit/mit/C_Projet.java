@@ -101,7 +101,27 @@ public class C_Projet {
         this.pContext=context;
     }
 
-    public void creerLesListes()
+    public void creerLesListes(DAO_Jour daoJour, DAO_Participant daoPart)
+    {
+        liste_participants=new ArrayList<C_Participant>();
+        liste_jours=new ArrayList<C_Jour>();
+        String[] parts;
+
+        //gestion liste participants
+        parts = this.participantsToString.split(";");
+        for(int i = 0; i < parts.length; i++)
+        {
+            liste_participants.add(daoPart.getParticipantById(parts[i]));
+        }
+        //gestion liste jours
+        parts = this.joursToString.split(";");
+        for(int i = 0; i < parts.length; i++)
+        {
+            liste_jours.add(daoJour.getJourById(parts[i]));
+        }
+    }
+
+    public void creerLesListesOLD()
     {
         DAO_Participant daoPart = new DAO_Participant(this.pContext);
         DAO_Jour daoJour = new DAO_Jour(this.pContext);

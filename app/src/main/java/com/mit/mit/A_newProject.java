@@ -125,6 +125,10 @@ public class A_newProject extends MainActivity {
 
             //SAUVEGARDE
             daoProjet.ajouter(newprojet);
+            for (C_Jour j:v_liste_jours)
+            {
+                daoJour.ajouter(j);
+            }
 
 
             //RETOUR PAGE PRECEDENTE
@@ -211,17 +215,17 @@ public class A_newProject extends MainActivity {
     private List<C_Jour> creerListeJours(Date debut, Date fin)
     {
         List<C_Jour>maListeJours=new ArrayList<C_Jour>();
-
+        Date jourEnCour=debut;
         for(int i=0; i<getDaysBetweenDates(debut, fin); i++)
         {
             Calendar cal = Calendar.getInstance();
-            cal.setTime(debut);
+            cal.setTime(jourEnCour);
             cal.add(Calendar.DATE, 1);
 
-            Date d = cal.getTime();
+            jourEnCour = cal.getTime();
 
 
-            C_Jour jour = new C_Jour(v_nom+"_"+d.getMonth()+"-"+ fin.getDay(), d);
+            C_Jour jour = new C_Jour(v_nom+"_"+jourEnCour.getMonth()+"-"+ jourEnCour.getDay(), jourEnCour);
             maListeJours.add(jour);
         }
 

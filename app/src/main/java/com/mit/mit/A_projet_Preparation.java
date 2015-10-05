@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.Calendar;
@@ -34,7 +36,7 @@ public class A_projet_Preparation extends MainActivity {
 
         //initialiser objets de la page
         setContentView(R.layout.activity_a_affichage_projet);
-        /*
+
         lb_description = (TextView) findViewById(R.id.projetPrep_lb_description);
         lb_cout = (TextView) findViewById(R.id.projetPrep_lb_cout);
         lb_test= (TextView) findViewById(R.id.projetPrep_lb_txtCout);
@@ -47,32 +49,59 @@ public class A_projet_Preparation extends MainActivity {
         {
             //chargement des données du projet
             this.projet = daoProjet.getProjetByName(extras.getString("idEntry"));
-            this.projet.creerLesListes();
+            this.projet.creerLesListes(daoJour, daoparticipant);
             setTitle(this.projet.nom);
             lb_description.setText(this.projet.description);
             lb_cout.setText(this.projet.prixSejour + " €");
-            nbDays=projet.liste_jours.size();
-            //nbDays=16;
-            tab_days=new ImageButton[(int)nbDays];
-            lb_test.setText(nbDays+"");
+            nbDays=this.projet.liste_jours.size();
+            //tab_days=new ImageButton[(int)nbDays];
+
+            lb_description.setText(this.projet.joursToString);
+            lb_cout.setText(""+this.projet.liste_jours.size());
         }
 
         //création des boutons jours
-        for(int i=0; i<tab_days.length; i++)
+        //for(int i=0; i<tab_days.length; i++)
+        container_tableLayout.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout LL = new LinearLayout(this);
+
+        for(int i=0; i<nbDays; i++)
         {
+            if(i%7==0)
+            {
+                container_tableLayout.addView(LL);
+                LL = new LinearLayout(this);
+                LL.setOrientation(LinearLayout.HORIZONTAL);
+                LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                LL.setLayoutParams(LLParams);
+            }
+
+
+
             ImageButton btn=new ImageButton(this);
             btn.setImageResource(R.drawable.calendar);
             btn.setBackgroundColor(Color.TRANSPARENT);
             btn.setOnClickListener(onClickDay);
             btn.setId(i);
 
-            container_tableLayout.addView(btn);
+            /*if(i%5==0 || i%6==0)
+            {
+                btn.setBackgroundColor(Color.parseColor("#DD99BD"));
+            }*/
+
+            LL.addView(btn);
+
+
 
         }
 
+            container_tableLayout.addView(LL);
 
 
-*/
+
+
+
+
 
 
 
