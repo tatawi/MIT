@@ -103,6 +103,8 @@ public class A_newProject extends MainActivity {
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             try {
 
+
+
                 v_dateDebut = formatter.parse(tb_dateDebut.getText().toString());
                 v_dateFin = formatter.parse(tb_dateFin.getText().toString());
             } catch (ParseException e) {
@@ -112,15 +114,12 @@ public class A_newProject extends MainActivity {
              v_liste_jours=creerListeJours(v_dateDebut, v_dateFin);
 
 
+
             //CREATION DU PROJET
             C_Projet newprojet=new C_Projet(pContext, v_nom, v_description, v_dateDebut, v_dateFin);
             newprojet.setListe_jours(v_liste_jours);
             newprojet.setListe_participants(v_liste_participants);
             newprojet.listeToString();
-
-
-
-
 
 
             //SAUVEGARDE
@@ -216,17 +215,26 @@ public class A_newProject extends MainActivity {
     {
         List<C_Jour>maListeJours=new ArrayList<C_Jour>();
         Date jourEnCour=debut;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
+        System.out.print("Date debut : "+sdf.format(debut));
+        System.out.println();
+        System.out.print("Date fin : "+sdf.format(fin));
+        System.out.println();
+        System.out.print("Nombre de jours : "+getDaysBetweenDates(debut, fin));
+        System.out.println();
         for(int i=0; i<getDaysBetweenDates(debut, fin); i++)
         {
+            C_Jour jour = new C_Jour(v_nom+"_"+jourEnCour.getMonth()+"-"+ jourEnCour.getDay(), jourEnCour);
+            maListeJours.add(jour);
+            System.out.print("Add day : "+jour.nomJour+" | "+sdf.format(jour.jour));
+            System.out.println();
+
+            //INCREMENT DAY
             Calendar cal = Calendar.getInstance();
             cal.setTime(jourEnCour);
             cal.add(Calendar.DATE, 1);
 
             jourEnCour = cal.getTime();
-
-
-            C_Jour jour = new C_Jour(v_nom+"_"+jourEnCour.getMonth()+"-"+ jourEnCour.getDay(), jourEnCour);
-            maListeJours.add(jour);
         }
 
         //public C_Jour(String nomJour, Date jour)

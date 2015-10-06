@@ -61,12 +61,16 @@ public class DAO_Projet extends DAO_Bdd {
     public void ajouter(C_Projet p) {
         this.open();
 
+
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
         ContentValues value = new ContentValues();
         value.put(ATTR_ID, p.id);
         value.put(ATTR_NOM, p.nom);
         value.put(ATTR_DESCRIPTION, p.description);
-        value.put(ATTR_DATEDEBUT, p.dateDebut.toString());
-        value.put(ATTR_DATEFIN, p.dateFin.toString());
+        value.put(ATTR_DATEDEBUT, sdf.format(p.dateDebut));
+        value.put(ATTR_DATEFIN, sdf.format(p.dateFin));
         value.put(ATTR_PRIXSEJOUR, p.prixSejour);
         value.put(ATTR_STATUT, p.statut);
         value.put(ATTR_PARTICIPANTS, p.participantsToString);
@@ -201,7 +205,10 @@ public class DAO_Projet extends DAO_Bdd {
             }
             catch(Exception e)
             {
-
+                System.out.print("ERROR LOADING PROJECT DATE");
+                System.out.println();
+                System.out.print(""+cursor.getString(cursor.getColumnIndex(ATTR_DATEDEBUT)));
+                System.out.println();
             }
             p=new C_Projet(
                     cursor.getInt(cursor.getColumnIndex(ATTR_ID)),
@@ -231,6 +238,7 @@ public class DAO_Projet extends DAO_Bdd {
         this.open();
         C_Projet p = null;
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
         Date datedebut=new Date();
         Date datefin=new Date();
         Cursor cursor = bdd.query(
@@ -252,7 +260,10 @@ public class DAO_Projet extends DAO_Bdd {
             }
             catch(Exception e)
             {
-
+                System.out.print("ERROR LOADING PROJECT DATE");
+                System.out.println();
+                System.out.print(""+cursor.getString(cursor.getColumnIndex(ATTR_DATEDEBUT)));
+                System.out.println();
             }
             p=new C_Projet(
                     cursor.getInt(cursor.getColumnIndex(ATTR_ID)),

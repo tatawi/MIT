@@ -55,10 +55,11 @@ public class DAO_Jour extends DAO_Bdd {
     public void ajouter(C_Jour j) {
         this.open();
 
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         ContentValues value = new ContentValues();
         //value.put(ATTR_ID, j.id);
         value.put(ATTR_NOMJOUR, j.nomJour);
-        value.put(ATTR_DATE, j.jour.toString());
+        value.put(ATTR_DATE, sdf.format(j.jour));
         value.put(ATTR_PRIXJOURNEE, j.prixJournee);
         value.put(ATTR_SUJETS, j.sujetsToString);
 

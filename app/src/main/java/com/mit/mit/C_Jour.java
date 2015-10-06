@@ -84,14 +84,18 @@ public class C_Jour {
      */
     public boolean isNotification(C_Participant me)
     {
-        for(C_Sujet sujet:liste_sujets)
-        {
-            if(sujet.isNotification(me))
-            {
-                return true;
+        try {
+            for (C_Sujet sujet : liste_sujets) {
+                if (sujet.isNotification(me)) {
+                    return true;
+                }
             }
+            return false;
         }
-        return false;
+        catch(Exception ex)
+        {
+            return false;
+        }
     }
 
     public void setContext(Context context)

@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -56,61 +57,75 @@ public class A_projet_Preparation extends MainActivity {
             nbDays=this.projet.liste_jours.size();
             //tab_days=new ImageButton[(int)nbDays];
 
-            lb_description.setText(this.projet.joursToString);
-            lb_cout.setText(""+this.projet.liste_jours.size());
+            lb_cout.setText("" + this.projet.liste_jours.size());
+
+            //lb_description.setText("" + this.projet.dateDebut.toString() + " " + this.projet.dateFin.toString());
+
+
+
         }
 
-        //création des boutons jours
-        //for(int i=0; i<tab_days.length; i++)
+
+
+        //container
         container_tableLayout.setOrientation(LinearLayout.VERTICAL);
         LinearLayout LL = new LinearLayout(this);
+        LL.setOrientation(LinearLayout.HORIZONTAL);
+        LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LL.setLayoutParams(LLParams);
 
-        for(int i=0; i<nbDays; i++)
+
+
+
+        //AFFICHAGE
+        Date currentDate=this.projet.dateDebut;
+
+        //ADDING BLANK IMAGES
+        Calendar c = Calendar.getInstance();
+        c.setTime(currentDate);
+        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK)-2;
+        for(int j=0; j<dayOfWeek; j++)
         {
-            if(i%7==0)
+            System.out.print("ADD BLANK");
+            System.out.println();
+            ImageButton btn=new ImageButton(this);
+            btn.setImageResource(R.drawable.ic_cal_blank);
+            btn.setBackgroundColor(Color.TRANSPARENT);
+            LL.addView(btn);
+        }
+
+        for(int i=dayOfWeek; i<nbDays+dayOfWeek; i++)
+        {
+            if(i>0 && i%7==0)
             {
+                System.out.print("RETOUR LIGNE");
+                System.out.println();
                 container_tableLayout.addView(LL);
                 LL = new LinearLayout(this);
                 LL.setOrientation(LinearLayout.HORIZONTAL);
-                LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 LL.setLayoutParams(LLParams);
             }
 
 
-
+            //ADD BUTTON
             ImageButton btn=new ImageButton(this);
-            btn.setImageResource(R.drawable.calendar);
+            String fileName=getImageNameForDay(currentDate);
+            int identifier = getResources().getIdentifier(fileName, "drawable", getPackageName());
+            btn.setImageResource(identifier);
             btn.setBackgroundColor(Color.TRANSPARENT);
-            btn.setOnClickListener(onClickDay);
-            btn.setId(i);
-
-            /*if(i%5==0 || i%6==0)
-            {
-                btn.setBackgroundColor(Color.parseColor("#DD99BD"));
-            }*/
-
             LL.addView(btn);
+            System.out.print("ADD BUTTON "+fileName );
+            System.out.println();
 
+
+            //INCREMENT DAY
+            c.setTime(currentDate);
+            c.add(Calendar.DATE, 1);
+            currentDate = c.getTime();
 
 
         }
-
-            container_tableLayout.addView(LL);
-
-
-
-
-
-
-
-
-
-
-        //listeners
-
-
-
-
+        container_tableLayout.addView(LL);
 
 
 
@@ -148,7 +163,41 @@ public class A_projet_Preparation extends MainActivity {
 //	FONCTIONS
 //---------------------------------------------------------------------------------------
 
+    private String getImageNameForDay(Date d)
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
+        System.out.print("------------------------------------------");
+        System.out.println();
+        System.out.print("date : "+sdf.format(d));
+        System.out.println();
 
+        for(C_Jour j:this.projet.liste_jours)
+        {
+
+            System.out.print(sdf.format(d)+" =? "+sdf.format(j.jour));
+            System.out.println();
+            if(sdf.format(d).equals(sdf.format(j.jour)))
+            {
+                System.out.print("OK");
+                System.out.println();
+                sdf = new SimpleDateFormat("dd");
+
+                if(j.isNotification(me))
+                {
+                    return "ic_cal_red_"+sdf.format(j.jour);
+                }
+                else
+                {
+                    return "ic_cal_black_"+sdf.format(j.jour);
+                }
+            }
+
+
+        }
+
+
+        return "ic_cal_black_01";
+    }
 
 
 
