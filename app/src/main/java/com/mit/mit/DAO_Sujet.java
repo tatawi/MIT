@@ -167,7 +167,7 @@ public class DAO_Sujet extends DAO_Bdd {
                             lheure,
                             cursor.getInt(cursor.getColumnIndex(ATTR_DUREE)),
                             cursor.getString(cursor.getColumnIndex(ATTR_FEELLING)),
-                            cursor.getFloat(cursor.getColumnIndex(ATTR_PRIX)),
+                            cursor.getDouble(cursor.getColumnIndex(ATTR_PRIX)),
                             cursor.getString(cursor.getColumnIndex(ATTR_MESSAGES)),
                             cursor.getString(cursor.getColumnIndex(ATTR_PERSONNESOK))
                     )
@@ -220,7 +220,7 @@ public class DAO_Sujet extends DAO_Bdd {
                     lheure,
                     cursor.getInt(cursor.getColumnIndex(ATTR_DUREE)),
                     cursor.getString(cursor.getColumnIndex(ATTR_FEELLING)),
-                    cursor.getFloat(cursor.getColumnIndex(ATTR_PRIX)),
+                    cursor.getDouble(cursor.getColumnIndex(ATTR_PRIX)),
                     cursor.getString(cursor.getColumnIndex(ATTR_MESSAGES)),
                     cursor.getString(cursor.getColumnIndex(ATTR_PERSONNESOK))
             );

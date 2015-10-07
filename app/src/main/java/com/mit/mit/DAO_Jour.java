@@ -78,7 +78,7 @@ public class DAO_Jour extends DAO_Bdd {
         bdd.delete(
                 TABLE,
                 ATTR_NOMJOUR + " = ?",
-                new String[] { id }
+                new String[]{id}
         );
         this.close();
     }
@@ -102,7 +102,7 @@ public class DAO_Jour extends DAO_Bdd {
                 TABLE,
                 value,
                 ATTR_NOMJOUR + " = ?",
-                new String[] { String.valueOf(j.id) }
+                new String[]{String.valueOf(j.id)}
         );
         this.close();
     }
@@ -198,6 +198,7 @@ public class DAO_Jour extends DAO_Bdd {
         cursor.close();
         return p;
     }
+
 
 
 

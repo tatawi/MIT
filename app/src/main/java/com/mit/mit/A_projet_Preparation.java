@@ -1,5 +1,7 @@
 package com.mit.mit;
 
+import android.app.DialogFragment;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,29 +20,33 @@ import java.util.Date;
 
 public class A_projet_Preparation extends MainActivity {
 
+/*          System.out.print("ADD BLANK");
+            System.out.println();
+            */
 
     //objets de la page
     private TextView lb_description;
     private TextView lb_cout;
-    private TextView lb_test;
+    private TextView lb_text;
     private LinearLayout container_tableLayout;
-    private ImageButton[] tab_days;
 
     //variables
     private C_Projet projet;
     private double nbDays;
+    private String tab_correspButtons[];
+    private SimpleDateFormat sdf;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         //initialiser objets de la page
         setContentView(R.layout.activity_a_affichage_projet);
-
         lb_description = (TextView) findViewById(R.id.projetPrep_lb_description);
         lb_cout = (TextView) findViewById(R.id.projetPrep_lb_cout);
-        lb_test= (TextView) findViewById(R.id.projetPrep_lb_txtCout);
+        lb_text= (TextView) findViewById(R.id.projetPrep_lb_txtCout);
         container_tableLayout = (LinearLayout) findViewById(R.id.projetPrep_tableLayout);
 
 
@@ -55,19 +61,16 @@ public class A_projet_Preparation extends MainActivity {
             lb_description.setText(this.projet.description);
             lb_cout.setText(this.projet.prixSejour + " €");
             nbDays=this.projet.liste_jours.size();
-            //tab_days=new ImageButton[(int)nbDays];
-
-            lb_cout.setText("" + this.projet.liste_jours.size());
-
-            //lb_description.setText("" + this.projet.dateDebut.toString() + " " + this.projet.dateFin.toString());
-
-
-
+            tab_correspButtons=new String[(int)nbDays+7];
         }
 
 
+        /*---------------------------
+        *AFFICHAGE
+        */
+        Date currentDate=this.projet.dateDebut;
+        Calendar c = Calendar.getInstance();
 
-        //container
         container_tableLayout.setOrientation(LinearLayout.VERTICAL);
         LinearLayout LL = new LinearLayout(this);
         LL.setOrientation(LinearLayout.HORIZONTAL);
@@ -75,47 +78,48 @@ public class A_projet_Preparation extends MainActivity {
         LL.setLayoutParams(LLParams);
 
 
-
-
-        //AFFICHAGE
-        Date currentDate=this.projet.dateDebut;
-
         //ADDING BLANK IMAGES
-        Calendar c = Calendar.getInstance();
         c.setTime(currentDate);
         int dayOfWeek = c.get(Calendar.DAY_OF_WEEK)-2;
         for(int j=0; j<dayOfWeek; j++)
         {
-            System.out.print("ADD BLANK");
-            System.out.println();
+
             ImageButton btn=new ImageButton(this);
             btn.setImageResource(R.drawable.ic_cal_blank);
             btn.setBackgroundColor(Color.TRANSPARENT);
             LL.addView(btn);
         }
 
+        //ADD IMAGES BUTTON
         for(int i=dayOfWeek; i<nbDays+dayOfWeek; i++)
         {
+            //variables
+            ImageButton btn=new ImageButton(this);
+            sdf = new SimpleDateFormat("dd/MM/yy");
+            String str_buttonID=getDayIDFromDate(currentDate);
+            String fileName=getImageNameForDay(currentDate);
+            int identifier = getResources().getIdentifier(fileName, "drawable", getPackageName());
+
+            //ajoute la ligne suivante si ligne actuelle pleine
             if(i>0 && i%7==0)
             {
-                System.out.print("RETOUR LIGNE");
-                System.out.println();
                 container_tableLayout.addView(LL);
                 LL = new LinearLayout(this);
                 LL.setOrientation(LinearLayout.HORIZONTAL);
                 LL.setLayoutParams(LLParams);
             }
 
+            //add listener
+            if (!str_buttonID.equals(""))
+            {
+                tab_correspButtons[i]=getDayIDFromDate(currentDate);
+                btn.setId(i);
+                btn.setOnClickListener(onClickDay);
+            }
 
-            //ADD BUTTON
-            ImageButton btn=new ImageButton(this);
-            String fileName=getImageNameForDay(currentDate);
-            int identifier = getResources().getIdentifier(fileName, "drawable", getPackageName());
             btn.setImageResource(identifier);
             btn.setBackgroundColor(Color.TRANSPARENT);
             LL.addView(btn);
-            System.out.print("ADD BUTTON "+fileName );
-            System.out.println();
 
 
             //INCREMENT DAY
@@ -130,9 +134,6 @@ public class A_projet_Preparation extends MainActivity {
 
 
 
-
-
-
     }
 
 
@@ -143,12 +144,18 @@ public class A_projet_Preparation extends MainActivity {
 
 
     //bouton ajouter date debut
-    View.OnClickListener onClickDay = new View.OnClickListener() {
+    View.OnClickListener onClickDay = new View.OnClickListener()
+    {
         public void onClick(View v) {
+            ImageButton button = (ImageButton)v;
+            String dayID=tab_correspButtons[button.getId()];
 
-
+            Intent intent = new Intent(A_projet_Preparation.this, A_jour_Preparation.class);
+            intent.putExtra("idEntry", dayID);
+            startActivity(intent);
         }
     };
+
 
 
 
@@ -163,13 +170,27 @@ public class A_projet_Preparation extends MainActivity {
 //	FONCTIONS
 //---------------------------------------------------------------------------------------
 
+
+    private String getDayIDFromDate(Date d)
+    {
+        sdf = new SimpleDateFormat("dd/MM/yy");
+
+        for(C_Jour j:this.projet.liste_jours)
+        {
+            if(sdf.format(d).equals(sdf.format(j.jour)))
+            {
+                return j.nomJour;
+            }
+
+        }
+        return "";
+    }
+
+
     private String getImageNameForDay(Date d)
     {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
-        System.out.print("------------------------------------------");
-        System.out.println();
-        System.out.print("date : "+sdf.format(d));
-        System.out.println();
+        sdf = new SimpleDateFormat("dd/MM/yy");
+
 
         for(C_Jour j:this.projet.liste_jours)
         {
@@ -233,10 +254,7 @@ public class A_projet_Preparation extends MainActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+
 
         return super.onOptionsItemSelected(item);
     }

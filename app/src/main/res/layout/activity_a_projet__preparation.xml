@@ -57,7 +57,7 @@
         <TextView
             android:id="@+id/projetPrep_lb_cout"
             android:text="125€"
-            android:textSize="28dp"
+            android:textSize="25dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"

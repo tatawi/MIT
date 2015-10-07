@@ -24,10 +24,10 @@ public class C_Sujet {
     public String description;
     public String type;
     public String localisation;
-    public Date heure; //in minutes
+    public Date heure;
     public int duree;
     public boolean auFeeling;
-    public float prix;
+    public double prix;
 
     public String messagesToString;
     public String personnesAyantAccepteToString;
@@ -42,7 +42,6 @@ public class C_Sujet {
 
     /**
      *Application builder - create a new subject
-     *@param idSujet				Id of the day containing the subject
      *@param titre				Subject's title
      *@param description			Subject's description
      *@param type				Subject's type
@@ -52,10 +51,9 @@ public class C_Sujet {
      *@param auFeeling			If it's a feeling subject
      *@param prix				Subject's price
      */
-    public C_Sujet( String idSujet, String titre, String description, String type, String localisation, Date heure, int duree, boolean auFeeling, float prix)
+    public C_Sujet( String titre, String description, String type, String localisation, Date heure, int duree, boolean auFeeling, double prix)
     {
         super();
-        this.idSujet =idSujet;
         this.titre = titre;
         this.description = description;
         this.type = type;
@@ -81,7 +79,7 @@ public class C_Sujet {
      *@param messagesToString				List of all C_message's id in string format (separated with ";")
      *@param personnesAyantAccepteToString	List of all accepted member's id in string format (separated with ";")
      */
-    public C_Sujet( String id, String idSujet, String titre, String description, String type, String localisation, Date heure, int duree, String auFeeling, float prix, String messagesToString, String personnesAyantAccepteToString)
+    public C_Sujet( String id, String idSujet, String titre, String description, String type, String localisation, Date heure, int duree, String auFeeling, double prix, String messagesToString, String personnesAyantAccepteToString)
     {
         super();
         boolean v_feel=false;

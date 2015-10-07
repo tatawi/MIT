@@ -127,7 +127,22 @@ public class A_newProject extends MainActivity {
             for (C_Jour j:v_liste_jours)
             {
                 daoJour.ajouter(j);
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
+                System.out.print("<jour "+ j.nomJour+" | "+sdf.format(j.jour));
+                System.out.println();
             }
+
+            for (C_Jour j:newprojet.liste_jours)
+            {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
+                System.out.print(">jour "+ j.nomJour+" | "+sdf.format(j.jour));
+                System.out.println();
+
+            }
+            System.out.print("*********************************************************");
+            System.out.println();
+
+
 
 
             //RETOUR PAGE PRECEDENTE
@@ -224,7 +239,8 @@ public class A_newProject extends MainActivity {
         System.out.println();
         for(int i=0; i<getDaysBetweenDates(debut, fin); i++)
         {
-            C_Jour jour = new C_Jour(v_nom+"_"+jourEnCour.getMonth()+"-"+ jourEnCour.getDay(), jourEnCour);
+            sdf = new SimpleDateFormat("dd-MM");
+            C_Jour jour = new C_Jour(v_nom+"_"+sdf.format(jourEnCour), jourEnCour);
             maListeJours.add(jour);
             System.out.print("Add day : "+jour.nomJour+" | "+sdf.format(jour.jour));
             System.out.println();
@@ -284,10 +300,7 @@ public class A_newProject extends MainActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+
 
         return super.onOptionsItemSelected(item);
     }

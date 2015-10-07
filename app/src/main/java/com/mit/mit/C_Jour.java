@@ -18,7 +18,7 @@ public class C_Jour {
 //---------------------------------------------------------------------------------------
 //	VARIABLES
 //---------------------------------------------------------------------------------------
-    public Context pContext;
+
     public int id;
     public String nomJour;
     public Date jour;
@@ -98,23 +98,26 @@ public class C_Jour {
         }
     }
 
-    public void setContext(Context context)
-    {
-        this.pContext=context;
-    }
 
-    public void creerLesListes()
-    {
-        List<C_Sujet> list_sujets=new ArrayList<C_Sujet>();
-        DAO_Sujet daoSujet = new DAO_Sujet(this.pContext);
-        String[] parts;
 
-        //gestion liste sujets
-        parts = this.sujetsToString.split(";");
-        for(int i = 0; i < parts.length; i++)
-        {
-            list_sujets.add(daoSujet.getSujetById(parts[i]));
+    public void creerLesListes(DAO_Sujet daoSujet)
+    {
+        try{
+            liste_sujets=new ArrayList<C_Sujet>();
+            String[] parts;
+
+            //gestion liste sujets
+            parts = this.sujetsToString.split(";");
+            for(int i = 0; i < parts.length; i++)
+            {
+                liste_sujets.add(daoSujet.getSujetById(parts[i]));
+            }
         }
+        catch(Exception ex)
+        {
+
+        }
+
     }
 
 
