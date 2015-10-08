@@ -102,20 +102,15 @@ public class C_Jour {
 
     public void creerLesListes(DAO_Sujet daoSujet)
     {
-        try{
-            liste_sujets=new ArrayList<C_Sujet>();
-            String[] parts;
+        liste_sujets=new ArrayList<C_Sujet>();
+        String[] parts;
 
+        if(sujetsToString.length()>1) {
             //gestion liste sujets
             parts = this.sujetsToString.split(";");
-            for(int i = 0; i < parts.length; i++)
-            {
+            for (int i = 0; i < parts.length; i++) {
                 liste_sujets.add(daoSujet.getSujetById(parts[i]));
             }
-        }
-        catch(Exception ex)
-        {
-
         }
 
     }
@@ -130,10 +125,11 @@ public class C_Jour {
     /**
      *Convert class list in string (separated with ";") in order to store data in DAO bdd
      */
-    private void listeToString()
+    public void listeToString()
     {
         this.sujetsToString="";
-
+System.out.println("JOUR LISTE TO STRING");
+        System.out.println("liste :"+this.liste_sujets.size());
         for(C_Sujet s:this.liste_sujets)
         {
             if (sujetsToString=="")
@@ -145,6 +141,7 @@ public class C_Jour {
                 sujetsToString = sujetsToString + ";" + s.id;
             }
         }
+        System.out.println("RESULT " + this.sujetsToString);
     }
 
 

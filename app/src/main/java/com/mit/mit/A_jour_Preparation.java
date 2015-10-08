@@ -1,10 +1,13 @@
 package com.mit.mit;
 
+import android.app.DialogFragment;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -52,125 +55,137 @@ public class A_jour_Preparation extends MainActivity {
         }
 
 
-        this.day.liste_sujets=creerDesSujets();
+        //this.day.liste_sujets=creerDesSujets();
 
 
 
 
+        System.out.println("sujets : "+day.sujetsToString);
 
+        System.out.println("nombre sujets : "+day.liste_sujets.size());
 
-
-
-
-
-        container_globalLayout.setOrientation(LinearLayout.VERTICAL);
-        sdf = new SimpleDateFormat("HH:mm");
-        String titreDescription="";
-        for(C_Sujet s:this.day.liste_sujets)
-        //for(int i=0; i<10; i++)
+        if(!this.day.liste_sujets.isEmpty())
         {
-            //panel global
-            LinearLayout LLglobal = new LinearLayout(this);
-            LLglobal.setOrientation(LinearLayout.HORIZONTAL);
-            LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            LLglobal.setLayoutParams(LLParams);
-
-            //panel button
-            LinearLayout LLleft = new LinearLayout(this);
-            LLleft.setOrientation(LinearLayout.HORIZONTAL);
-            LLleft.setLayoutParams(LLParams);
-
-            //panel messages
-            LinearLayout LLright = new LinearLayout(this);
-            LLright.setOrientation(LinearLayout.VERTICAL);
-            LLright.setLayoutParams(LLParams);
-
-            //panel description
-            LinearLayout LLrightUp = new LinearLayout(this);
-            LLrightUp.setOrientation(LinearLayout.HORIZONTAL);
-            LLrightUp.setLayoutParams(LLParams);
-
-            //panel heures
-            LinearLayout LLrightDown = new LinearLayout(this);
-            LLrightDown.setOrientation(LinearLayout.HORIZONTAL);
-            LLrightDown.setLayoutParams(LLParams);
-
-
-            //déclarations champs
-            ImageButton img=new ImageButton(this);
-            TextView desc = new TextView(this);
-            TextView h1 = new TextView(this);
-            TextView h2 = new TextView(this);
-            TextView cout = new TextView(this);
-
-
-            //personnalisation champs
-            switch (s.type)
+            System.out.println("Enter");
+            container_globalLayout.setOrientation(LinearLayout.VERTICAL);
+            sdf = new SimpleDateFormat("HH:mm");
+            String titreDescription = "";
+            for (C_Sujet s : this.day.liste_sujets)
+            //for(int i=0; i<10; i++)
             {
-                case "Transport":
-                    img.setImageResource(R.drawable.ic_jour_transports);
-                    desc.setTextColor(Color.parseColor("#e74c3c"));
-                    titreDescription="[Transport] ";
-                    break;
+                System.out.println("sujet : " + s.titre);
+                //panel global
+                LinearLayout LLglobal = new LinearLayout(this);
+                LLglobal.setOrientation(LinearLayout.HORIZONTAL);
+                LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                LLglobal.setLayoutParams(LLParams);
 
-                case "Repas":
-                    img.setImageResource(R.drawable.ic_jour_repas);
-                    desc.setTextColor(Color.parseColor("#2980b9"));
-                    titreDescription="[Repas] ";
-                    break;
+                //panel button
+                LinearLayout LLleft = new LinearLayout(this);
+                LLleft.setOrientation(LinearLayout.HORIZONTAL);
+                LLleft.setLayoutParams(LLParams);
 
-                case "Visite":
-                    img.setImageResource(R.drawable.ic_jour_visite);
-                    desc.setTextColor(Color.parseColor("#16a085"));
-                    titreDescription="[Visite] ";
-                    break;
+                //panel messages
+                LinearLayout LLright = new LinearLayout(this);
+                LLright.setOrientation(LinearLayout.VERTICAL);
+                LLright.setLayoutParams(LLParams);
 
-                case "Logement":
-                    img.setImageResource(R.drawable.ic_jour_logement);
-                    desc.setTextColor(Color.parseColor("#f39c12"));
-                    titreDescription="[Hebergement] ";
-                    break;
+                //panel description
+                LinearLayout LLrightUp = new LinearLayout(this);
+                LLrightUp.setOrientation(LinearLayout.HORIZONTAL);
+                LLrightUp.setLayoutParams(LLParams);
 
-                case "loisir":
-                    img.setImageResource(R.drawable.ic_jour_loisir);
-                    desc.setTextColor(Color.parseColor("#9b59b6"));
-                    titreDescription="[Loisir] ";
-                    break;
+                //panel heures
+                LinearLayout LLrightDown = new LinearLayout(this);
+                LLrightDown.setOrientation(LinearLayout.HORIZONTAL);
+                LLrightDown.setLayoutParams(LLParams);
 
-                case "Libre":
-                    img.setImageResource(R.drawable.ic_jour_libre);
-                    desc.setTextColor(Color.parseColor("#5b5b5b"));
-                    titreDescription="[Libre] ";
-                    break;
+
+                //déclarations champs
+                ImageButton img = new ImageButton(this);
+                TextView desc = new TextView(this);
+                TextView h1 = new TextView(this);
+                TextView h2 = new TextView(this);
+                TextView cout = new TextView(this);
+
+
+                //personnalisation champs
+                switch (s.type) {
+                    case "Transport":
+                        img.setImageResource(R.drawable.ic_jour_transports);
+                        desc.setTextColor(Color.parseColor("#e74c3c"));
+                        titreDescription = "[Transport] ";
+                        break;
+
+                    case "Repas":
+                        img.setImageResource(R.drawable.ic_jour_repas);
+                        desc.setTextColor(Color.parseColor("#2980b9"));
+                        titreDescription = "[Repas] ";
+                        break;
+
+                    case "Visite":
+                        img.setImageResource(R.drawable.ic_jour_visite);
+                        desc.setTextColor(Color.parseColor("#16a085"));
+                        titreDescription = "[Visite] ";
+                        break;
+
+                    case "Logement":
+                        img.setImageResource(R.drawable.ic_jour_logement);
+                        desc.setTextColor(Color.parseColor("#f39c12"));
+                        titreDescription = "[Hebergement] ";
+                        break;
+
+                    case "loisir":
+                        img.setImageResource(R.drawable.ic_jour_loisir);
+                        desc.setTextColor(Color.parseColor("#9b59b6"));
+                        titreDescription = "[Loisir] ";
+                        break;
+
+                    case "Libre":
+                        img.setImageResource(R.drawable.ic_jour_libre);
+                        desc.setTextColor(Color.parseColor("#5b5b5b"));
+                        titreDescription = "[Libre] ";
+                        break;
+                }
+
+                //initialisation champs
+                img.setBackgroundColor(Color.TRANSPARENT);
+                desc.setText(titreDescription + s.titre);
+                desc.setTextSize(16);
+                h1.setText(sdf.format(s.heure));
+                h1.setPadding(10, 10, 10, 0);
+                h2.setText(" " + s.duree + " m ");
+                h2.setPadding(10, 10, 10, 0);
+                cout.setText(" " + s.prix + " € ");
+                cout.setPadding(10, 10, 10, 0);
+
+                //ajout des champs aux pannels
+                LLleft.addView(img);
+                LLrightUp.addView(desc);
+                LLrightDown.addView(h1);
+                LLrightDown.addView(h2);
+                LLrightDown.addView(cout);
+
+                //ajouts panels
+                LLright.addView(LLrightUp);
+                LLright.addView(LLrightDown);
+                LLglobal.addView(LLleft);
+                LLglobal.addView(LLright);
+                LLglobal.setOnClickListener(onClickLayout);
+                container_globalLayout.addView(LLglobal);
             }
-
-            //initialisation champs
-            img.setBackgroundColor(Color.TRANSPARENT);
-            desc.setText(titreDescription+s.titre);
-            desc.setTextSize(16);
-            h1.setText(sdf.format(s.heure));
-            h1.setPadding(10, 10, 10, 0);
-            h2.setText(" "+s.duree +" m ");
-            h2.setPadding(10, 10, 10, 0);
-            cout.setText(" "+s.prix +" € ");
-            cout.setPadding(10, 10, 10, 0);
-
-            //ajout des champs aux pannels
-            LLleft.addView(img);
-            LLrightUp.addView(desc);
-            LLrightDown.addView(h1);
-            LLrightDown.addView(h2);
-            LLrightDown.addView(cout);
-
-            //ajouts panels
-            LLright.addView(LLrightUp);
-            LLright.addView(LLrightDown);
-            LLglobal.addView(LLleft);
-            LLglobal.addView(LLright);
-            container_globalLayout.addView(LLglobal);
         }
-
     }
+
+    //bouton ajouter date debut
+    View.OnClickListener onClickLayout = new View.OnClickListener() {
+        public void onClick(View v) {
+
+            //DialogFragment newFragment = new D_DatePickerFragment("newproject_debut");
+            //newFragment.show(getFragmentManager(), "datePicker");
+            //tb_dateDebut.setText(lb_date.getText());
+        }
+    };
 
 
 
@@ -251,6 +266,13 @@ public class A_jour_Preparation extends MainActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        //ON NEW USER
+        if (id == R.id.menu_addSujet)
+        {
+            Intent intent = new Intent(A_jour_Preparation.this, A_sujet_new.class);
+            intent.putExtra("idEntry", this.day.nomJour);
+            startActivity(intent);
+        }
 
 
         return super.onOptionsItemSelected(item);

@@ -1,0 +1,396 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context="com.mit.mit.A_sujet_new">
+
+    <LinearLayout
+        android:id="@+id/newsujet_linearlayout_up"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:id="@+id/newsujet_lb_sujet"
+            android:text="Sujet :"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ac035d"
+            android:layout_marginBottom="10dp"
+             />
+
+        <EditText
+            android:id="@+id/newsujet_tb_sujet"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Entrez le titre du sujet"
+            android:textSize="20dp"
+            android:textColor="#5b5b5b"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2px"
+        android:background="#ac035d"
+        android:layout_below="@+id/newsujet_linearlayout_up"/>
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/newsujet_linearlayout_up"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" >
+
+        <LinearLayout
+            android:id="@+id/newsujet_linearlayout_global"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <LinearLayout
+                android:id="@+id/newsujet_linearlayout_desc"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true">
+
+                <TextView
+                    android:id="@+id/newsujet_lb_description"
+                    android:text="Description :"
+                    android:textColor="#ac035d"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+
+                    />
+
+                <EditText
+                    android:id="@+id/newsujet_tb_description"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Description"
+                    android:textColor="#5b5b5b"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2px"
+                android:background="#ac035d"/>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true">
+
+
+
+                <TextView
+                    android:text="Type :"
+                    android:textColor="#ac035d"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    />
+
+                <TextView
+                    android:id="@+id/newsujet_lb_type"
+                    android:text="Sélectioner dans la liste suivante :"
+                    android:textColor="#5b5b5b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    />
+        </LinearLayout>
+
+            <HorizontalScrollView
+                android:id="@+id/horizontalScrollView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+            <LinearLayout
+                android:id="@+id/newsujet_linearlayout_type"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true">
+
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/newsujet_btn_logement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_jour_logement"
+                    android:background="@null"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="10dp"
+                    android:layout_marginBottom="2dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Logement"
+                        android:textColor="#f39c12"
+                        android:paddingLeft="20dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:id="@+id/newsujet_btn_repas"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_jour_repas"
+                        android:background="@null"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:layout_marginBottom="2dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Repas"
+                        android:textColor="#2980b9"
+                        android:paddingLeft="25dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:id="@+id/newsujet_btn_transport"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_jour_transports"
+                        android:background="@null"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:layout_marginBottom="2dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="transport"
+                        android:textColor="#e74c3c"
+                        android:paddingLeft="20dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:id="@+id/newsujet_btn_visite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_jour_visite"
+                        android:background="@null"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:layout_marginBottom="2dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Visite"
+                        android:textColor="#16a085"
+                        android:paddingLeft="25dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:id="@+id/newsujet_btn_loisir"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_jour_loisir"
+                        android:background="@null"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:layout_marginBottom="2dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Loisir"
+                        android:textColor="#9b59b6"
+                        android:paddingLeft="20dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:id="@+id/newsujet_btn_libre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_jour_libre"
+                        android:background="@null"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:layout_marginBottom="2dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="libre"
+                        android:textColor="#5b5b5b"
+                        android:paddingLeft="20dp"
+                        android:layout_marginTop="10dp"/>
+                </LinearLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2px"
+                android:background="#ac035d" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:text="Starting time :"
+                android:textSize="20dp"
+                android:textColor="#ac035d"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_marginBottom="10dp"
+                />
+
+            <TimePicker
+                android:id="@+id/newsujet_timePicker"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="10dp"/>
+
+        </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2px"
+                android:background="#ac035d" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:text="Duration (m) :"
+                    android:textSize="20dp"
+                    android:textColor="#ac035d"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_marginBottom="10dp"
+                    />
+
+                <EditText
+                    android:id="@+id/newsujet_tb_duration"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="time"
+                    android:ems="10"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignRight="@+id/scrollView2"
+                    android:layout_alignEnd="@+id/scrollView2" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2px"
+                android:background="#ac035d" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:text="Position :"
+                    android:textSize="20dp"
+                    android:textColor="#ac035d"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_marginBottom="10dp"
+                    />
+
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/newsujet_btn_addSujet"
+                android:text="New Button"
+                android:src="@drawable/ic_addproject_create"
+                android:background="@null"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"/>
+
+
+
+
+
+
+
+        </LinearLayout>
+
+
+
+
+
+
+        </ScrollView>
+
+
+
+
+</RelativeLayout>

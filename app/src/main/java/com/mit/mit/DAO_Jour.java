@@ -102,7 +102,7 @@ public class DAO_Jour extends DAO_Bdd {
                 TABLE,
                 value,
                 ATTR_NOMJOUR + " = ?",
-                new String[]{String.valueOf(j.id)}
+                new String[]{String.valueOf(j.nomJour)}
         );
         this.close();
     }

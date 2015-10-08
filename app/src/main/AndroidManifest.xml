@@ -58,6 +58,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mit.mit.A_projet_Preparation" />
         </activity>
+        <activity
+            android:name=".A_sujet_new"
+            android:label="@string/title_activity_a_sujet_new"
+            android:parentActivityName=".A_jour_Preparation" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mit.mit.A_jour_Preparation" />
+        </activity>
     </application>
 
 </manifest>
