@@ -42,6 +42,7 @@ public class A_newProject extends MainActivity {
     private ImageButton btn_creer;
     private ImageButton btn_adduser;
     private ListView lv_listViewPart;
+    private EditText tb_couleur;
 
     //variables
     private String v_nom;
@@ -70,6 +71,7 @@ public class A_newProject extends MainActivity {
         btn_creer = (ImageButton) findViewById(R.id.newProject_btn_addProject);
         btn_adduser = (ImageButton) findViewById(R.id.newProject_btn_addParticipant);
         lv_listViewPart = (ListView) findViewById(R.id.newProject_lv_listView);
+        tb_couleur = (EditText) findViewById(R.id.newProject_tb_couleur);
 
 
         //listeners
@@ -116,7 +118,7 @@ public class A_newProject extends MainActivity {
 
 
             //CREATION DU PROJET
-            C_Projet newprojet=new C_Projet(pContext, v_nom, v_description, v_dateDebut, v_dateFin);
+            C_Projet newprojet=new C_Projet(pContext, v_nom, v_description, v_dateDebut, v_dateFin,tb_couleur.getText().toString());
             newprojet.setListe_jours(v_liste_jours);
             newprojet.setListe_participants(v_liste_participants);
             newprojet.listeToString();

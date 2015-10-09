@@ -49,7 +49,14 @@ public class A_jour_Preparation extends MainActivity {
         {
             //chargement des données du projet
             this.day = daoJour.getJourById(extras.getString("idEntry"));
+
+
+            System.out.println("sujets : "+day.sujetsToString);
+            System.out.println("nombre sujets : "+day.liste_sujets.size());
             this.day.creerLesListes(daoSujet);
+            System.out.println("CREER LISTES");
+            System.out.println("sujets : " + day.sujetsToString);
+            System.out.println("nombre sujets : "+day.liste_sujets.size());
 
             setTitle(sdf.format(this.day.jour));
         }
@@ -60,25 +67,21 @@ public class A_jour_Preparation extends MainActivity {
 
 
 
-        System.out.println("sujets : "+day.sujetsToString);
-
-        System.out.println("nombre sujets : "+day.liste_sujets.size());
 
         if(!this.day.liste_sujets.isEmpty())
         {
-            System.out.println("Enter");
             container_globalLayout.setOrientation(LinearLayout.VERTICAL);
             sdf = new SimpleDateFormat("HH:mm");
             String titreDescription = "";
             for (C_Sujet s : this.day.liste_sujets)
             //for(int i=0; i<10; i++)
             {
-                System.out.println("sujet : " + s.titre);
                 //panel global
                 LinearLayout LLglobal = new LinearLayout(this);
                 LLglobal.setOrientation(LinearLayout.HORIZONTAL);
                 LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 LLglobal.setLayoutParams(LLParams);
+                LLglobal.setId(Integer.parseInt(s.id));
 
                 //panel button
                 LinearLayout LLleft = new LinearLayout(this);
@@ -180,6 +183,15 @@ public class A_jour_Preparation extends MainActivity {
     //bouton ajouter date debut
     View.OnClickListener onClickLayout = new View.OnClickListener() {
         public void onClick(View v) {
+            LinearLayout selectedLL = (LinearLayout) v;
+
+            for (C_Sujet s:day.liste_sujets)
+            {
+                if(s.id.equals(selectedLL.getId()))
+                {
+
+                }
+            }
 
             //DialogFragment newFragment = new D_DatePickerFragment("newproject_debut");
             //newFragment.show(getFragmentManager(), "datePicker");

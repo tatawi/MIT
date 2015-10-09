@@ -11,4 +11,5 @@
     <string name="title_activity_a_projet__preparation">A_projet_Preparation</string>
     <string name="title_activity_a_jour__preparation">A_jour_Preparation</string>
     <string name="title_activity_a_sujet_new">Nouveau sujet</string>
+    <string name="title_activity_main2">Main2Activity</string>
 </resources>

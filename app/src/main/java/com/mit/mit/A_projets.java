@@ -3,32 +3,36 @@ package com.mit.mit;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class A_projets extends MainActivity {
 
     //objets de la page
-    private ListView lv_listeAffichage;
+    //private ListView lv_listeAffichage;
     private ImageButton btn_enPreparation;
     private ImageButton btn_projEnCours;
     private ImageButton btn_projFinis;
+    private LinearLayout ll_center;
 
     //variables
     private List<C_Projet> list_projets;
-
-    private List<String> listeStringParticipants;
-
+    private SimpleDateFormat sdf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,114 +42,266 @@ public class A_projets extends MainActivity {
 
         //initialiser objets de la page
         setContentView(R.layout.activity_a_projets);
-        lv_listeAffichage = (ListView)findViewById(R.id.projets_listViw);
+        //lv_listeAffichage = (ListView)findViewById(R.id.projets_listViw);
         btn_enPreparation = (ImageButton)findViewById(R.id.projets_ibtn_enPreparation);
         btn_projEnCours = (ImageButton)findViewById(R.id.projets_ibtn_enCours);
         btn_projFinis = (ImageButton)findViewById(R.id.projets_ibtn_finis);
+        ll_center = (LinearLayout)findViewById(R.id.projets_LinearLayoutCenter);
 
-        listeStringParticipants= new ArrayList<String>();
+
         list_projets=daoProjet.getProjets();
 
         //listeners
         btn_enPreparation.setOnClickListener(onPreparationProjets);
         btn_projEnCours.setOnClickListener(onEnCoursProjets);
         btn_projFinis.setOnClickListener(onTerminesProjets);
-        lv_listeAffichage.setOnItemClickListener(onListClick);
+        //lv_listeAffichage.setOnItemClickListener(onListClick);
+        ll_center.setOrientation(LinearLayout.VERTICAL);
 
-        //initialisation de la liste
+        setAffichage("Preparation");
+
+
+    }
+
+
+
+    public void setAffichage(String cas)
+    {
+        ll_center.removeAllViews();
         for(C_Projet p:list_projets)
         {
-            if(p.statut.equals("Preparation"))
+            //panel global
+            LinearLayout LLglobal = new LinearLayout(this);
+            LLglobal.setOrientation(LinearLayout.HORIZONTAL);
+            LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            LLglobal.setLayoutParams(LLParams);
+            LLglobal.setId(p.id);
+
+            //panel button
+            LinearLayout LLleft = new LinearLayout(this);
+            LLleft.setOrientation(LinearLayout.HORIZONTAL);
+            LLleft.setLayoutParams(LLParams);
+
+            //panel messages
+            LinearLayout LLright = new LinearLayout(this);
+            LLright.setOrientation(LinearLayout.VERTICAL);
+            LLright.setLayoutParams(LLParams);
+
+            //panel description
+            LinearLayout LLrightUp = new LinearLayout(this);
+            LLrightUp.setOrientation(LinearLayout.HORIZONTAL);
+            LLrightUp.setLayoutParams(LLParams);
+
+            //panel heures
+            LinearLayout LLrightDown = new LinearLayout(this);
+            LLrightDown.setOrientation(LinearLayout.HORIZONTAL);
+            LLrightDown.setLayoutParams(LLParams);
+
+
+            //déclarations champs
+            ImageButton img = new ImageButton(this);
+            TextView desc = new TextView(this);
+            TextView d1 = new TextView(this);
+            TextView cout = new TextView(this);
+
+            //personnalisation champs
+
+            switch (p.couleur)
             {
-                listeStringParticipants.add(p.nom);
+                case "noir":
+                    desc.setTextColor(Color.parseColor("#5b5b5b"));
+                    switch (p.statut)
+                    {
+                        case "Preparation":
+                            img.setImageResource(R.drawable.ic_proj_prep_noir);
+                            break;
+                        case "Actuel":
+                            img.setImageResource(R.drawable.ic_proj_cours_noir);
+                            break;
+                        case "Fini":
+                            img.setImageResource(R.drawable.ic_proj_fini_noir);
+                            break;
+                    }
+
+                    break;
+
+                case "rouge":
+                    desc.setTextColor(Color.parseColor("#e74c3c"));
+                    switch (p.statut)
+                    {
+                        case "Preparation":
+                            img.setImageResource(R.drawable.ic_proj_prep_rouge);
+                            break;
+                        case "Actuel":
+                            img.setImageResource(R.drawable.ic_proj_cours_rouge);
+                            break;
+                        case "Fini":
+                            img.setImageResource(R.drawable.ic_proj_fini_rouge);
+                            break;
+                    }
+                    break;
+
+                case "jaune":
+                    desc.setTextColor(Color.parseColor("#f39c12"));
+                    switch (p.statut)
+                    {
+                        case "Preparation":
+                            img.setImageResource(R.drawable.ic_proj_prep_jaune);
+                            break;
+                        case "Actuel":
+                            img.setImageResource(R.drawable.ic_proj_cours_jaune);
+                            break;
+                        case "Fini":
+                            img.setImageResource(R.drawable.ic_proj_fini_jaune);
+                            break;
+                    }
+                    break;
+
+                case "bleu":
+                    desc.setTextColor(Color.parseColor("#2980b9"));
+                    switch (p.statut)
+                    {
+                        case "Preparation":
+                            img.setImageResource(R.drawable.ic_proj_prep_bleu);
+                            break;
+                        case "Actuel":
+                            img.setImageResource(R.drawable.ic_proj_cours_bleu);
+                            break;
+                        case "Fini":
+                            img.setImageResource(R.drawable.ic_proj_fini_bleu);
+                            break;
+                    }
+                    break;
+
+                case "vert":
+                    desc.setTextColor(Color.parseColor("#16a085"));
+                    switch (p.statut)
+                    {
+                        case "Preparation":
+                            img.setImageResource(R.drawable.ic_proj_prep_vert);
+                            break;
+                        case "Actuel":
+                            img.setImageResource(R.drawable.ic_proj_cours_vert);
+                            break;
+                        case "Fini":
+                            img.setImageResource(R.drawable.ic_proj_fini_vert);
+                            break;
+                    }
+                    break;
+
+                case "violet":
+                    desc.setTextColor(Color.parseColor("#9b59b6"));
+                    switch (p.statut)
+                    {
+                        case "Preparation":
+                            img.setImageResource(R.drawable.ic_proj_prep_violet);
+                            break;
+                        case "Actuel":
+                            img.setImageResource(R.drawable.ic_proj_cours_violet);
+                            break;
+                        case "Fini":
+                            img.setImageResource(R.drawable.ic_proj_fini_violet);
+                            break;
+                    }
+                    break;
+
+
             }
+
+
+
+            //initialisation champs
+            sdf = new SimpleDateFormat("dd/MM/yy");
+            img.setBackgroundColor(Color.TRANSPARENT);
+            desc.setText(p.nom);
+            desc.setTextSize(18);
+            desc.setPadding(10, 10, 0, 0);
+            d1.setText(sdf.format(p.dateDebut) + " - " + sdf.format(p.dateFin));
+            d1.setPadding(10, 10, 10, 0);
+            cout.setText(" " + p.prixSejour + " € ");
+            cout.setPadding(10, 10, 10, 0);
+
+            //ajout des champs aux pannels
+            LLleft.addView(img);
+            LLrightUp.addView(desc);
+            LLrightDown.addView(d1);
+            LLrightDown.addView(cout);
+
+            //ajouts panels
+            LLright.addView(LLrightUp);
+            LLright.addView(LLrightDown);
+            LLglobal.addView(LLleft);
+            LLglobal.addView(LLright);
+            LLglobal.setOnClickListener(onClickLayout);
+            ll_center.addView(LLglobal);
+
+
         }
-        majListe();
-
-
     }
 
 
 
 
 
-    private void majListe()
-    {
-
-        if(listeStringParticipants.isEmpty())
-        {
-            listeStringParticipants.add("Pas de projet");
-        }
-
-        lv_listeAffichage.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listeStringParticipants));
-    }
 
 
 //---------------------------------------------------------------------------------------
 //	LISTENERS
 //---------------------------------------------------------------------------------------
 
+
+    //bouton ajouter date debut
+    View.OnClickListener onClickLayout = new View.OnClickListener() {
+        public void onClick(View v) {
+            LinearLayout selectedLL = (LinearLayout) v;
+
+            for (C_Projet p:list_projets)
+            {
+                if(p.id==selectedLL.getId())
+                {
+                    Intent intent = new Intent(A_projets.this, A_projet_Preparation.class);
+                    intent.putExtra("idEntry", p.nom);
+                    startActivity(intent);
+                }
+            }
+
+            //DialogFragment newFragment = new D_DatePickerFragment("newproject_debut");
+            //newFragment.show(getFragmentManager(), "datePicker");
+            //tb_dateDebut.setText(lb_date.getText());
+        }
+    };
+
     //click projets en préparation
     View.OnClickListener onPreparationProjets = new View.OnClickListener() {
         public void onClick(View v) {
-
-            listeStringParticipants.clear();
-
-            for(C_Projet p:list_projets)
-            {
-                if(p.statut.equals("Preparation"))
-                {
-                    listeStringParticipants.add(p.nom);
-                }
-            }
-            majListe();
-
-
+            setAffichage("Preparation");
+            btn_enPreparation.setBackgroundColor(Color.parseColor("#d2d2d2"));
+            btn_projEnCours.setBackgroundColor(Color.TRANSPARENT);
+            btn_projFinis.setBackgroundColor(Color.TRANSPARENT);
         }
     };
 
     //click projets en cours
     View.OnClickListener onEnCoursProjets = new View.OnClickListener() {
         public void onClick(View v) {
-            listeStringParticipants.clear();
-
-            for(C_Projet p:list_projets)
-            {
-                if(p.statut.equals("Actuel"))
-                {
-                    listeStringParticipants.add(p.nom);
-                }
-            }
-            majListe();
+            setAffichage("Actuel");
+            btn_enPreparation.setBackgroundColor(Color.TRANSPARENT);
+            btn_projEnCours.setBackgroundColor(Color.parseColor("#d2d2d2"));
+            btn_projFinis.setBackgroundColor(Color.TRANSPARENT);
         }
     };
 
     //click projets terminés
     View.OnClickListener onTerminesProjets = new View.OnClickListener() {
         public void onClick(View v) {
-
-            listeStringParticipants.clear();
-
-            for(C_Projet p:list_projets)
-            {
-                if(p.statut.equals("Fini"))
-                {
-                    listeStringParticipants.add(p.nom);
-                }
-            }
-            majListe();
+            setAffichage("Fini");
+            btn_enPreparation.setBackgroundColor(Color.TRANSPARENT);
+            btn_projEnCours.setBackgroundColor(Color.TRANSPARENT);
+            btn_projFinis.setBackgroundColor(Color.parseColor("#d2d2d2"));
         }
     };
 
-    //liste on click
-    AdapterView.OnItemClickListener onListClick =new AdapterView.OnItemClickListener(){
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-        {
-            C_Projet p=daoProjet.getProjetByName(listeStringParticipants.get(position));
 
-            Intent intent = new Intent(A_projets.this, A_projet_Preparation.class);
-            intent.putExtra("idEntry", p.nom);
-            startActivity(intent);
 
              /*       AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(pContext);
                     alertDialogBuilder.setTitle(p.nom);
@@ -164,9 +320,6 @@ public class A_projets extends MainActivity {
             //startActivity(inte);
 
 
-        }
-
-    };
 
 
 

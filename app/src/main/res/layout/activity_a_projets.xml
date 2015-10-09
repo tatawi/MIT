@@ -1,4 +1,5 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -9,13 +10,17 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/linearLayout">
+        android:id="@+id/projets_linearLayoutUp"
+        >
 
-
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
         <ImageButton
             android:id="@+id/projets_ibtn_enPreparation"
             android:src="@drawable/ic_project_prepare"
@@ -23,10 +28,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="30dp"
-            android:paddingRight="30dp"/>
+            android:paddingRight="30dp"
+            />
 
+        <TextView
+            android:text="Préparation"
+            android:textColor="#ac035d"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:paddingLeft="20dp" />
+</LinearLayout>
 
-
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
         <ImageButton
             android:id="@+id/projets_ibtn_enCours"
             android:src="@drawable/ic_project_current"
@@ -35,8 +52,18 @@
             android:layout_height="wrap_content"
             android:paddingLeft="40dp"
             android:paddingRight="40dp"/>
+        <TextView
+            android:text="En cours"
+            android:textColor="#ac035d"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="37dp" />
+    </LinearLayout>
 
-
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
         <ImageButton
             android:id="@+id/projets_ibtn_finis"
             android:src="@drawable/ic_project_ended"
@@ -45,29 +72,46 @@
             android:layout_height="wrap_content"
             android:paddingLeft="30dp"
             android:paddingRight="30dp"/>
-
-
-
-
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/linearLayout">
-
-        <ListView
+        <TextView
+            android:text="Terminés"
+            android:textColor="#ac035d"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/projets_listViw"
-            android:divider="#ac035d"
-            android:dividerHeight="1dp"
-            android:layout_weight="1" />
+            android:paddingLeft="30dp" />
+    </LinearLayout>
     </LinearLayout>
 
-</RelativeLayout>
+    <View
+        android:id="@+id/projets_ligne"
+        android:layout_width="fill_parent"
+        android:layout_height="2px"
+        android:background="#ac035d"
+        android:layout_marginBottom="10dp" />
+
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+    <LinearLayout
+        android:id="@+id/projets_LinearLayoutCenter"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+
+
+
+
+
+
+
+    </LinearLayout>
+
+    </ScrollView>
+
+
+
+</LinearLayout>

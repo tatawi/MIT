@@ -63,6 +63,7 @@ public class C_Jour {
         this.jour = jour;
         this.prixJournee = prixJournee;
         this.sujetsToString=sujets;
+        this.liste_sujets=new ArrayList<C_Sujet>();
     }
 
     /**
@@ -102,16 +103,20 @@ public class C_Jour {
 
     public void creerLesListes(DAO_Sujet daoSujet)
     {
+        System.out.println("CREER LISTES fct");
         liste_sujets=new ArrayList<C_Sujet>();
         String[] parts;
+        System.out.println("string : "+sujetsToString);
 
         if(sujetsToString.length()>1) {
             //gestion liste sujets
             parts = this.sujetsToString.split(";");
+            System.out.println("parts : "+parts.length);
             for (int i = 0; i < parts.length; i++) {
                 liste_sujets.add(daoSujet.getSujetById(parts[i]));
             }
         }
+        System.out.println("final : "+liste_sujets.size());
 
     }
 
@@ -127,21 +132,23 @@ public class C_Jour {
      */
     public void listeToString()
     {
+        System.out.println("---JOUR LISTE TO STRING----------------");
         this.sujetsToString="";
-System.out.println("JOUR LISTE TO STRING");
-        System.out.println("liste :"+this.liste_sujets.size());
+        System.out.println("taille : " + this.liste_sujets.size());
         for(C_Sujet s:this.liste_sujets)
         {
+            System.out.println("Enter");
             if (sujetsToString=="")
             {
-                sujetsToString = s.id;
+                sujetsToString = s.idSujet;
             }
             else
             {
-                sujetsToString = sujetsToString + ";" + s.id;
+                sujetsToString = sujetsToString + ";" + s.idSujet;
             }
+            System.out.println(sujetsToString);
         }
-        System.out.println("RESULT " + this.sujetsToString);
+        System.out.println("--------------------------------------");
     }
 
 

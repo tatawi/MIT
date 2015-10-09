@@ -27,6 +27,7 @@ public class C_Projet {
     public String statut;
     public String participantsToString;
     public String joursToString;
+    public String couleur;
 
     public transient List<C_Jour> liste_jours;
     public transient List<C_Participant> liste_participants;
@@ -34,6 +35,30 @@ public class C_Projet {
 //---------------------------------------------------------------------------------------
 //	CONSTRUCTEURS
 //---------------------------------------------------------------------------------------
+    /**
+     *Application builder - create a new project
+     *@param nom 			Project's name
+     *@param description 	Project's description
+     *@param dateDebut		Start date
+     *@param dateFin			End date
+     *@param couleur			couleur
+     */
+    public C_Projet( Context pContext, String nom, String description, Date dateDebut, Date dateFin, String couleur)
+    {
+        super();
+        this.pContext= pContext;
+        this.id=setID(nom);
+        this.nom = nom;
+        this.description = description;
+        this.dateDebut = dateDebut;
+        this.dateFin = dateFin;
+        this.prixSejour=0;
+        this.statut="Preparation";
+        liste_jours=new ArrayList<C_Jour>();
+        liste_participants=new ArrayList<C_Participant>();
+        this.couleur=couleur;
+    }
+
     /**
      *Application builder - create a new project
      *@param nom 			Project's name
@@ -54,6 +79,7 @@ public class C_Projet {
         this.statut="Preparation";
         liste_jours=new ArrayList<C_Jour>();
         liste_participants=new ArrayList<C_Participant>();
+        couleur="noir";
     }
 
     /**
@@ -67,7 +93,7 @@ public class C_Projet {
      *@param participants	List of project's ids members in string separated by ";"
      *@param jours			List of C_Jour ids in string separated by ";"
      */
-    public C_Projet( int id, String nom, String description, Date dateDebut, Date dateFin, float prixSejour, String statut, String participants, String jours)
+    public C_Projet( int id, String nom, String description, Date dateDebut, Date dateFin, float prixSejour, String statut, String participants, String jours, String couleur)
     {
         super();
 
@@ -80,6 +106,7 @@ public class C_Projet {
         this.joursToString=jours;
         this.statut=statut;
         this.participantsToString=participants;
+        this.couleur=couleur;
     }
 
 

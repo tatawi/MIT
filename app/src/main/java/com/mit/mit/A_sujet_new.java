@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -33,8 +34,13 @@ public class A_sujet_new extends MainActivity {
     private TimePicker tp_heureDebut;
     private EditText tb_duree;
     private ImageButton btn_creer;
-    //private prix
-    //private aufelling
+    private TextView lb_time;
+    private TextView lb_duree;
+    private SeekBar sb_hour;
+    private SeekBar sb_min;
+    private SeekBar sb_duree;
+
+
 
     //variables
     private C_Jour day;
@@ -60,12 +66,15 @@ public class A_sujet_new extends MainActivity {
         btn_visite = (ImageButton) findViewById(R.id.newsujet_btn_visite);
         btn_loisir = (ImageButton) findViewById(R.id.newsujet_btn_loisir);
         btn_libre = (ImageButton) findViewById(R.id.newsujet_btn_libre);
-        tp_heureDebut = (TimePicker) findViewById(R.id.newsujet_timePicker);
-        tb_duree = (EditText) findViewById(R.id.newsujet_tb_duration);
+       // tp_heureDebut = (TimePicker) findViewById(R.id.newsujet_timePicker);
+       // tb_duree = (EditText) findViewById(R.id.newsujet_tb_duration);
         btn_creer = (ImageButton) findViewById(R.id.newsujet_btn_addSujet);
+        lb_time = (TextView) findViewById(R.id.newsujet_lb_startTime);
+        lb_duree = (TextView) findViewById(R.id.newsujet_lb_duration);
+        sb_hour=(SeekBar)findViewById(R.id.newsujet_seekBar_hour);
+        sb_min=(SeekBar)findViewById(R.id.newsujet_seekBar_min);
+        sb_duree=(SeekBar)findViewById(R.id.newsujet_seekBar_duree);
 
-
-        //initialisation variables
 
 
 
@@ -80,8 +89,9 @@ public class A_sujet_new extends MainActivity {
         btn_loisir.setOnClickListener(onClickButtonLoisir);
         btn_libre.setOnClickListener(onClickButtonLibre);
         btn_creer.setOnClickListener(onClickButtonValider);
-
-
+        sb_hour.setOnSeekBarChangeListener(new seekBarListener());
+        sb_min.setOnSeekBarChangeListener(new seekBarListener());
+        sb_duree.setOnSeekBarChangeListener(new seekBarListener());
 
         //récupération du jour
         Bundle extras = getIntent().getExtras();
@@ -115,7 +125,7 @@ public class A_sujet_new extends MainActivity {
         public void onClick(View v) {
             int hour;
             int min;
-            sdf = new SimpleDateFormat("EEE d MMM");
+            //sdf = new SimpleDateFormat("EEE d MMM");
 
             sujet =new C_Sujet();
             //public C_Sujet( String titre, String description, String type, String localisation, Date heure, int duree, boolean auFeeling, double prix)
@@ -124,11 +134,16 @@ public class A_sujet_new extends MainActivity {
             sujet.type=lb_type.getText().toString();
             sujet.localisation="loc";
             sujet.heure=day.jour;
-            sujet.heure.setHours(tp_heureDebut.getCurrentHour());
-            sujet.heure.setMinutes(tp_heureDebut.getCurrentMinute());
-            sujet.duree=Integer.parseInt(tb_duree.getText().toString());
+            sujet.heure.setHours(sb_hour.getProgress());
+            sujet.heure.setMinutes(sb_min.getProgress());
+            sujet.duree=sb_duree.getProgress();
             sujet.auFeeling=false;
             sujet.prix=10;
+            sujet.idSujet=day.nomJour+"_"+tb_titre.getText().toString();
+
+            System.out.println("SUJET AVANT AJOUT*****************************");
+            System.out.println("titre : " + sujet.titre);
+
 
             //save sujet
             daoSujet.ajouter(sujet);
@@ -137,8 +152,6 @@ public class A_sujet_new extends MainActivity {
             day.liste_sujets.add(sujet);
             day.listeToString();
             daoJour.modifier(day);
-
-            System.out.println("liste to string : "+day.sujetsToString);
 
             //retour activité
             Intent intent = new Intent(A_sujet_new.this, A_jour_Preparation.class);
@@ -231,6 +244,31 @@ public class A_sujet_new extends MainActivity {
             lb_type.setTextColor(Color.parseColor("#5b5b5b"));
         }
     };
+
+
+
+    //SEEKBAR
+    private class seekBarListener implements SeekBar.OnSeekBarChangeListener {
+
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+        {
+            int hour = sb_hour.getProgress();
+            int min = sb_min.getProgress();
+            int duree = sb_duree.getProgress();
+
+            lb_time.setText(hour+"h"+min);
+
+            hour=duree/60;
+            min=duree-hour*60;
+            lb_duree.setText(hour+"h"+min);
+
+        }
+
+        public void onStartTrackingTouch(SeekBar seekBar) {}
+
+        public void onStopTrackingTouch(SeekBar seekBar) {}
+
+    }
 
 
 

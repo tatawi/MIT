@@ -6,10 +6,20 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.mit.mit.A_newProject">
 
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+      <LinearLayout
+          android:orientation="vertical"
+          android:layout_width="fill_parent"
+          android:layout_height="fill_parent">
+
+
+
     <GridLayout
         android:id="@+id/newProject_gridLayout"
-        android:layout_width="match_parent"
-        android:layout_height="230dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -107,6 +117,7 @@
             android:layout_column="1"
             android:enabled="false" />
 
+
         <ImageButton
             android:id="@+id/newProject_btn_dateFin"
             android:text="Add"
@@ -119,8 +130,8 @@
             />
 
         <TextView
-            android:id="@+id/newProject_lb_participants"
-            android:text="Participants :"
+            android:id="@+id/newProject_lb_couleur"
+            android:text="Couleur :"
             android:textColor="#ac035d"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
@@ -130,12 +141,33 @@
             />
 
         <EditText
+            android:id="@+id/newProject_tb_couleur"
+            android:hint="rouge, bleu, vert, jaune, violet"
+            android:inputType="text"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:layout_row="4"
+            android:layout_column="1" />
+
+        <TextView
+            android:id="@+id/newProject_lb_participants"
+            android:text="Participants :"
+            android:textColor="#ac035d"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="5"
+            android:layout_column="0"
+            />
+
+        <EditText
             android:id="@+id/newProject_tb_participants"
             android:hint="adresse mail"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:layout_row="4"
+            android:layout_row="5"
             android:layout_column="1"
             android:inputType="textEmailAddress" />
 
@@ -146,7 +178,7 @@
             android:text="Add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_row="4"
+            android:layout_row="5"
             android:layout_column="2"
             />
     </GridLayout>
@@ -164,31 +196,14 @@
         android:text="New Button"
         android:src="@drawable/ic_addproject_create"
         android:background="@null"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"/>
 
-    <RelativeLayout
-            android:id="@+id/Layout22"
-            android:layout_below="@+id/newProject_gridLayout"
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_centerHorizontal="true"
-            android:gravity="right"
-            >
 
-
-
-
-
-
-
-        </RelativeLayout>
-
-
-
+      </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>
