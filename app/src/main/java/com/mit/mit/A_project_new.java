@@ -52,12 +52,17 @@ public class A_project_new extends MainActivity {
     private float v_prixSejour=0;
     private transient List<C_Jour> v_liste_jours;
     private transient List<C_Participant> v_liste_participants;
-
+    private String userID;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            this.userID = extras.getString("userID");
+        }
 
         //initialisations
         setContentView(R.layout.activity_a_project_new);
@@ -149,6 +154,7 @@ public class A_project_new extends MainActivity {
 
             //RETOUR PAGE PRECEDENTE
             Intent intent = new Intent(A_project_new.this, A_projets.class);
+            intent.putExtra("userID", userID);
             startActivity(intent);
         }
     };

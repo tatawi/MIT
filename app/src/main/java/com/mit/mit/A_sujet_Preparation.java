@@ -80,7 +80,8 @@ public class A_sujet_Preparation extends MainActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null)
         {
-            this .userID=extras.getString("userID");
+            this.userID=extras.getString("userID");
+            System.out.println("jour preparation : "+this.userID);
             //chargement des données du sujet
             this.sujet = daoSujet.getSujetById(extras.getString("idEntry"));
             this.sujet.creerLesListes(daoMessage, daoparticipant);

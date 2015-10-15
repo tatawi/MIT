@@ -21,6 +21,7 @@ public class DAO_Message extends DAO_Bdd {
 //---------------------------------------------------------------------------------------
     public static final String TABLE = " MESSAGE";
     public static final String ATTR_ID = "_id";
+    public static final String ATTR_IDMESSAGE = "idMessage";
     public static final String ATTR_HEURE = "heure";
     public static final String ATTR_MESSAGE = "message";
     public static final String ATTR_EMETTEUR = "id_participantEmetteur";
@@ -28,6 +29,7 @@ public class DAO_Message extends DAO_Bdd {
     public static final String TABLE_CREATE =
             "CREATE TABLE " + TABLE + "("
                     + ATTR_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + ATTR_IDMESSAGE + " TEXT, "
                     + ATTR_HEURE + " TEXT, "
                     + ATTR_MESSAGE + " TEXT, "
                     + ATTR_EMETTEUR + " TEXT, "
@@ -53,7 +55,7 @@ public class DAO_Message extends DAO_Bdd {
         this.open();
 
         ContentValues value = new ContentValues();
-        value.put(ATTR_ID, m.id);
+        value.put(ATTR_IDMESSAGE, m.id);
         value.put(ATTR_HEURE, m.heure.toString());
         value.put(ATTR_MESSAGE, m.message);
         value.put(ATTR_EMETTEUR, m.id_participantEmetteur);
@@ -72,7 +74,7 @@ public class DAO_Message extends DAO_Bdd {
 
         bdd.delete(
                 TABLE,
-                ATTR_ID + " = ?",
+                ATTR_IDMESSAGE + " = ?",
                 new String[] { id }
         );
 
@@ -87,8 +89,10 @@ public class DAO_Message extends DAO_Bdd {
         this.open();
 
         ContentValues value = new ContentValues();
-        value.put(ATTR_ID, m.id);
-        value.put(ATTR_HEURE, m.heure.toString());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        value.put(ATTR_IDMESSAGE, m.id);
+        value.put(ATTR_HEURE, sdf.format(m.heure));
         value.put(ATTR_MESSAGE, m.message);
         value.put(ATTR_EMETTEUR, m.id_participantEmetteur);
         value.put(ATTR_PERSONNESAYANTVUES, m.personnesAyantVuesToString);
@@ -96,7 +100,7 @@ public class DAO_Message extends DAO_Bdd {
         bdd.update(
                 TABLE,
                 value,
-                ATTR_ID + " = ?",
+                ATTR_IDMESSAGE + " = ?",
                 new String[] { String.valueOf(m.id) }
         );
         this.close();
@@ -113,7 +117,7 @@ public class DAO_Message extends DAO_Bdd {
         Date lheure = new Date();
         Cursor cursor = bdd.query(
                 TABLE,
-                new String[] { ATTR_ID, ATTR_HEURE, ATTR_MESSAGE, ATTR_EMETTEUR, ATTR_PERSONNESAYANTVUES},
+                new String[] { ATTR_IDMESSAGE, ATTR_HEURE, ATTR_MESSAGE, ATTR_EMETTEUR, ATTR_PERSONNESAYANTVUES},
                 null,
                 null,
                 null,
@@ -134,7 +138,7 @@ public class DAO_Message extends DAO_Bdd {
 
             liste_messages.add(
                     new C_Message(
-                            cursor.getString(cursor.getColumnIndex(ATTR_ID)),
+                            cursor.getString(cursor.getColumnIndex(ATTR_IDMESSAGE)),
                             lheure,
                             cursor.getString(cursor.getColumnIndex(ATTR_MESSAGE)),
                             cursor.getString(cursor.getColumnIndex(ATTR_EMETTEUR)),
@@ -159,8 +163,8 @@ public class DAO_Message extends DAO_Bdd {
         Date lheure = new Date();
         Cursor cursor = bdd.query(
                 TABLE,
-                new String[] { ATTR_ID, ATTR_HEURE, ATTR_MESSAGE, ATTR_EMETTEUR, ATTR_PERSONNESAYANTVUES},
-                ATTR_ID + " = ?",
+                new String[] { ATTR_IDMESSAGE, ATTR_HEURE, ATTR_MESSAGE, ATTR_EMETTEUR, ATTR_PERSONNESAYANTVUES},
+                ATTR_IDMESSAGE + " = ?",
                 new String[] { id },
                 null,
                 null,
@@ -179,7 +183,7 @@ public class DAO_Message extends DAO_Bdd {
             }
 
             p=new C_Message(
-                    cursor.getString(cursor.getColumnIndex(ATTR_ID)),
+                    cursor.getString(cursor.getColumnIndex(ATTR_IDMESSAGE)),
                     lheure,
                     cursor.getString(cursor.getColumnIndex(ATTR_MESSAGE)),
                     cursor.getString(cursor.getColumnIndex(ATTR_EMETTEUR)),

@@ -43,6 +43,7 @@ public class A_projets extends MainActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             this.userID = extras.getString("userID");
+            System.out.println("liste projets : "+this.userID);
         }
 
         //initialiser objets de la page
@@ -358,6 +359,7 @@ public class A_projets extends MainActivity {
         if (id == R.id.project_new)
         {
             Intent intent = new Intent(A_projets.this, A_project_new.class);
+            intent.putExtra("userID", userID);
             startActivity(intent);
 
 

@@ -55,8 +55,8 @@ public class A_projet_Preparation extends MainActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null)
         {
-
             this.userID = extras.getString("userID");
+            System.out.println("projets preparation : "+this.userID);
 
             //chargement des données du projet
             this.projet = daoProjet.getProjetByName(extras.getString("idEntry"));

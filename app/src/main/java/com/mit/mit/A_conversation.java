@@ -92,12 +92,13 @@ public class A_conversation extends MainActivity {
             TextView text = new TextView(this);
 
             //initialisation champs
-            name.setText(daoparticipant.getParticipantById(m.id).prenom);
+            name.setText(daoparticipant.getParticipantById(m.id_participantEmetteur).prenom);
             name.setTextSize(16);
+            text.setText(m.message);
             date.setText(sdf.format(m.heure));
             date.setPadding(10, 0, 0, 0);
 
-            if (!me.mail.equals(m.id_participantEmetteur)) {
+            if (!part.mail.equals(m.id_participantEmetteur)) {
                 LLglobal.setPadding(30, 3, 3, 0);
             }
 

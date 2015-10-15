@@ -46,7 +46,7 @@ public class A_sujet_new extends MainActivity {
     private C_Jour day;
     private C_Sujet sujet;
     private SimpleDateFormat sdf;
-
+    private String userID;
 
 
 
@@ -54,6 +54,7 @@ public class A_sujet_new extends MainActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_a_sujet_new);
+
 
 
         //initialisation objet page
@@ -97,6 +98,7 @@ public class A_sujet_new extends MainActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null)
         {
+            this.userID = extras.getString("userID");
             //chargement des données du projet
             this.day = daoJour.getJourById(extras.getString("idEntry"));
             this.day.creerLesListes(daoSujet);
@@ -156,6 +158,7 @@ public class A_sujet_new extends MainActivity {
             //retour activité
             Intent intent = new Intent(A_sujet_new.this, A_jour_Preparation.class);
             intent.putExtra("idEntry", day.nomJour);
+            intent.putExtra("userID", userID);
             startActivity(intent);
 
         }

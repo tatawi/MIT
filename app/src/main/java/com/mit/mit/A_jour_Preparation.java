@@ -48,8 +48,8 @@ public class A_jour_Preparation extends MainActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null)
         {
-
             this.userID = extras.getString("userID");
+            System.out.println("jour preparation: "+this.userID);
 
             //chargement des données du projet
             this.day = daoJour.getJourById(extras.getString("idEntry"));
@@ -290,6 +290,7 @@ public class A_jour_Preparation extends MainActivity {
         {
             Intent intent = new Intent(A_jour_Preparation.this, A_sujet_new.class);
             intent.putExtra("idEntry", this.day.nomJour);
+            intent.putExtra("userID", userID);
             startActivity(intent);
         }
 
