@@ -28,6 +28,7 @@ public class A_jour_Preparation extends MainActivity {
     //variables
     private C_Jour day;
     private SimpleDateFormat sdf;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,9 @@ public class A_jour_Preparation extends MainActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null)
         {
+
+            this.userID = extras.getString("userID");
+
             //chargement des données du projet
             this.day = daoJour.getJourById(extras.getString("idEntry"));
 
@@ -81,7 +85,7 @@ public class A_jour_Preparation extends MainActivity {
                 LLglobal.setOrientation(LinearLayout.HORIZONTAL);
                 LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 LLglobal.setLayoutParams(LLParams);
-                LLglobal.setId(Integer.parseInt(s.id));
+                LLglobal.setId(s.id);
 
                 //panel button
                 LinearLayout LLleft = new LinearLayout(this);
@@ -180,16 +184,19 @@ public class A_jour_Preparation extends MainActivity {
         }
     }
 
-    //bouton ajouter date debut
+    //Selection d'un sujet
     View.OnClickListener onClickLayout = new View.OnClickListener() {
         public void onClick(View v) {
             LinearLayout selectedLL = (LinearLayout) v;
 
             for (C_Sujet s:day.liste_sujets)
             {
-                if(s.id.equals(selectedLL.getId()))
+                if(s.id==selectedLL.getId())
                 {
-
+                    Intent intent = new Intent(A_jour_Preparation.this, A_sujet_Preparation.class);
+                    intent.putExtra("idEntry", s.idSujet);
+                    intent.putExtra("userID", userID);
+                    startActivity(intent);
                 }
             }
 

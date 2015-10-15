@@ -1,15 +1,19 @@
 <resources>
-    <string name="app_name">MIT</string>
+    <string name="app_name">MYT</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_a_new_user">Créer un utilisateur</string>
+    <string name="title_activity_a_user_new">Créer un utilisateur</string>
     <string name="title_activity_a_projets">Projets</string>
     <string name="title_activity_a_gestion_participants">Gestion des participants</string>
-    <string name="title_activity_a_new_project">Nouveau Project</string>
+    <string name="title_activity_a_project_new">Nouveau Project</string>
     <string name="title_activity_a_affichage_projet">A_affichageProjet</string>
     <string name="title_activity_a_projet__preparation">A_projet_Preparation</string>
     <string name="title_activity_a_jour__preparation">A_jour_Preparation</string>
     <string name="title_activity_a_sujet_new">Nouveau sujet</string>
     <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_a_sujet__preparation">A_sujet_Preparation</string>
+    <string name="title_activity_a_conversation">A_conversation</string>
+
+
 </resources>

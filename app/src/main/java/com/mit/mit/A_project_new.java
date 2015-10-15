@@ -29,7 +29,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class A_newProject extends MainActivity {
+public class A_project_new extends MainActivity {
 
     //Objets de la page
     private EditText tb_nom;
@@ -60,7 +60,7 @@ public class A_newProject extends MainActivity {
         super.onCreate(savedInstanceState);
 
         //initialisations
-        setContentView(R.layout.activity_a_new_project);
+        setContentView(R.layout.activity_a_project_new);
         tb_nom = (EditText) findViewById(R.id.newProject_tb_nom);
         tb_description = (EditText) findViewById(R.id.newProject_tb_description);
         tb_dateDebut = (EditText) findViewById(R.id.newProject_tb_debut);
@@ -99,8 +99,8 @@ public class A_newProject extends MainActivity {
     View.OnClickListener onCreateProjet = new View.OnClickListener() {
         public void onClick(View v) {
             //RECUPERATIONS DES INFOS POUR VARIABLES PROJET
-             v_nom=tb_nom.getText().toString();
-             v_description=tb_description.getText().toString();
+            v_nom=tb_nom.getText().toString();
+            v_description=tb_description.getText().toString();
 
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             try {
@@ -112,8 +112,8 @@ public class A_newProject extends MainActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-             v_prixSejour=0;
-             v_liste_jours=creerListeJours(v_dateDebut, v_dateFin);
+            v_prixSejour=0;
+            v_liste_jours=creerListeJours(v_dateDebut, v_dateFin);
 
 
 
@@ -148,7 +148,7 @@ public class A_newProject extends MainActivity {
 
 
             //RETOUR PAGE PRECEDENTE
-            Intent intent = new Intent(A_newProject.this, A_projets.class);
+            Intent intent = new Intent(A_project_new.this, A_projets.class);
             startActivity(intent);
         }
     };

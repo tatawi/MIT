@@ -158,7 +158,7 @@ public class DAO_Sujet extends DAO_Bdd {
             }
             list_sujets.add(
                     new C_Sujet(
-                            cursor.getString(cursor.getColumnIndex(ATTR_ID)),
+                            cursor.getInt(cursor.getColumnIndex(ATTR_ID)),
                             cursor.getString(cursor.getColumnIndex(ATTR_IDSUJET)),
                             cursor.getString(cursor.getColumnIndex(ATTR_TITRE)),
                             cursor.getString(cursor.getColumnIndex(ATTR_DESCRIPTION)),
@@ -211,7 +211,7 @@ public class DAO_Sujet extends DAO_Bdd {
             }
 
             p=new C_Sujet(
-                    cursor.getString(cursor.getColumnIndex(ATTR_ID)),
+                    cursor.getInt(cursor.getColumnIndex(ATTR_ID)),
                     cursor.getString(cursor.getColumnIndex(ATTR_IDSUJET)),
                     cursor.getString(cursor.getColumnIndex(ATTR_TITRE)),
                     cursor.getString(cursor.getColumnIndex(ATTR_DESCRIPTION)),

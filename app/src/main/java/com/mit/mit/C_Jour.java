@@ -103,10 +103,8 @@ public class C_Jour {
 
     public void creerLesListes(DAO_Sujet daoSujet)
     {
-        System.out.println("CREER LISTES fct");
         liste_sujets=new ArrayList<C_Sujet>();
         String[] parts;
-        System.out.println("string : "+sujetsToString);
 
         if(sujetsToString.length()>1) {
             //gestion liste sujets
@@ -116,7 +114,6 @@ public class C_Jour {
                 liste_sujets.add(daoSujet.getSujetById(parts[i]));
             }
         }
-        System.out.println("final : "+liste_sujets.size());
 
     }
 

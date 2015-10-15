@@ -2,6 +2,7 @@ package com.mit.mit;
 
 import android.content.Context;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
@@ -40,12 +41,14 @@ public class C_Message {
      *@param message			Message's body
      *@param emetteur		User who has send the message
      */
-    public C_Message( Date heure, String message, C_Participant emetteur)
+    public C_Message(String idSujet, Date heure, String message, C_Participant emetteur)
     {
         super();
         Date today = new Date();
+        SimpleDateFormat sdf;
+        sdf = new SimpleDateFormat("dd-MM-yy-HH-MM-SS");
 
-        this.id = id +"_"+today.getHours()+":"+today.getMinutes()+":"+today.getSeconds();
+        this.id = idSujet+sdf.format(heure);
         this.heure = heure;
         this.message = message;
         this.emetteur = emetteur;

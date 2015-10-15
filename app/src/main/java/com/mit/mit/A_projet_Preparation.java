@@ -35,6 +35,7 @@ public class A_projet_Preparation extends MainActivity {
     private double nbDays;
     private String tab_correspButtons[];
     private SimpleDateFormat sdf;
+    private String userID;
 
 
     @Override
@@ -54,6 +55,9 @@ public class A_projet_Preparation extends MainActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null)
         {
+
+            this.userID = extras.getString("userID");
+
             //chargement des données du projet
             this.projet = daoProjet.getProjetByName(extras.getString("idEntry"));
             this.projet.creerLesListes(daoJour, daoparticipant);
@@ -152,6 +156,7 @@ public class A_projet_Preparation extends MainActivity {
 
             Intent intent = new Intent(A_projet_Preparation.this, A_jour_Preparation.class);
             intent.putExtra("idEntry", dayID);
+            intent.putExtra("userID", userID);
             startActivity(intent);
         }
     };

@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class A_newUser extends MainActivity {
+public class A_user_new extends MainActivity {
 
     //Objets de la page
     private EditText tb_nom;
@@ -36,7 +36,7 @@ public class A_newUser extends MainActivity {
 
         //initialisations
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_a_new_user);
+        setContentView(R.layout.activity_a_user_new);
         tb_nom = (EditText) findViewById(R.id.newUser_tb_nom);
         tb_prenom = (EditText) findViewById(R.id.newUser_tb_prenom);
         tb_mail = (EditText) findViewById(R.id.newUser_tb_mail);
@@ -82,7 +82,7 @@ public class A_newUser extends MainActivity {
                 if(verifOK) {
                     C_Participant newPart = new C_Participant(nom,prenom,mail,mdp);
                     daoparticipant.ajouter(newPart);
-                    Intent intent = new Intent(A_newUser.this, MainActivity.class);
+                    Intent intent = new Intent(A_user_new.this, MainActivity.class);
                     startActivity(intent);
                 }
 

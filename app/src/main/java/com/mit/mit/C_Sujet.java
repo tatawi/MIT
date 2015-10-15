@@ -17,8 +17,7 @@ public class C_Sujet {
     //---------------------------------------------------------------------------------------
 //	VARIABLES
 //---------------------------------------------------------------------------------------
-    public Context pContext;
-    public String id;
+    public int id;
     public String idSujet;
     public String titre;
     public String description;
@@ -62,6 +61,8 @@ public class C_Sujet {
         this.duree = duree;
         this.auFeeling=auFeeling;
         this.prix=prix;
+        this.messagesToString="";
+        this.personnesAyantAccepteToString="";
     }
 
     /**
@@ -79,7 +80,7 @@ public class C_Sujet {
      *@param messagesToString				List of all C_message's id in string format (separated with ";")
      *@param personnesAyantAccepteToString	List of all accepted member's id in string format (separated with ";")
      */
-    public C_Sujet( String id, String idSujet, String titre, String description, String type, String localisation, Date heure, int duree, String auFeeling, double prix, String messagesToString, String personnesAyantAccepteToString)
+    public C_Sujet( int id, String idSujet, String titre, String description, String type, String localisation, Date heure, int duree, String auFeeling, double prix, String messagesToString, String personnesAyantAccepteToString)
     {
         super();
         boolean v_feel=false;
@@ -158,69 +159,39 @@ public class C_Sujet {
     }
 
 
-    public void setContext(Context context)
-    {
-        this.pContext=context;
-    }
 
-    public void creerLesListes()
+    public void creerLesListes(DAO_Message daoMessage, DAO_Participant daoParticipant)
     {
-        List<C_Message> list_messages=new ArrayList<C_Message>();
-        List<C_Participant> list_part=new ArrayList<C_Participant>();
-        DAO_Message daoMessage = new DAO_Message(this.pContext);
-        DAO_Participant daoParticipant = new DAO_Participant(this.pContext);
+        liste_messages=new ArrayList<C_Message>();
+        personnesAyantAccepte=new ArrayList<C_Participant>();
         String[] parts;
 
-        //gestion liste messages
-        parts = this.messagesToString.split(";");
-        for(int i = 0; i < parts.length; i++)
+        try{
+            //gestion liste messages
+            if(messagesToString.length()>1) {
+                parts = this.messagesToString.split(";");
+                for (int i = 0; i < parts.length; i++) {
+                    liste_messages.add(daoMessage.getMessageById(parts[i]));
+                }
+            }
+
+            //gestion liste participants
+            if(personnesAyantAccepteToString.length()>1) {
+                parts = this.personnesAyantAccepteToString.split(";");
+                for (int i = 0; i < parts.length; i++) {
+                    personnesAyantAccepte.add(daoParticipant.getParticipantById(parts[i]));
+                }
+            }
+        }
+        catch(Exception ex)
         {
-            list_messages.add(daoMessage.getMessageById(parts[i]));
+            System.out.println(ex.getMessage());
         }
 
-        //gestion liste participants
-        parts = this.personnesAyantAccepteToString.split(";");
-        for(int i = 0; i < parts.length; i++)
-        {
-            list_part.add(daoParticipant.getParticipantById(parts[i]));
-        }
     }
 
 
-//---------------------------------------------------------------------------------------
-//	BDD GESTION
-//---------------------------------------------------------------------------------------
 
-    /**
-     *Add class to DAO bdd
-     */
-    public void BDDajouter()
-    {
-        DAO_Sujet daoSujet = new DAO_Sujet(this.pContext);
-        listeToString();
-
-        daoSujet.ajouter(this);
-    }
-
-    /**
-     *Modify class in DAO bdd
-     */
-    public void BDDmodifier()
-    {
-        DAO_Sujet daoSujet = new DAO_Sujet(this.pContext);
-        listeToString();
-
-        daoSujet.modifier(this);
-    }
-
-    /**
-     *Remove class from DAO bdd
-     */
-    public void BDDsuprimer()
-    {
-        DAO_Sujet daoSujet = new DAO_Sujet(this.pContext);
-        daoSujet.supprimer(this.id);
-    }
 
 //---------------------------------------------------------------------------------------
 //	FONCTIONS PRIVATES

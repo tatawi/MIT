@@ -17,8 +17,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".A_newUser"
-            android:label="@string/title_activity_a_new_user"
+            android:name=".A_user_new"
+            android:label="@string/title_activity_a_user_new"
             android:parentActivityName=".MainActivity" >
         </activity>
         <activity
@@ -35,9 +35,8 @@
                 android:value="com.mit.mit.MainActivity" />
         </activity>
         <activity
-            android:name=".A_newProject"
-            android:label="@string/title_activity_a_new_project"
-            android:parentActivityName=".A_projets" >
+            android:name=".A_project_new"
+            android:label="@string/title_activity_a_project_new" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mit.mit.A_projets" />
@@ -67,6 +66,23 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mit.mit.A_jour_Preparation" />
+        </activity>
+        <activity
+            android:name=".A_sujet_Preparation"
+            android:label="@string/title_activity_a_sujet__preparation"
+            android:launchMode="singleTop"
+            android:parentActivityName=".A_jour_Preparation" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mit.mit.A_jour_Preparation" />
+        </activity>
+        <activity
+            android:name=".A_conversation"
+            android:label="@string/title_activity_a_conversation"
+            android:parentActivityName=".A_sujet_Preparation" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mit.mit.A_sujet_Preparation" />
         </activity>
     </application>
 

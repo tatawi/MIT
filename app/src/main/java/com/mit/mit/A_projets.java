@@ -33,12 +33,17 @@ public class A_projets extends MainActivity {
     //variables
     private List<C_Projet> list_projets;
     private SimpleDateFormat sdf;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        //récupération de l'utilisateur
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            this.userID = extras.getString("userID");
+        }
 
         //initialiser objets de la page
         setContentView(R.layout.activity_a_projets);
@@ -59,6 +64,7 @@ public class A_projets extends MainActivity {
         ll_center.setOrientation(LinearLayout.VERTICAL);
 
         setAffichage("Preparation");
+
 
 
     }
@@ -261,6 +267,7 @@ public class A_projets extends MainActivity {
                 {
                     Intent intent = new Intent(A_projets.this, A_projet_Preparation.class);
                     intent.putExtra("idEntry", p.nom);
+                    intent.putExtra("userID", userID);
                     startActivity(intent);
                 }
             }
@@ -323,8 +330,9 @@ public class A_projets extends MainActivity {
 
 
 
-
-
+//---------------------------------------------------------------------------------------
+//	FONCTIONS
+//---------------------------------------------------------------------------------------
 
 
 
@@ -349,7 +357,7 @@ public class A_projets extends MainActivity {
         //CREATE A NEW PROJECT
         if (id == R.id.project_new)
         {
-            Intent intent = new Intent(A_projets.this, A_newProject.class);
+            Intent intent = new Intent(A_projets.this, A_project_new.class);
             startActivity(intent);
 
 

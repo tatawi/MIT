@@ -117,7 +117,9 @@ private void CASdeTESTS()
                 if (me.mdp.length()>2) {
                     if(me.mdp.equals(mdp)) {
                         Intent intent = new Intent(MainActivity.this, A_projets.class);
+                        intent.putExtra("userID", me.mail);
                         startActivity(intent);
+
                     }
                     else{
                         tb_userID.setText("mot de passe incorrect");
@@ -161,7 +163,7 @@ private void CASdeTESTS()
         //ON NEW USER
         if (id == R.id.menu_new)
         {
-            Intent intent = new Intent(MainActivity.this, A_newUser.class);
+            Intent intent = new Intent(MainActivity.this, A_user_new.class);
             startActivity(intent);
         }
 
