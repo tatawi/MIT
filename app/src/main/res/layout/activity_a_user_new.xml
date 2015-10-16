@@ -5,17 +5,26 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context="com.mit.mit.A_user_new">
 
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+
+
+
 
 
     <TextView
         android:id="@+id/newUser_lb_nom"
-        android:text="Nom"
+        android:text="Nom :"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
         android:id="@+id/newUser_tb_nom"
@@ -24,24 +33,22 @@
         android:inputType="textPersonName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:layout_below="@+id/newUser_lb_nom"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:ems="10" />
 
-
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2px"
+                android:background="#ac035d"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp" />
 
 
     <TextView
         android:id="@+id/newUser_lb_prenom"
-        android:text="Prénom"
+        android:text="Prénom :"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_below="@+id/newUser_lb_nom"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="56dp" />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
         android:id="@+id/newUser_tb_prenom"
@@ -50,24 +57,22 @@
         android:textColor="#ac035d"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:layout_below="@+id/newUser_lb_prenom"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:ems="10" />
 
-
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2px"
+                android:background="#ac035d"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp" />
 
 
     <TextView
         android:id="@+id/newUser_lb_mail"
-        android:text="Adresse mail"
+        android:text="Adresse mail :"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_below="@+id/newUser_lb_prenom"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="59dp" />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
         android:id="@+id/newUser_tb_mail"
@@ -76,23 +81,22 @@
         android:textColor="#ac035d"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:layout_below="@+id/newUser_lb_mail"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:ems="10" />
 
-
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2px"
+                android:background="#ac035d"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp" />
 
 
     <TextView
         android:id="@+id/newUser_lb_mdp1"
-        android:text="Créer un mot de passe"
+        android:text="Créer un mot de passe :"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
         android:id="@+id/newUser_tb_mdp1"
@@ -101,23 +105,17 @@
         android:textColor="#ac035d"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:layout_below="@+id/newUser_lb_mdp1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:ems="10" />
 
 
 
 
     <TextView
         android:id="@+id/newUser_lb_mdp2"
-        android:text="Valider le mot de passe"
+        android:text="Valider le mot de passe :"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_below="@+id/newUser_tb_mdp1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
         android:id="@+id/newUser_tb_mdp2"
@@ -126,10 +124,7 @@
         android:textColor="#ac035d"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:layout_below="@+id/newUser_lb_mdp2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:ems="10" />
 
 
 
@@ -137,11 +132,10 @@
         android:id="@+id/newUser_lb_msg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_above="@+id/newUser_btn_valider"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="31dp"
-        android:textColor="#ac035d" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#ac035d"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
 
 
     <Button
@@ -149,10 +143,9 @@
         android:text="Valider"
         android:textColor="#ac035d"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_height="wrap_content" />
 
-
+        </LinearLayout>
+</ScrollView>
 
 </RelativeLayout>

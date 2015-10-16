@@ -200,7 +200,7 @@ public class C_Sujet {
     /**
      *Convert class list in string (separated with ";") in order to store data in DAO bdd
      */
-    private void listeToString()
+    public void listeToString()
     {
         this.messagesToString="";
         this.personnesAyantAccepteToString="";

@@ -44,7 +44,7 @@ public class A_projet_Preparation extends MainActivity {
 
 
         //initialiser objets de la page
-        setContentView(R.layout.activity_a_affichage_projet);
+        setContentView(R.layout.activity_a_projet__preparation);
         lb_description = (TextView) findViewById(R.id.projetPrep_lb_description);
         lb_cout = (TextView) findViewById(R.id.projetPrep_lb_cout);
         lb_text= (TextView) findViewById(R.id.projetPrep_lb_txtCout);
@@ -72,6 +72,103 @@ public class A_projet_Preparation extends MainActivity {
         /*---------------------------
         *AFFICHAGE
         */
+
+
+        if(!this.projet.liste_jours.isEmpty()) {
+            container_tableLayout.setOrientation(LinearLayout.VERTICAL);
+            LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            sdf = new SimpleDateFormat("EEEE dd MMM yyyy");
+            int nbParcours=0;
+            for (C_Jour j : this.projet.liste_jours)
+            {
+                //layout ligne
+                LinearLayout LL = new LinearLayout(this);
+                LL.setOrientation(LinearLayout.HORIZONTAL);
+                LL.setLayoutParams(LLParams);
+                LL.setPadding(0,10,0,10);
+
+
+
+
+                //IMAGE CALENDRIER
+                ImageButton btn=new ImageButton(this);
+                String str_buttonID=getDayIDFromDate(j.jour);
+                String fileName=getImageNameForDay(j.jour);
+                int identifier = getResources().getIdentifier(fileName, "drawable", getPackageName());
+
+                //add listener
+                tab_correspButtons[nbParcours]=getDayIDFromDate(j.jour);
+                btn.setId(nbParcours);
+                btn.setOnClickListener(onClickDay);
+                btn.setImageResource(identifier);
+                btn.setBackgroundColor(Color.TRANSPARENT);
+                LL.addView(btn);
+
+
+                //TEXTE
+                LinearLayout LLtexte = new LinearLayout(this);
+                LLtexte.setOrientation(LinearLayout.VERTICAL);
+                LLtexte.setLayoutParams(LLParams);
+                LLtexte.setPadding(20,0,40,0);
+
+                TextView lb_jour = new TextView(this);
+                nbParcours++;
+                lb_jour.setText("Journée " + nbParcours);
+                nbParcours=nbParcours-1;
+                lb_jour.setTextSize(18);
+                LLtexte.addView(lb_jour);
+
+                TextView lb_date = new TextView(this);
+                lb_date.setText(sdf.format(j.jour));
+                LLtexte.addView(lb_date);
+
+                LL.addView(LLtexte);
+
+
+                //IMAGE MESSAGES
+                ImageButton btnConv=new ImageButton(this);
+                btnConv.setImageResource(R.drawable.ic_projet_prep_conv);
+                btnConv.setBackgroundColor(Color.TRANSPARENT);
+                btnConv.setId(nbParcours);
+                btnConv.setOnClickListener(onClickConv);
+                LL.addView(btnConv);
+
+
+                //INCREMENT DAY
+                nbParcours++;
+                container_tableLayout.addView(LL);
+            }
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
         Date currentDate=this.projet.dateDebut;
         Calendar c = Calendar.getInstance();
 
@@ -134,7 +231,7 @@ public class A_projet_Preparation extends MainActivity {
 
         }
         container_tableLayout.addView(LL);
-
+*/
 
 
 
@@ -147,8 +244,24 @@ public class A_projet_Preparation extends MainActivity {
 //---------------------------------------------------------------------------------------
 
 
-    //bouton ajouter date debut
+    //BOUTON SELECTION JOUR
     View.OnClickListener onClickDay = new View.OnClickListener()
+    {
+        public void onClick(View v) {
+            ImageButton button = (ImageButton)v;
+            String dayID=tab_correspButtons[button.getId()];
+
+            Intent intent = new Intent(A_projet_Preparation.this, A_jour_Preparation.class);
+            intent.putExtra("idEntry", dayID);
+            intent.putExtra("userID", userID);
+            startActivity(intent);
+        }
+    };
+
+
+
+    //BOUTON SELECTION MESSAGE
+    View.OnClickListener onClickConv = new View.OnClickListener()
     {
         public void onClick(View v) {
             ImageButton button = (ImageButton)v;
@@ -210,11 +323,11 @@ public class A_projet_Preparation extends MainActivity {
 
                 if(j.isNotification(me))
                 {
-                    return "ic_cal_red_"+sdf.format(j.jour);
+                    return "ic_cal_full_"+sdf.format(j.jour);
                 }
                 else
                 {
-                    return "ic_cal_black_"+sdf.format(j.jour);
+                    return "ic_cal_"+sdf.format(j.jour);
                 }
             }
 

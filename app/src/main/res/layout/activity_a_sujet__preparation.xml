@@ -8,7 +8,8 @@
 
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:id="@+id/scrollView3">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
@@ -150,16 +151,34 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp" />
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">.
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Participants" />
+                android:text="Participants : " />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">.
+
+
+            <ProgressBar
+                android:id="@+id/sujetPreparation_progressBar"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"/>
+
+            <ImageButton
+                android:id="@+id/sujetPreparation_btn_participer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_sujetprep_participate"
+                android:background="@null"
+                android:paddingLeft="20dp"/>
+
+
 
 
             </LinearLayout>
@@ -176,8 +195,11 @@
 
 
 
+
         </LinearLayout>
     </ScrollView>
+
+
 
 
 </RelativeLayout>

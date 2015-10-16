@@ -53,8 +53,7 @@ public class A_conversation extends MainActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             this.userID = extras.getString("userID");
-            System.out.println("*/*/*/*/*/*/*/*/*/*//*/*/*/*/*//");
-            System.out.println(userID);
+
             part=daoparticipant.getParticipantById(userID);
 
             //chargement des données du sujet
@@ -93,7 +92,7 @@ public class A_conversation extends MainActivity {
 
             //initialisation champs
             name.setText(daoparticipant.getParticipantById(m.id_participantEmetteur).prenom);
-            name.setTextSize(16);
+            name.setTextSize(18);
             text.setText(m.message);
             date.setText(sdf.format(m.heure));
             date.setPadding(10, 0, 0, 0);
@@ -120,6 +119,17 @@ public class A_conversation extends MainActivity {
 
 
 
+    public void majNotifications()
+    {
+        for (C_Message m : this.liste_messages)
+        {
+
+
+        }
+    }
+
+
+
 
 
 
@@ -139,11 +149,7 @@ public class A_conversation extends MainActivity {
 /*       public C_Message(String idSujet, Date heure, String message, C_Participant emetteur)*/
 
 
-            System.out.println("**********************************************");
-            System.out.println(part.id);
-            System.out.println(part.nom);
-            System.out.println(part.prenom);
-            System.out.println(part.mail);
+
 
             C_Message message = new C_Message(sujet.idSujet,new Date(), tb_message.getText().toString(), part);
             daoMessage.ajouter(message);

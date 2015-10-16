@@ -64,6 +64,9 @@ private void CASdeTESTS()
     C_Participant part2 = new C_Participant("BAUDRAIS","Maxime","cnero@hotmail.f","azerty");
     daoparticipant.ajouter(part2);
 
+    C_Participant part3 = new C_Participant("BAUDRAIS","Maxime","part2","azerty");
+    daoparticipant.ajouter(part3);
+
     //projet 1
   /*  C_Projet proj1= new C_Projet(this,"proj1","ceci est un test",new Date(), new Date());
     proj1.creerLesListes();
@@ -106,31 +109,32 @@ private void CASdeTESTS()
     View.OnClickListener onConnectClick = new View.OnClickListener() {
         public void onClick(View v) {
 
-            tb_userID.setText("part1");
-            tb_mdp.setText("aaaa");
-            userID =tb_userID.getText().toString();
-            mdp=tb_mdp.getText().toString();
-            me=daoparticipant.getParticipantById(userID);
-
-            if(me!=null)
+            for (C_Participant me : daoparticipant.getParticipants())
             {
-                if (me.mdp.length()>2) {
-                    if(me.mdp.equals(mdp)) {
+                System.out.println("user :" + me.mail);
+                System.out.println(me.mail + " vs " + tb_userID.getText().toString());
+                if(me.mail.equals(tb_userID.getText().toString()))
+                {
+                    System.out.println(">found");
+                    if(me.mdp.equals(tb_mdp.getText().toString()))
+                    {
+                        System.out.println(">ok");
                         Intent intent = new Intent(MainActivity.this, A_projets.class);
                         intent.putExtra("userID", me.mail);
                         startActivity(intent);
-
                     }
-                    else{
+                    else
+                    {
                         tb_userID.setText("mot de passe incorrect");
+                        tb_mdp.setText("");
                     }
                 }
-                else {
+                else
+                {
                     tb_userID.setText("Utilisateur inconnu");
+                    tb_mdp.setText("");
                 }
-            }
-            else {
-                tb_userID.setText("Utilisateur inconnu");
+
             }
         }
     };

@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -27,6 +28,8 @@ public class A_sujet_Preparation extends MainActivity {
     private TextView lb_nbMessages;
     private TextView lb_nbNonLus;
     private ImageButton btn_conv;
+    private ProgressBar progressBar_participations;
+    private ImageButton btn_participer;
 
 
     //android:id="@+id/sujetPreparation_lb_description"
@@ -40,7 +43,8 @@ public class A_sujet_Preparation extends MainActivity {
     private C_Sujet sujet;
     private SimpleDateFormat sdf;
     private String userID;
-
+    private C_Projet projet;
+    private C_Participant part;
 
 
 
@@ -62,11 +66,12 @@ public class A_sujet_Preparation extends MainActivity {
         lb_nbMessages = (TextView) findViewById(R.id.sujetPreparation_lb_nbMessages);
         lb_nbNonLus = (TextView) findViewById(R.id.sujetPreparation_lb_nbNonLus);
         btn_conv = (ImageButton) findViewById(R.id.sujetPreparation_btn_conv);
-
-
+        progressBar_participations = (ProgressBar) findViewById(R.id.sujetPreparation_progressBar);
+        btn_participer = (ImageButton) findViewById(R.id.sujetPreparation_btn_participer);
 
         //listeners
         btn_conv.setOnClickListener(onOpenConv);
+        btn_participer.setOnClickListener(onParticiper);
 
 
 
@@ -80,73 +85,27 @@ public class A_sujet_Preparation extends MainActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null)
         {
+            //chargement user
             this.userID=extras.getString("userID");
-            System.out.println("jour preparation : "+this.userID);
+            part=daoparticipant.getParticipantById(userID);
+
             //chargement des données du sujet
             this.sujet = daoSujet.getSujetById(extras.getString("idEntry"));
             this.sujet.creerLesListes(daoMessage, daoparticipant);
 
-            //System.out.println("sujets : "+day.sujetsToString);
 
+            //recupération projet courant
+            String nomProjet =this.sujet.idSujet.split("_")[0];
+            projet = daoProjet.getProjetByName(nomProjet);
+            projet.creerLesListes(daoJour, daoparticipant);
 
-            //MAJ de l'interface avec les données
-            setTitle("[" + this.sujet.type + "] " + this.sujet.titre);
-
-            lb_description.setText(this.sujet.description);
-            lb_date.setText(sdf.format(this.sujet.heure));
-            lb_montant.setText(this.sujet.prix+" €");
-
-            int hour = this.sujet.duree/60;
-            int min = this.sujet.duree-hour*60;
-            lb_duree.setText(hour+"h"+min);
-
-            lb_nbMessages.setText("Aucun messages");
-            lb_nbNonLus.setText("Pas de nouveaux messages");
-
-            switch (this.sujet.type) {
-                case "Transport":
-                    btn_type.setImageResource(R.drawable.ic_jour_transports);
-                    lb_description.setTextColor(Color.parseColor("#e74c3c"));
-                    break;
-
-                case "Repas":
-                    btn_type.setImageResource(R.drawable.ic_jour_repas);
-                    lb_description.setTextColor(Color.parseColor("#2980b9"));
-                    break;
-
-                case "Visite":
-                    btn_type.setImageResource(R.drawable.ic_jour_visite);
-                    lb_description.setTextColor(Color.parseColor("#16a085"));
-                    break;
-
-                case "Logement":
-                    btn_type.setImageResource(R.drawable.ic_jour_logement);
-                    lb_description.setTextColor(Color.parseColor("#f39c12"));
-                    break;
-
-                case "loisir":
-                    btn_type.setImageResource(R.drawable.ic_jour_loisir);
-                    lb_description.setTextColor(Color.parseColor("#9b59b6"));
-                    break;
-
-                case "Libre":
-                    btn_type.setImageResource(R.drawable.ic_jour_libre);
-                    lb_description.setTextColor(Color.parseColor("#5b5b5b"));
-                    break;
-            }
-
-
+            //affichage
+            majInterface();
         }
 
-
-
-
-
-
-
-
-
     }
+
+
 
 
 
@@ -173,6 +132,19 @@ public class A_sujet_Preparation extends MainActivity {
     };
 
 
+    //bouton participer
+    View.OnClickListener onParticiper = new View.OnClickListener() {
+        public void onClick(View v)
+        {
+            sujet.personnesAyantAccepte.add(part);
+            sujet.listeToString();
+            daoSujet.modifier(sujet);
+            progressBar_participations.incrementProgressBy(1);
+
+        }
+    };
+
+
 
 
 
@@ -185,6 +157,65 @@ public class A_sujet_Preparation extends MainActivity {
 //	FONCTIONS
 //---------------------------------------------------------------------------------------
 
+//MAJ de l'interface avec les données
+public void majInterface()
+{
+    //Titre
+    setTitle("[" + this.sujet.type + "] " + this.sujet.titre);
+
+    //champs
+    lb_description.setText(this.sujet.description);
+    lb_date.setText(sdf.format(this.sujet.heure));
+    lb_montant.setText(this.sujet.prix+" €");
+
+    //heure
+    int hour = this.sujet.duree/60;
+    int min = this.sujet.duree-hour*60;
+    lb_duree.setText(hour+"h"+min);
+
+    //messages
+    lb_nbMessages.setText("Aucun messages");
+    lb_nbNonLus.setText("Pas de nouveaux messages");
+
+    //type
+    switch (this.sujet.type) {
+        case "Transport":
+            btn_type.setImageResource(R.drawable.ic_jour_transports);
+            lb_description.setTextColor(Color.parseColor("#e74c3c"));
+            break;
+
+        case "Repas":
+            btn_type.setImageResource(R.drawable.ic_jour_repas);
+            lb_description.setTextColor(Color.parseColor("#2980b9"));
+            break;
+
+        case "Visite":
+            btn_type.setImageResource(R.drawable.ic_jour_visite);
+            lb_description.setTextColor(Color.parseColor("#16a085"));
+            break;
+
+        case "Logement":
+            btn_type.setImageResource(R.drawable.ic_jour_logement);
+            lb_description.setTextColor(Color.parseColor("#f39c12"));
+            break;
+
+        case "loisir":
+            btn_type.setImageResource(R.drawable.ic_jour_loisir);
+            lb_description.setTextColor(Color.parseColor("#9b59b6"));
+            break;
+
+        case "Libre":
+            btn_type.setImageResource(R.drawable.ic_jour_libre);
+            lb_description.setTextColor(Color.parseColor("#5b5b5b"));
+            break;
+    }
+
+
+    //participants
+    progressBar_participations.setMax(projet.liste_participants.size());
+    progressBar_participations.setProgress(sujet.personnesAyantAccepte.size());
+
+}
 
 
 

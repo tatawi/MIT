@@ -42,7 +42,12 @@ public class A_project_new extends MainActivity {
     private ImageButton btn_creer;
     private ImageButton btn_adduser;
     private ListView lv_listViewPart;
-    private EditText tb_couleur;
+    private ImageButton btn_couleur_noir;
+    private ImageButton btn_couleur_rouge;
+    private ImageButton btn_couleur_bleu;
+    private ImageButton btn_couleur_jaune;
+    private ImageButton btn_couleur_vert;
+    private ImageButton btn_couleur_violet;
 
     //variables
     private String v_nom;
@@ -50,6 +55,7 @@ public class A_project_new extends MainActivity {
     private Date v_dateDebut;
     private Date v_dateFin;
     private float v_prixSejour=0;
+    private String v_couleur="noir";
     private transient List<C_Jour> v_liste_jours;
     private transient List<C_Participant> v_liste_participants;
     private String userID;
@@ -76,7 +82,12 @@ public class A_project_new extends MainActivity {
         btn_creer = (ImageButton) findViewById(R.id.newProject_btn_addProject);
         btn_adduser = (ImageButton) findViewById(R.id.newProject_btn_addParticipant);
         lv_listViewPart = (ListView) findViewById(R.id.newProject_lv_listView);
-        tb_couleur = (EditText) findViewById(R.id.newProject_tb_couleur);
+        btn_couleur_noir= (ImageButton) findViewById(R.id.newProject_btn_color_noir);
+        btn_couleur_rouge= (ImageButton) findViewById(R.id.newProject_btn_color_rouge);
+        btn_couleur_bleu= (ImageButton) findViewById(R.id.newProject_btn_color_bleu);
+        btn_couleur_jaune= (ImageButton) findViewById(R.id.newProject_btn_color_jaune);
+        btn_couleur_vert= (ImageButton) findViewById(R.id.newProject_btn_color_vert);
+        btn_couleur_violet= (ImageButton) findViewById(R.id.newProject_btn_color_violet);
 
 
         //listeners
@@ -84,6 +95,14 @@ public class A_project_new extends MainActivity {
         btn_dateFin.setOnClickListener(onClickFinDate);
         btn_adduser.setOnClickListener(onAddUser);
         btn_creer.setOnClickListener(onCreateProjet);
+        btn_couleur_noir.setOnClickListener(onColorClick);
+        btn_couleur_rouge.setOnClickListener(onColorClick);
+        btn_couleur_bleu.setOnClickListener(onColorClick);
+        btn_couleur_jaune.setOnClickListener(onColorClick);
+        btn_couleur_vert.setOnClickListener(onColorClick);
+        btn_couleur_violet.setOnClickListener(onColorClick);
+
+
 
         // ini
         v_liste_jours=new ArrayList<C_Jour>();
@@ -100,7 +119,7 @@ public class A_project_new extends MainActivity {
 //	LISTENERS
 //---------------------------------------------------------------------------------------
 
-    //bouton creer
+    //BOUTTON creer
     View.OnClickListener onCreateProjet = new View.OnClickListener() {
         public void onClick(View v) {
             //RECUPERATIONS DES INFOS POUR VARIABLES PROJET
@@ -123,7 +142,7 @@ public class A_project_new extends MainActivity {
 
 
             //CREATION DU PROJET
-            C_Projet newprojet=new C_Projet(pContext, v_nom, v_description, v_dateDebut, v_dateFin,tb_couleur.getText().toString());
+            C_Projet newprojet=new C_Projet(pContext, v_nom, v_description, v_dateDebut, v_dateFin,v_couleur);
             newprojet.setListe_jours(v_liste_jours);
             newprojet.setListe_participants(v_liste_participants);
             newprojet.listeToString();
@@ -135,19 +154,7 @@ public class A_project_new extends MainActivity {
             {
                 daoJour.ajouter(j);
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
-                System.out.print("<jour "+ j.nomJour+" | "+sdf.format(j.jour));
-                System.out.println();
             }
-
-            for (C_Jour j:newprojet.liste_jours)
-            {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
-                System.out.print(">jour "+ j.nomJour+" | "+sdf.format(j.jour));
-                System.out.println();
-
-            }
-            System.out.print("*********************************************************");
-            System.out.println();
 
 
 
@@ -160,6 +167,8 @@ public class A_project_new extends MainActivity {
     };
 
 
+
+
     //bouton ajouter date debut
     View.OnClickListener onClickDebutDate = new View.OnClickListener() {
         public void onClick(View v) {
@@ -170,6 +179,8 @@ public class A_project_new extends MainActivity {
     };
 
 
+
+
     //bouton ajouter date fin
     View.OnClickListener onClickFinDate = new View.OnClickListener() {
         public void onClick(View v) {
@@ -178,6 +189,8 @@ public class A_project_new extends MainActivity {
             //tb_dateFin.setText(lb_date.getText());
         }
     };
+
+
 
     //bouton ajouter participant
     View.OnClickListener onAddUser = new View.OnClickListener() {
@@ -215,6 +228,88 @@ public class A_project_new extends MainActivity {
 
 
 
+    //BUTONS COLORS
+    View.OnClickListener onColorClick = new View.OnClickListener() {
+        public void onClick(View v) {
+            ImageButton btn = (ImageButton) v;
+
+            if (btn.equals(btn_couleur_bleu))
+            {
+                System.out.println("bleu");
+                v_couleur="bleu";
+                btn_couleur_bleu.setImageResource(R.drawable.ic_circle_full_bleu);
+                btn_couleur_noir.setImageResource(R.drawable.ic_circle_noir);
+                btn_couleur_rouge.setImageResource(R.drawable.ic_circle_rouge);
+                btn_couleur_jaune.setImageResource(R.drawable.ic_circle_jaune);
+                btn_couleur_vert.setImageResource(R.drawable.ic_circle_vert);
+                btn_couleur_violet.setImageResource(R.drawable.ic_circle_violet);
+            }
+
+            if (btn.equals(btn_couleur_noir))
+            {
+                System.out.println("noir");
+                v_couleur="noir";
+                btn_couleur_bleu.setImageResource(R.drawable.ic_circle_bleu);
+                btn_couleur_noir.setImageResource(R.drawable.ic_circle_full_noir);
+                btn_couleur_rouge.setImageResource(R.drawable.ic_circle_rouge);
+                btn_couleur_jaune.setImageResource(R.drawable.ic_circle_jaune);
+                btn_couleur_vert.setImageResource(R.drawable.ic_circle_vert);
+                btn_couleur_violet.setImageResource(R.drawable.ic_circle_violet);
+            }
+
+            if (btn.equals(btn_couleur_rouge))
+            {
+                System.out.println("rouge");
+                v_couleur="rouge";
+                btn_couleur_bleu.setImageResource(R.drawable.ic_circle_bleu);
+                btn_couleur_noir.setImageResource(R.drawable.ic_circle_noir);
+                btn_couleur_rouge.setImageResource(R.drawable.ic_circle_full_rouge);
+                btn_couleur_jaune.setImageResource(R.drawable.ic_circle_jaune);
+                btn_couleur_vert.setImageResource(R.drawable.ic_circle_vert);
+                btn_couleur_violet.setImageResource(R.drawable.ic_circle_violet);
+            }
+
+            if (btn.equals(btn_couleur_jaune))
+            {
+                System.out.println("jaune");
+                v_couleur="jaune";
+                btn_couleur_bleu.setImageResource(R.drawable.ic_circle_bleu);
+                btn_couleur_noir.setImageResource(R.drawable.ic_circle_noir);
+                btn_couleur_rouge.setImageResource(R.drawable.ic_circle_rouge);
+                btn_couleur_jaune.setImageResource(R.drawable.ic_circle_full_jaune);
+                btn_couleur_vert.setImageResource(R.drawable.ic_circle_vert);
+                btn_couleur_violet.setImageResource(R.drawable.ic_circle_violet);
+            }
+
+            if (btn.equals(btn_couleur_vert))
+            {
+                System.out.println("vert");
+                v_couleur="vert";
+                btn_couleur_bleu.setImageResource(R.drawable.ic_circle_bleu);
+                btn_couleur_noir.setImageResource(R.drawable.ic_circle_noir);
+                btn_couleur_rouge.setImageResource(R.drawable.ic_circle_rouge);
+                btn_couleur_jaune.setImageResource(R.drawable.ic_circle_jaune);
+                btn_couleur_vert.setImageResource(R.drawable.ic_circle_full_vert);
+                btn_couleur_violet.setImageResource(R.drawable.ic_circle_violet);
+            }
+
+            if (btn.equals(btn_couleur_violet))
+            {
+                System.out.println("violet");
+                v_couleur="violet";
+                btn_couleur_bleu.setImageResource(R.drawable.ic_circle_bleu);
+                btn_couleur_noir.setImageResource(R.drawable.ic_circle_noir);
+                btn_couleur_rouge.setImageResource(R.drawable.ic_circle_rouge);
+                btn_couleur_jaune.setImageResource(R.drawable.ic_circle_jaune);
+                btn_couleur_vert.setImageResource(R.drawable.ic_circle_vert);
+                btn_couleur_violet.setImageResource(R.drawable.ic_circle_full_violet);
+            }
+
+        }
+    };
+
+
+
 //---------------------------------------------------------------------------------------
 //	FONCTIONS
 //---------------------------------------------------------------------------------------
@@ -238,16 +333,11 @@ public class A_project_new extends MainActivity {
     {
         List<C_Jour>maListeJours=new ArrayList<C_Jour>();
         Date jourEnCour=debut;
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
-        System.out.print("Date debut : "+sdf.format(debut));
-        System.out.println();
-        System.out.print("Date fin : "+sdf.format(fin));
-        System.out.println();
-        System.out.print("Nombre de jours : "+getDaysBetweenDates(debut, fin));
-        System.out.println();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM");
+
         for(int i=0; i<getDaysBetweenDates(debut, fin); i++)
         {
-            sdf = new SimpleDateFormat("dd-MM");
+            //sdf = new SimpleDateFormat("dd-MM");
             C_Jour jour = new C_Jour(v_nom+"_"+sdf.format(jourEnCour), jourEnCour);
             maListeJours.add(jour);
             System.out.print("Add day : "+jour.nomJour+" | "+sdf.format(jour.jour));

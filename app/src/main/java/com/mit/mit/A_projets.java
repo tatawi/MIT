@@ -32,6 +32,7 @@ public class A_projets extends MainActivity {
 
     //variables
     private List<C_Projet> list_projets;
+    private C_Participant part;
     private SimpleDateFormat sdf;
     private String userID;
 
@@ -43,33 +44,50 @@ public class A_projets extends MainActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             this.userID = extras.getString("userID");
+            part=daoparticipant.getParticipantById(userID);
             System.out.println("liste projets : "+this.userID);
         }
 
         //initialiser objets de la page
         setContentView(R.layout.activity_a_projets);
-        //lv_listeAffichage = (ListView)findViewById(R.id.projets_listViw);
         btn_enPreparation = (ImageButton)findViewById(R.id.projets_ibtn_enPreparation);
         btn_projEnCours = (ImageButton)findViewById(R.id.projets_ibtn_enCours);
         btn_projFinis = (ImageButton)findViewById(R.id.projets_ibtn_finis);
         ll_center = (LinearLayout)findViewById(R.id.projets_LinearLayoutCenter);
 
-
-        list_projets=daoProjet.getProjets();
-
         //listeners
         btn_enPreparation.setOnClickListener(onPreparationProjets);
         btn_projEnCours.setOnClickListener(onEnCoursProjets);
         btn_projFinis.setOnClickListener(onTerminesProjets);
-        //lv_listeAffichage.setOnItemClickListener(onListClick);
         ll_center.setOrientation(LinearLayout.VERTICAL);
 
-        setAffichage("Preparation");
-
-
+        majAffichage();
 
     }
 
+
+
+    public void majAffichage()
+    {
+        //trier les projets de l'user only
+        list_projets=new ArrayList<C_Projet>();
+
+        for (C_Projet p : daoProjet.getProjets())
+        {
+            //p.creerLesListes(daoJour, daoparticipant);
+
+            if(p.participantsToString.contains(part.mail))
+            //if(p.liste_participants.contains(part))
+            {
+                list_projets.add(p);
+            }
+        }
+
+        if(!list_projets.isEmpty())
+        {
+            setAffichage("Preparation");
+        }
+    }
 
 
     public void setAffichage(String cas)
@@ -77,174 +95,170 @@ public class A_projets extends MainActivity {
         ll_center.removeAllViews();
         for(C_Projet p:list_projets)
         {
-            //panel global
-            LinearLayout LLglobal = new LinearLayout(this);
-            LLglobal.setOrientation(LinearLayout.HORIZONTAL);
-            LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            LLglobal.setLayoutParams(LLParams);
-            LLglobal.setId(p.id);
-
-            //panel button
-            LinearLayout LLleft = new LinearLayout(this);
-            LLleft.setOrientation(LinearLayout.HORIZONTAL);
-            LLleft.setLayoutParams(LLParams);
-
-            //panel messages
-            LinearLayout LLright = new LinearLayout(this);
-            LLright.setOrientation(LinearLayout.VERTICAL);
-            LLright.setLayoutParams(LLParams);
-
-            //panel description
-            LinearLayout LLrightUp = new LinearLayout(this);
-            LLrightUp.setOrientation(LinearLayout.HORIZONTAL);
-            LLrightUp.setLayoutParams(LLParams);
-
-            //panel heures
-            LinearLayout LLrightDown = new LinearLayout(this);
-            LLrightDown.setOrientation(LinearLayout.HORIZONTAL);
-            LLrightDown.setLayoutParams(LLParams);
-
-
-            //déclarations champs
-            ImageButton img = new ImageButton(this);
-            TextView desc = new TextView(this);
-            TextView d1 = new TextView(this);
-            TextView cout = new TextView(this);
-
-            //personnalisation champs
-
-            switch (p.couleur)
+            if (p.statut.equals(cas))
             {
-                case "noir":
-                    desc.setTextColor(Color.parseColor("#5b5b5b"));
-                    switch (p.statut)
-                    {
-                        case "Preparation":
-                            img.setImageResource(R.drawable.ic_proj_prep_noir);
-                            break;
-                        case "Actuel":
-                            img.setImageResource(R.drawable.ic_proj_cours_noir);
-                            break;
-                        case "Fini":
-                            img.setImageResource(R.drawable.ic_proj_fini_noir);
-                            break;
-                    }
+                //panel global
+                LinearLayout LLglobal = new LinearLayout(this);
+                LLglobal.setOrientation(LinearLayout.HORIZONTAL);
+                LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                LLglobal.setLayoutParams(LLParams);
+                LLglobal.setId(p.id);
 
-                    break;
+                //panel button
+                LinearLayout LLleft = new LinearLayout(this);
+                LLleft.setOrientation(LinearLayout.HORIZONTAL);
+                LLleft.setLayoutParams(LLParams);
 
-                case "rouge":
-                    desc.setTextColor(Color.parseColor("#e74c3c"));
-                    switch (p.statut)
-                    {
-                        case "Preparation":
-                            img.setImageResource(R.drawable.ic_proj_prep_rouge);
-                            break;
-                        case "Actuel":
-                            img.setImageResource(R.drawable.ic_proj_cours_rouge);
-                            break;
-                        case "Fini":
-                            img.setImageResource(R.drawable.ic_proj_fini_rouge);
-                            break;
-                    }
-                    break;
+                //panel messages
+                LinearLayout LLright = new LinearLayout(this);
+                LLright.setOrientation(LinearLayout.VERTICAL);
+                LLright.setLayoutParams(LLParams);
 
-                case "jaune":
-                    desc.setTextColor(Color.parseColor("#f39c12"));
-                    switch (p.statut)
-                    {
-                        case "Preparation":
-                            img.setImageResource(R.drawable.ic_proj_prep_jaune);
-                            break;
-                        case "Actuel":
-                            img.setImageResource(R.drawable.ic_proj_cours_jaune);
-                            break;
-                        case "Fini":
-                            img.setImageResource(R.drawable.ic_proj_fini_jaune);
-                            break;
-                    }
-                    break;
+                //panel description
+                LinearLayout LLrightUp = new LinearLayout(this);
+                LLrightUp.setOrientation(LinearLayout.HORIZONTAL);
+                LLrightUp.setLayoutParams(LLParams);
 
-                case "bleu":
-                    desc.setTextColor(Color.parseColor("#2980b9"));
-                    switch (p.statut)
-                    {
-                        case "Preparation":
-                            img.setImageResource(R.drawable.ic_proj_prep_bleu);
-                            break;
-                        case "Actuel":
-                            img.setImageResource(R.drawable.ic_proj_cours_bleu);
-                            break;
-                        case "Fini":
-                            img.setImageResource(R.drawable.ic_proj_fini_bleu);
-                            break;
-                    }
-                    break;
-
-                case "vert":
-                    desc.setTextColor(Color.parseColor("#16a085"));
-                    switch (p.statut)
-                    {
-                        case "Preparation":
-                            img.setImageResource(R.drawable.ic_proj_prep_vert);
-                            break;
-                        case "Actuel":
-                            img.setImageResource(R.drawable.ic_proj_cours_vert);
-                            break;
-                        case "Fini":
-                            img.setImageResource(R.drawable.ic_proj_fini_vert);
-                            break;
-                    }
-                    break;
-
-                case "violet":
-                    desc.setTextColor(Color.parseColor("#9b59b6"));
-                    switch (p.statut)
-                    {
-                        case "Preparation":
-                            img.setImageResource(R.drawable.ic_proj_prep_violet);
-                            break;
-                        case "Actuel":
-                            img.setImageResource(R.drawable.ic_proj_cours_violet);
-                            break;
-                        case "Fini":
-                            img.setImageResource(R.drawable.ic_proj_fini_violet);
-                            break;
-                    }
-                    break;
+                //panel heures
+                LinearLayout LLrightDown = new LinearLayout(this);
+                LLrightDown.setOrientation(LinearLayout.HORIZONTAL);
+                LLrightDown.setLayoutParams(LLParams);
 
 
-            }
+                //déclarations champs
+                ImageButton img = new ImageButton(this);
+                TextView desc = new TextView(this);
+                TextView d1 = new TextView(this);
+                TextView cout = new TextView(this);
+
+                //personnalisation champs
+
+                switch (p.couleur) {
+                    case "noir":
+                        desc.setTextColor(Color.parseColor("#5b5b5b"));
+                        switch (p.statut) {
+                            case "Preparation":
+                                img.setImageResource(R.drawable.ic_proj_prep_noir);
+                                break;
+                            case "Actuel":
+                                img.setImageResource(R.drawable.ic_proj_cours_noir);
+                                break;
+                            case "Fini":
+                                img.setImageResource(R.drawable.ic_proj_fini_noir);
+                                break;
+                        }
+
+                        break;
+
+                    case "rouge":
+                        desc.setTextColor(Color.parseColor("#e74c3c"));
+                        switch (p.statut) {
+                            case "Preparation":
+                                img.setImageResource(R.drawable.ic_proj_prep_rouge);
+                                break;
+                            case "Actuel":
+                                img.setImageResource(R.drawable.ic_proj_cours_rouge);
+                                break;
+                            case "Fini":
+                                img.setImageResource(R.drawable.ic_proj_fini_rouge);
+                                break;
+                        }
+                        break;
+
+                    case "jaune":
+                        desc.setTextColor(Color.parseColor("#f39c12"));
+                        switch (p.statut) {
+                            case "Preparation":
+                                img.setImageResource(R.drawable.ic_proj_prep_jaune);
+                                break;
+                            case "Actuel":
+                                img.setImageResource(R.drawable.ic_proj_cours_jaune);
+                                break;
+                            case "Fini":
+                                img.setImageResource(R.drawable.ic_proj_fini_jaune);
+                                break;
+                        }
+                        break;
+
+                    case "bleu":
+                        desc.setTextColor(Color.parseColor("#2980b9"));
+                        switch (p.statut) {
+                            case "Preparation":
+                                img.setImageResource(R.drawable.ic_proj_prep_bleu);
+                                break;
+                            case "Actuel":
+                                img.setImageResource(R.drawable.ic_proj_cours_bleu);
+                                break;
+                            case "Fini":
+                                img.setImageResource(R.drawable.ic_proj_fini_bleu);
+                                break;
+                        }
+                        break;
+
+                    case "vert":
+                        desc.setTextColor(Color.parseColor("#16a085"));
+                        switch (p.statut) {
+                            case "Preparation":
+                                img.setImageResource(R.drawable.ic_proj_prep_vert);
+                                break;
+                            case "Actuel":
+                                img.setImageResource(R.drawable.ic_proj_cours_vert);
+                                break;
+                            case "Fini":
+                                img.setImageResource(R.drawable.ic_proj_fini_vert);
+                                break;
+                        }
+                        break;
+
+                    case "violet":
+                        desc.setTextColor(Color.parseColor("#9b59b6"));
+                        switch (p.statut) {
+                            case "Preparation":
+                                img.setImageResource(R.drawable.ic_proj_prep_violet);
+                                break;
+                            case "Actuel":
+                                img.setImageResource(R.drawable.ic_proj_cours_violet);
+                                break;
+                            case "Fini":
+                                img.setImageResource(R.drawable.ic_proj_fini_violet);
+                                break;
+                        }
+                        break;
 
 
-
-            //initialisation champs
-            sdf = new SimpleDateFormat("dd/MM/yy");
-            img.setBackgroundColor(Color.TRANSPARENT);
-            desc.setText(p.nom);
-            desc.setTextSize(18);
-            desc.setPadding(10, 10, 0, 0);
-            d1.setText(sdf.format(p.dateDebut) + " - " + sdf.format(p.dateFin));
-            d1.setPadding(10, 10, 10, 0);
-            cout.setText(" " + p.prixSejour + " € ");
-            cout.setPadding(10, 10, 10, 0);
-
-            //ajout des champs aux pannels
-            LLleft.addView(img);
-            LLrightUp.addView(desc);
-            LLrightDown.addView(d1);
-            LLrightDown.addView(cout);
-
-            //ajouts panels
-            LLright.addView(LLrightUp);
-            LLright.addView(LLrightDown);
-            LLglobal.addView(LLleft);
-            LLglobal.addView(LLright);
-            LLglobal.setOnClickListener(onClickLayout);
-            ll_center.addView(LLglobal);
+                }
 
 
-        }
-    }
+                //initialisation champs
+                sdf = new SimpleDateFormat("dd/MM/yy");
+                img.setBackgroundColor(Color.TRANSPARENT);
+                desc.setText(p.nom);
+                desc.setTextSize(18);
+                desc.setPadding(10, 10, 0, 0);
+                d1.setText(sdf.format(p.dateDebut) + " - " + sdf.format(p.dateFin));
+                d1.setPadding(10, 10, 10, 0);
+                cout.setText(" " + p.prixSejour + " € ");
+                cout.setPadding(10, 10, 10, 0);
+
+                //ajout des champs aux pannels
+                LLleft.addView(img);
+                LLrightUp.addView(desc);
+                LLrightDown.addView(d1);
+                LLrightDown.addView(cout);
+
+                //ajouts panels
+                LLright.addView(LLrightUp);
+                LLright.addView(LLrightDown);
+                LLglobal.addView(LLleft);
+                LLglobal.addView(LLright);
+                LLglobal.setOnClickListener(onClickLayout);
+                ll_center.addView(LLglobal);
+
+
+            }//if cas
+        }//for projets
+    }//set affichage
+
 
 
 
