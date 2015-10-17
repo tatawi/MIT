@@ -204,6 +204,7 @@ public class A_project_new extends MainActivity {
                 {
                     v_liste_participants.add(p);
                     majListView();
+                    tb_participant.setText("");
 
                     /*AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(pContext);
                     alertDialogBuilder.setTitle(" "+v_liste_participants.size()+ " "+p.mail+" "+tb_participant.getText().toString());

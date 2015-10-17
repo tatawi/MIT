@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         tb_userID.setOnClickListener(onUserClick);
         btn_connect.setOnClickListener(onConnectClick);
 
-        CASdeTESTS();
+        //CASdeTESTS();
 
     }
 
@@ -108,16 +108,18 @@ private void CASdeTESTS()
     //BTN_Connect
     View.OnClickListener onConnectClick = new View.OnClickListener() {
         public void onClick(View v) {
-
+            boolean find=false;
             for (C_Participant me : daoparticipant.getParticipants())
             {
                 System.out.println("user :" + me.mail);
                 System.out.println(me.mail + " vs " + tb_userID.getText().toString());
                 if(me.mail.equals(tb_userID.getText().toString()))
                 {
+                    find=true;
                     System.out.println(">found");
                     if(me.mdp.equals(tb_mdp.getText().toString()))
                     {
+
                         System.out.println(">ok");
                         Intent intent = new Intent(MainActivity.this, A_projets.class);
                         intent.putExtra("userID", me.mail);
@@ -129,13 +131,14 @@ private void CASdeTESTS()
                         tb_mdp.setText("");
                     }
                 }
-                else
-                {
-                    tb_userID.setText("Utilisateur inconnu");
-                    tb_mdp.setText("");
-                }
 
             }
+            if(!find)
+            {
+                tb_userID.setText("Utilisateur inconnu");
+                tb_mdp.setText("");
+            }
+
         }
     };
 
