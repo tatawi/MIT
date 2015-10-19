@@ -18,6 +18,10 @@ public class C_Participant {
      */
     public C_Participant() {
         super();
+        this.nom = "newUser";
+        this.prenom = "newUser";
+        this.mail = "newUser";
+        this.mdp = "";
     }
 
     /**

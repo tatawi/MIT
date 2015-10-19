@@ -23,7 +23,7 @@
         android:layout_height="wrap_content">
         <ImageButton
             android:id="@+id/projets_ibtn_enPreparation"
-            android:src="@drawable/ic_project_prepare"
+            android:src="@drawable/ic_project_prepare_full"
             android:background="@null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

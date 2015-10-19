@@ -62,6 +62,7 @@
                     android:layout_row="1"
                     android:layout_column="1" />
 
+
                 <TextView
                     android:id="@+id/newProject_lb_debut"
                     android:text="Début :"
@@ -79,26 +80,26 @@
                     android:layout_height="fill_parent"
                     android:layout_row="2"
                     android:layout_column="1" >
-                <EditText
-                    android:id="@+id/newProject_tb_debut"
-                    android:hint="select date ->"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
+                    <EditText
+                        android:id="@+id/newProject_tb_debut"
+                        android:hint="select date ->"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
 
-                    android:enabled="false"
-                    android:editable="false"
-                    android:inputType="text" />
+                        android:enabled="false"
+                        android:editable="false"
+                        android:inputType="text" />
 
-                <ImageButton
-                    android:id="@+id/newProject_btn_dateDebut"
-                    android:text="Add"
-                    android:src="@drawable/ic_addproject_adddate"
-                    android:background="@null"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    <ImageButton
+                        android:id="@+id/newProject_btn_dateDebut"
+                        android:text="Add"
+                        android:src="@drawable/ic_addproject_adddate"
+                        android:background="@null"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
 
-                    />
+                        />
                 </LinearLayout>
 
                 <TextView
@@ -120,26 +121,26 @@
                     android:layout_row="3"
                     android:layout_column="1" >
 
-                <EditText
-                    android:id="@+id/newProject_tb_fin"
-                    android:hint="select date ->"
-                    android:inputType="text"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
+                    <EditText
+                        android:id="@+id/newProject_tb_fin"
+                        android:hint="select date ->"
+                        android:inputType="text"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
 
-                    android:enabled="false" />
+                        android:enabled="false" />
 
 
-                <ImageButton
-                    android:id="@+id/newProject_btn_dateFin"
-                    android:text="Add"
-                    android:src="@drawable/ic_addproject_adddate"
-                    android:background="@null"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    <ImageButton
+                        android:id="@+id/newProject_btn_dateFin"
+                        android:text="Add"
+                        android:src="@drawable/ic_addproject_adddate"
+                        android:background="@null"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
 
-                    />
+                        />
                 </LinearLayout>
 
                 <TextView
@@ -164,11 +165,11 @@
 
                     <ImageButton
                         android:id="@+id/newProject_btn_color_noir"
-                        android:src="@drawable/ic_circle_noir"
+                        android:src="@drawable/ic_circle_full_noir"
                         android:background="@null"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingRight="7dp"
+                        android:paddingRight="6dp"
                         />
 
                     <ImageButton
@@ -177,7 +178,7 @@
                         android:background="@null"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingRight="7dp"
+                        android:paddingRight="6dp"
                         />
 
                     <ImageButton
@@ -186,7 +187,7 @@
                         android:background="@null"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingRight="7dp"
+                        android:paddingRight="6dp"
                         />
 
                     <ImageButton
@@ -195,7 +196,7 @@
                         android:background="@null"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingRight="7dp"
+                        android:paddingRight="6dp"
                         />
 
                     <ImageButton
@@ -204,7 +205,7 @@
                         android:background="@null"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingRight="7dp"
+                        android:paddingRight="6dp"
                         />
 
                     <ImageButton
@@ -237,23 +238,23 @@
                     android:layout_row="5"
                     android:layout_column="1" >
 
-                <EditText
-                    android:id="@+id/newProject_tb_participants"
-                    android:hint="adresse mail"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
+                    <EditText
+                        android:id="@+id/newProject_tb_participants"
+                        android:hint="adresse mail"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
 
-                    android:inputType="textEmailAddress" />
+                        android:inputType="textEmailAddress" />
 
-                <ImageButton
-                    android:id="@+id/newProject_btn_addParticipant"
-                    android:src="@drawable/ic_addproject_adduser"
-                    android:background="@null"
-                    android:text="Add"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    />
+                    <ImageButton
+                        android:id="@+id/newProject_btn_addParticipant"
+                        android:src="@drawable/ic_addproject_adduser"
+                        android:background="@null"
+                        android:text="Add"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
                 </LinearLayout>
             </GridLayout>
 
@@ -261,8 +262,9 @@
             <ListView
                 android:id="@+id/newProject_lv_listView"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="130dp"
                 android:layout_below="@+id/newProject_gridLayout"
+
                 />
 
             <ImageButton

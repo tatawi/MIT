@@ -63,6 +63,8 @@ public class C_Sujet {
         this.prix=prix;
         this.messagesToString="";
         this.personnesAyantAccepteToString="";
+        this.personnesAyantAccepte = new ArrayList<C_Participant>();
+        this.liste_messages= new ArrayList<C_Message>();
     }
 
     /**
@@ -202,30 +204,27 @@ public class C_Sujet {
      */
     public void listeToString()
     {
+
         this.messagesToString="";
         this.personnesAyantAccepteToString="";
 
-        for(C_Participant p:this.personnesAyantAccepte)
-        {
-            if (messagesToString=="")
-            {
-                messagesToString = p.mail;
-            }
-            else
-            {
-                messagesToString = messagesToString + ";" + p.mail;
+        if(!liste_messages.isEmpty()) {
+            for (C_Message m : this.liste_messages) {
+                if (messagesToString == "") {
+                    messagesToString = m.id;
+                } else {
+                    messagesToString = messagesToString + ";" + m.id;
+                }
             }
         }
 
-        for(C_Message m:this.liste_messages)
-        {
-            if (personnesAyantAccepteToString=="")
-            {
-                personnesAyantAccepteToString = m.id;
-            }
-            else
-            {
-                personnesAyantAccepteToString = personnesAyantAccepteToString + ";" + m.id;
+        if(!personnesAyantAccepte.isEmpty()) {
+            for (C_Participant p : this.personnesAyantAccepte) {
+                if (personnesAyantAccepteToString == "") {
+                    personnesAyantAccepteToString = p.mail;
+                } else {
+                    personnesAyantAccepteToString = personnesAyantAccepteToString + ";" + p.mail;
+                }
             }
         }
     }

@@ -297,9 +297,10 @@ public class A_projets extends MainActivity {
     View.OnClickListener onPreparationProjets = new View.OnClickListener() {
         public void onClick(View v) {
             setAffichage("Preparation");
-            btn_enPreparation.setBackgroundColor(Color.parseColor("#d2d2d2"));
-            btn_projEnCours.setBackgroundColor(Color.TRANSPARENT);
-            btn_projFinis.setBackgroundColor(Color.TRANSPARENT);
+            btn_enPreparation.setImageResource(R.drawable.ic_project_prepare_full);
+            btn_projEnCours.setImageResource(R.drawable.ic_project_current);
+            btn_projFinis.setImageResource(R.drawable.ic_project_ended);
+
         }
     };
 
@@ -307,9 +308,9 @@ public class A_projets extends MainActivity {
     View.OnClickListener onEnCoursProjets = new View.OnClickListener() {
         public void onClick(View v) {
             setAffichage("Actuel");
-            btn_enPreparation.setBackgroundColor(Color.TRANSPARENT);
-            btn_projEnCours.setBackgroundColor(Color.parseColor("#d2d2d2"));
-            btn_projFinis.setBackgroundColor(Color.TRANSPARENT);
+            btn_enPreparation.setImageResource(R.drawable.ic_project_prepare);
+            btn_projEnCours.setImageResource(R.drawable.ic_project_current_full);
+            btn_projFinis.setImageResource(R.drawable.ic_project_ended);
         }
     };
 
@@ -317,9 +318,9 @@ public class A_projets extends MainActivity {
     View.OnClickListener onTerminesProjets = new View.OnClickListener() {
         public void onClick(View v) {
             setAffichage("Fini");
-            btn_enPreparation.setBackgroundColor(Color.TRANSPARENT);
-            btn_projEnCours.setBackgroundColor(Color.TRANSPARENT);
-            btn_projFinis.setBackgroundColor(Color.parseColor("#d2d2d2"));
+            btn_enPreparation.setImageResource(R.drawable.ic_project_prepare);
+            btn_projEnCours.setImageResource(R.drawable.ic_project_current);
+            btn_projFinis.setImageResource(R.drawable.ic_project_ended_full);
         }
     };
 

@@ -57,18 +57,17 @@ public class A_project_new extends MainActivity {
     private float v_prixSejour=0;
     private String v_couleur="noir";
     private transient List<C_Jour> v_liste_jours;
-    private transient List<C_Participant> v_liste_participants;
+    private transient List<C_Participant> v_liste_participantsProjet;
     private String userID;
+    private transient List<C_Participant> v_liste_allParticipants;
+    private C_Participant part;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            this.userID = extras.getString("userID");
-        }
+
 
         //initialisations
         setContentView(R.layout.activity_a_project_new);
@@ -106,8 +105,19 @@ public class A_project_new extends MainActivity {
 
         // ini
         v_liste_jours=new ArrayList<C_Jour>();
-        v_liste_participants=new ArrayList<C_Participant>();
+        v_liste_participantsProjet=new ArrayList<C_Participant>();
+        v_liste_allParticipants=new ArrayList<C_Participant>();
+        v_liste_allParticipants=daoparticipant.getParticipants();
+        part=new C_Participant();
 
+
+        //getRessources
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            this.userID = extras.getString("userID");
+            part=daoparticipant.getParticipantById(userID);
+            tb_participant.setText(part.mail);
+        }
     }
 
 
@@ -144,7 +154,7 @@ public class A_project_new extends MainActivity {
             //CREATION DU PROJET
             C_Projet newprojet=new C_Projet(pContext, v_nom, v_description, v_dateDebut, v_dateFin,v_couleur);
             newprojet.setListe_jours(v_liste_jours);
-            newprojet.setListe_participants(v_liste_participants);
+            newprojet.setListe_participants(v_liste_participantsProjet);
             newprojet.listeToString();
 
 
@@ -195,15 +205,14 @@ public class A_project_new extends MainActivity {
     //bouton ajouter participant
     View.OnClickListener onAddUser = new View.OnClickListener() {
         public void onClick(View v) {
-            List<C_Participant>list_parts=new ArrayList<C_Participant>();
-            list_parts=daoparticipant.getParticipants();
 
-            for(C_Participant p:list_parts)
+            for(C_Participant p:v_liste_allParticipants)
             {
                 if(p.mail.equals(tb_participant.getText().toString()))
                 {
-                    v_liste_participants.add(p);
+                    v_liste_participantsProjet.add(p);
                     majListView();
+                    tb_participant.setText("");
 
                     /*AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(pContext);
                     alertDialogBuilder.setTitle(" "+v_liste_participants.size()+ " "+p.mail+" "+tb_participant.getText().toString());
@@ -319,7 +328,7 @@ public class A_project_new extends MainActivity {
         //String[] listeStrings = {""};
         List<String> listeStringParticipants = new ArrayList<String>();
         int i=0;
-        for(C_Participant p:v_liste_participants)
+        for(C_Participant p:v_liste_participantsProjet)
         {
             //listeStrings[i]=p.prenom+" "+p.nom;
             listeStringParticipants.add(p.prenom+" "+p.nom);

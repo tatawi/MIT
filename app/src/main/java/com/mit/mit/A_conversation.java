@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class A_conversation extends MainActivity {
 
     //variables
     private C_Sujet sujet;
-    private List<C_Message> liste_messages;
+    //private List<C_Message> liste_messages;
     private SimpleDateFormat sdf;
     private String userID;
     private C_Participant part;
@@ -49,30 +50,36 @@ public class A_conversation extends MainActivity {
         //listener
         btn_send.setOnClickListener(onSendMessage);
 
+        //variables
+        //liste_messages= new ArrayList<C_Message>();
+
         //récupération du sujet
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             this.userID = extras.getString("userID");
-
             part=daoparticipant.getParticipantById(userID);
 
             //chargement des données du sujet
             this.sujet = daoSujet.getSujetById(extras.getString("idEntry"));
             this.sujet.creerLesListes(daoMessage, daoparticipant);
-            this.liste_messages = this.sujet.liste_messages;
+            System.out.println("string messages : "+ this.sujet.messagesToString);
+            setTitle("[" + this.sujet.type + "] " + this.sujet.titre);
         }
 
         //scroll.fullScroll(View.FOCUS_DOWN) also should work.
-
+        affichage();
     }
 
 
     public void affichage() {
+        System.out.println("-*-*-*-*-*-*-**-**-*-*-*-*-*-*-*-*-***-*-*-*-");
+        System.out.println("Go affichage");
+        System.out.println("nb messages : "+this.sujet.liste_messages.size());
         container_globalLayout.removeAllViews();
         container_globalLayout.setOrientation(LinearLayout.VERTICAL);
         sdf = new SimpleDateFormat("dd/mm/yy HH:mm");
         String titreDescription = "";
-        for (C_Message m : this.liste_messages) {
+        for (C_Message m : this.sujet.liste_messages) {
             //panel global
             LinearLayout LLglobal = new LinearLayout(this);
             LLglobal.setOrientation(LinearLayout.VERTICAL);
@@ -121,7 +128,7 @@ public class A_conversation extends MainActivity {
 
     public void majNotifications()
     {
-        for (C_Message m : this.liste_messages)
+        for (C_Message m : this.sujet.liste_messages)
         {
 
 
@@ -153,7 +160,15 @@ public class A_conversation extends MainActivity {
 
             C_Message message = new C_Message(sujet.idSujet,new Date(), tb_message.getText().toString(), part);
             daoMessage.ajouter(message);
-            liste_messages.add(message);
+
+            System.out.println("avant : " + sujet.messagesToString);
+            System.out.println("list size : " + sujet.liste_messages.size());
+            sujet.liste_messages.add(message);
+            sujet.listeToString();
+            System.out.println("apres : " + sujet.messagesToString);
+            System.out.println("list size : "+sujet.liste_messages.size());
+            daoSujet.modifier(sujet);
+            tb_message.setText("");
             affichage();
 
 

@@ -8,10 +8,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -33,12 +35,23 @@ public class A_sujet_new extends MainActivity {
     private ImageButton btn_libre;
     private TimePicker tp_heureDebut;
     private EditText tb_duree;
+    private TextView lb_prix;
     private ImageButton btn_creer;
     private TextView lb_time;
     private TextView lb_duree;
     private SeekBar sb_hour;
     private SeekBar sb_min;
     private SeekBar sb_duree;
+    private Button btn_0;
+    private Button btn_1;
+    private Button btn_5;
+    private Button btn_10;
+    private Button btn_50;
+    private Button btn_100;
+    private Switch sw_plus;
+    private Switch sw_moins;
+
+    //newsujet_btn_0
 
 
 
@@ -56,7 +69,6 @@ public class A_sujet_new extends MainActivity {
         setContentView(R.layout.activity_a_sujet_new);
 
 
-
         //initialisation objet page
         tb_titre = (EditText) findViewById(R.id.newsujet_tb_sujet);
         tb_description = (EditText) findViewById(R.id.newsujet_tb_description);
@@ -67,18 +79,24 @@ public class A_sujet_new extends MainActivity {
         btn_visite = (ImageButton) findViewById(R.id.newsujet_btn_visite);
         btn_loisir = (ImageButton) findViewById(R.id.newsujet_btn_loisir);
         btn_libre = (ImageButton) findViewById(R.id.newsujet_btn_libre);
-       // tp_heureDebut = (TimePicker) findViewById(R.id.newsujet_timePicker);
-       // tb_duree = (EditText) findViewById(R.id.newsujet_tb_duration);
         btn_creer = (ImageButton) findViewById(R.id.newsujet_btn_addSujet);
         lb_time = (TextView) findViewById(R.id.newsujet_lb_startTime);
         lb_duree = (TextView) findViewById(R.id.newsujet_lb_duration);
+        lb_prix= (TextView) findViewById(R.id.newsujet_lb_prix);
+        lb_prix.setText("0 €");
         sb_hour=(SeekBar)findViewById(R.id.newsujet_seekBar_hour);
         sb_min=(SeekBar)findViewById(R.id.newsujet_seekBar_min);
         sb_duree=(SeekBar)findViewById(R.id.newsujet_seekBar_duree);
-
-
-
-
+        btn_0=(Button)findViewById(R.id.newsujet_btn_0);
+        btn_1=(Button)findViewById(R.id.newsujet_btn_1);
+        btn_5=(Button)findViewById(R.id.newsujet_btn_5);
+        btn_10=(Button)findViewById(R.id.newsujet_btn_10);
+        btn_50=(Button)findViewById(R.id.newsujet_btn_50);
+        btn_100=(Button)findViewById(R.id.newsujet_btn_100);
+        sw_plus=(Switch)findViewById(R.id.newsujet_switch_plus);
+        sw_plus.setChecked(true);
+        sw_moins=(Switch)findViewById(R.id.newsujet_switch_moins);
+        sw_moins.setChecked(false);
 
 
 
@@ -93,6 +111,13 @@ public class A_sujet_new extends MainActivity {
         sb_hour.setOnSeekBarChangeListener(new seekBarListener());
         sb_min.setOnSeekBarChangeListener(new seekBarListener());
         sb_duree.setOnSeekBarChangeListener(new seekBarListener());
+        btn_0.setOnClickListener(onClickButtonPrix);
+        btn_1.setOnClickListener(onClickButtonPrix);
+        btn_5.setOnClickListener(onClickButtonPrix);
+        btn_10.setOnClickListener(onClickButtonPrix);
+        btn_50.setOnClickListener(onClickButtonPrix);
+        btn_100.setOnClickListener(onClickButtonPrix);
+
 
         //récupération du jour
         Bundle extras = getIntent().getExtras();
@@ -131,7 +156,7 @@ public class A_sujet_new extends MainActivity {
 
             sujet =new C_Sujet();
             //public C_Sujet( String titre, String description, String type, String localisation, Date heure, int duree, boolean auFeeling, double prix)
-            sujet.titre=tb_titre.getText().toString();
+            sujet.titre=day.nomJour+"_"+tb_titre.getText().toString();
             sujet.description=tb_description.getText().toString();
             sujet.type=lb_type.getText().toString();
             sujet.localisation="loc";
@@ -140,7 +165,6 @@ public class A_sujet_new extends MainActivity {
             sujet.heure.setMinutes(sb_min.getProgress());
             sujet.duree=sb_duree.getProgress();
             sujet.auFeeling=false;
-            sujet.prix=10;
             sujet.idSujet=day.nomJour+"_"+tb_titre.getText().toString();
 
             System.out.println("SUJET AVANT AJOUT*****************************");
@@ -272,6 +296,99 @@ public class A_sujet_new extends MainActivity {
         public void onStopTrackingTouch(SeekBar seekBar) {}
 
     }
+
+
+    //toggle buttons
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+
+        if(buttonView.getText().toString().equals("Plus"))
+        {
+            if (isChecked) {
+                sw_moins.setChecked(false);
+            }
+        }
+        if(buttonView.getText().toString().equals("Moins"))
+        {
+            if (isChecked) {
+                sw_plus.setChecked(false);
+            }
+        }
+    }
+
+
+    //boutons prix
+    View.OnClickListener onClickButtonPrix = new View.OnClickListener() {
+        public void onClick(View v) {
+            Button b = (Button) v;
+
+            System.out.println("btn : "+ b.getText().toString());
+
+            if(b.getText().toString().equals("0")) {
+                sujet.prix=0;
+            }
+
+            if(b.getText().toString().equals("1")) {
+                if(sw_plus.isChecked()) {
+                    sujet.prix=sujet.prix+1;
+                }
+                if(sw_moins.isChecked()) {
+                    sujet.prix=sujet.prix-1;
+                    if (sujet.prix<0){
+                        sujet.prix=0;
+                    }
+                }
+            }
+
+
+            if(b.getText().toString().equals("5")) {
+                if(sw_plus.isChecked()) {
+                    sujet.prix=sujet.prix+5;
+                }
+                if(sw_moins.isChecked()) {
+                    sujet.prix=sujet.prix-5;
+                    if (sujet.prix<0){
+                        sujet.prix=0;
+                    }
+                }
+            }
+            if(b.getText().toString().equals("10")) {
+                if(sw_plus.isChecked()) {
+                    sujet.prix=sujet.prix+10;
+                }
+                if(sw_moins.isChecked()) {
+                    sujet.prix=sujet.prix-10;
+                    if (sujet.prix<0){
+                        sujet.prix=0;
+                    }
+                }
+            }
+            if(b.getText().toString().equals("50")) {
+                if(sw_plus.isChecked()) {
+                    sujet.prix=sujet.prix+50;
+                }
+                if(sw_moins.isChecked()) {
+                    sujet.prix=sujet.prix-50;
+                    if (sujet.prix<0){
+                        sujet.prix=0;
+                    }
+                }
+            }
+            if(b.getText().toString().equals("100")) {
+                if(sw_plus.isChecked()) {
+                    sujet.prix=sujet.prix+100;
+                }
+                if(sw_moins.isChecked()) {
+                    sujet.prix=sujet.prix-100;
+                    if (sujet.prix<0){
+                        sujet.prix=0;
+                    }
+                }
+            }
+            lb_prix.setText(""+sujet.prix+" €");
+        }
+    };
+
 
 
 
