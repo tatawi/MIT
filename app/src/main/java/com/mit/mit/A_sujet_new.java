@@ -51,13 +51,11 @@ public class A_sujet_new extends MainActivity {
     private Switch sw_plus;
     private Switch sw_moins;
 
-    //newsujet_btn_0
-
-
 
     //variables
     private C_Jour day;
     private C_Sujet sujet;
+    private C_Participant partAcutel;
     private SimpleDateFormat sdf;
     private String userID;
 
@@ -119,11 +117,15 @@ public class A_sujet_new extends MainActivity {
         btn_100.setOnClickListener(onClickButtonPrix);
 
 
+        //variables
+        sujet =new C_Sujet();
+
         //récupération du jour
         Bundle extras = getIntent().getExtras();
         if (extras != null)
         {
             this.userID = extras.getString("userID");
+            partAcutel=daoparticipant.getParticipantById(this.userID);
             //chargement des données du projet
             this.day = daoJour.getJourById(extras.getString("idEntry"));
             this.day.creerLesListes(daoSujet);
@@ -152,11 +154,11 @@ public class A_sujet_new extends MainActivity {
         public void onClick(View v) {
             int hour;
             int min;
-            //sdf = new SimpleDateFormat("EEE d MMM");
-
-            sujet =new C_Sujet();
+            //sdf = new SimpleDateFormat("EEE d MMM")
             //public C_Sujet( String titre, String description, String type, String localisation, Date heure, int duree, boolean auFeeling, double prix)
-            sujet.titre=day.nomJour+"_"+tb_titre.getText().toString();
+
+            sujet.idSujet=day.nomJour+"_"+tb_titre.getText().toString();
+            sujet.titre=tb_titre.getText().toString();
             sujet.description=tb_description.getText().toString();
             sujet.type=lb_type.getText().toString();
             sujet.localisation="loc";
@@ -165,7 +167,11 @@ public class A_sujet_new extends MainActivity {
             sujet.heure.setMinutes(sb_min.getProgress());
             sujet.duree=sb_duree.getProgress();
             sujet.auFeeling=false;
+            sujet.valide=false;
             sujet.idSujet=day.nomJour+"_"+tb_titre.getText().toString();
+            sujet.personnesAyantAccepte.add(partAcutel);
+
+            sujet.listeToString();
 
             System.out.println("SUJET AVANT AJOUT*****************************");
             System.out.println("titre : " + sujet.titre);
@@ -188,7 +194,7 @@ public class A_sujet_new extends MainActivity {
         }
     };
 
-    //bouton ajouter date debut
+    //bouton logement
     View.OnClickListener onClickButtonLogement = new View.OnClickListener() {
         public void onClick(View v) {
             btn_logement.setBackgroundColor(Color.parseColor("#d2d2d2"));
@@ -202,7 +208,7 @@ public class A_sujet_new extends MainActivity {
         }
     };
 
-    //bouton ajouter date debut
+    //bouton repas
     View.OnClickListener onClickButtonRepas = new View.OnClickListener() {
         public void onClick(View v) {
             btn_repas.setBackgroundColor(Color.parseColor("#d2d2d2"));
@@ -216,7 +222,7 @@ public class A_sujet_new extends MainActivity {
         }
     };
 
-    //bouton ajouter date debut
+    //bouton transport
     View.OnClickListener onClickButtonTransport = new View.OnClickListener() {
         public void onClick(View v) {
             btn_transport.setBackgroundColor(Color.parseColor("#d2d2d2"));
@@ -230,7 +236,7 @@ public class A_sujet_new extends MainActivity {
         }
     };
 
-    //bouton ajouter date debut
+    //bouton visite
     View.OnClickListener onClickButtonVisite = new View.OnClickListener() {
         public void onClick(View v) {
             btn_visite.setBackgroundColor(Color.parseColor("#d2d2d2"));
@@ -244,7 +250,7 @@ public class A_sujet_new extends MainActivity {
         }
     };
 
-    //bouton ajouter date debut
+    //bouton loisirs
     View.OnClickListener onClickButtonLoisir= new View.OnClickListener() {
         public void onClick(View v) {
             btn_loisir.setBackgroundColor(Color.parseColor("#d2d2d2"));
@@ -258,7 +264,7 @@ public class A_sujet_new extends MainActivity {
         }
     };
 
-    //bouton ajouter date debut
+    //bouton libre
     View.OnClickListener onClickButtonLibre = new View.OnClickListener() {
         public void onClick(View v) {
             btn_libre.setBackgroundColor(Color.parseColor("#d2d2d2"));
@@ -300,7 +306,6 @@ public class A_sujet_new extends MainActivity {
 
     //toggle buttons
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
 
         if(buttonView.getText().toString().equals("Plus"))
         {

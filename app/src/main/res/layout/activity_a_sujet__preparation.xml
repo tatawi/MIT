@@ -157,32 +157,84 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Participants : " />
+                android:text="Personnes participantes :" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">.
+            android:layout_height="wrap_content">
 
-
-            <ProgressBar
-                android:id="@+id/sujetPreparation_progressBar"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"/>
-
-            <ImageButton
-                android:id="@+id/sujetPreparation_btn_participer"
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_sujetprep_participate"
-                android:background="@null"
-                android:paddingLeft="20dp"/>
+                android:paddingRight="20dp">
 
+                <ImageButton
+                    android:id="@+id/sujetPreparation_btn_participer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_sujetprep_participate"
+                    android:background="@null"
+                    android:paddingLeft="20dp"/>
 
-
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Participer"
+                    android:textColor="#ac035d"
+                    android:textSize="18dp"/>
 
             </LinearLayout>
 
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/sujetPreparation_lb_nbParticipants"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="18dp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" / "
+                            android:textColor="#ac035d"
+                            android:textSize="18dp"/>
+                        <TextView
+                            android:id="@+id/sujetPreparation_lb_nbParticipantsTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="10"
+                            android:textSize="18dp"/>
+
+                    </LinearLayout>
+                <SeekBar
+                    android:id="@+id/sujetPreparation_progressBar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:max="10"
+                    android:layout_marginTop="20dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/sujetPreparation_lb_texteAjoutPart"
+                android:text="Participants :"
+                android:textColor="#ac035d"
+                android:paddingLeft="100dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
 
 
 

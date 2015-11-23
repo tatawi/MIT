@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
     private EditText tb_mdp;
 
     private Button btn_add1;
-    private Button btn_add2;
     private Button btn_co1;
     private Button btn_co2;
 
@@ -49,20 +49,19 @@ public class MainActivity extends AppCompatActivity {
         tb_userID= (EditText) findViewById(R.id.main_tb_user);
         tb_mdp= (EditText) findViewById(R.id.main_tb_mdp);
 
-        btn_add1 = (Button) findViewById(R.id.button1);
-        btn_add2 = (Button) findViewById(R.id.button2);
         btn_co1 = (Button) findViewById(R.id.button3);
         btn_co2 = (Button) findViewById(R.id.button4);
-
+        btn_add1= (Button) findViewById(R.id.button1);
 
         //set listeners
         tb_userID.setOnClickListener(onUserClick);
         btn_connect.setOnClickListener(onConnectClick);
 
-        btn_add1.setOnClickListener(onAdd1);
-        btn_add2.setOnClickListener(onAdd2);
+        btn_add1.setOnClickListener(oncreateusers);
         btn_co1.setOnClickListener(onco1);
         btn_co2.setOnClickListener(onco2);
+
+
 
 
 
@@ -90,7 +89,34 @@ public class MainActivity extends AppCompatActivity {
     View.OnClickListener onConnectClick = new View.OnClickListener() {
         public void onClick(View v) {
 
-            for (C_Participant me : daoparticipant.getParticipants())
+            try
+            {
+                me=daoparticipant.getParticipantById(tb_userID.getText().toString());
+                if(me.mdp.equals(tb_mdp.getText().toString()))
+                {
+                    Intent intent = new Intent(MainActivity.this, A_projets.class);
+                    intent.putExtra("userID", me.mail);
+                    startActivity(intent);
+                }
+                else
+                {
+                    tb_userID.setText("mot de passe incorrect");
+                    tb_mdp.setText("");
+                }
+            }
+            catch (Exception e)
+            {
+                tb_userID.setText("Utilisateur inconnu");
+                tb_mdp.setText("");
+            }
+
+
+
+
+
+
+
+           /* for (C_Participant me : daoparticipant.getParticipants())
             {
                 System.out.println("user :" + me.mail);
                 System.out.println(me.mail + " vs " + tb_userID.getText().toString());
@@ -106,8 +132,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else
                     {
-                        tb_userID.setText("mot de passe incorrect");
-                        tb_mdp.setText("");
+
                     }
                 }
                 else
@@ -116,47 +141,40 @@ public class MainActivity extends AppCompatActivity {
                     tb_mdp.setText("");
                 }
 
-            }
+            }*/
         }
     };
 
 
 
 
-//provi
-View.OnClickListener onAdd1 = new View.OnClickListener() {
-    public void onClick(View v) {
-        C_Participant part = new C_Participant("BAUDRAIS","Maxime","cnero@hotmail.f","azerty");
-        daoparticipant.ajouter(part);
-        tb_userID.setText(part.mail);
-        tb_mdp.setText(part.mdp);
-    }
-};
 
 
-    View.OnClickListener onAdd2 = new View.OnClickListener() {
+    View.OnClickListener oncreateusers = new View.OnClickListener() {
         public void onClick(View v) {
-            C_Participant part = new C_Participant("LELOUET","Audrey","audrey","azerty");
+            C_Participant part = new C_Participant("BAUDRAIS","Maxime","cnero@hotmail.f","azerty");
             daoparticipant.ajouter(part);
-            tb_userID.setText(part.mail);
-            tb_mdp.setText(part.mdp);
+
+            C_Participant part2 = new C_Participant("LELOUET","Audrey","audrey","azerty");
+            daoparticipant.ajouter(part2);
+
+            System.out.println("users created");
         }
     };
 
     View.OnClickListener onco1 = new View.OnClickListener() {
         public void onClick(View v) {
-            Intent intent = new Intent(MainActivity.this, A_projets.class);
-            intent.putExtra("userID", "cnero@hotmail.f");
-            startActivity(intent);
+            System.out.println("user 1");
+            tb_userID.setText("cnero@hotmail.f");
+            tb_mdp.setText("azerty");
         }
     };
 
     View.OnClickListener onco2 = new View.OnClickListener() {
         public void onClick(View v) {
-            Intent intent = new Intent(MainActivity.this, A_projets.class);
-            me=daoparticipant.getParticipantById(tb_userID.getText().toString());
-            intent.putExtra("userID", "audrey");
-            startActivity(intent);
+            System.out.println("user 2");
+            tb_userID.setText("audrey");
+            tb_mdp.setText("azerty");
 
         }
     };

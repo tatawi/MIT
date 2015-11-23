@@ -11,10 +11,12 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 public class A_sujet_Preparation extends MainActivity {
 
@@ -28,9 +30,11 @@ public class A_sujet_Preparation extends MainActivity {
     private TextView lb_nbMessages;
     private TextView lb_nbNonLus;
     private ImageButton btn_conv;
-    private ProgressBar progressBar_participations;
+    private SeekBar progressBar_participations;
     private ImageButton btn_participer;
-
+    private TextView lb_nbParticipants;
+    private TextView lb_nbParticipantsTotal;
+    private TextView lb_erreurAdd;
 
     //android:id="@+id/sujetPreparation_lb_description"
     //sujetPreparation_btn_type
@@ -44,8 +48,11 @@ public class A_sujet_Preparation extends MainActivity {
     private SimpleDateFormat sdf;
     private String userID;
     private C_Projet projet;
+    private C_Jour jour;
     private C_Participant part;
 
+    private String nomProjet;
+    private String nomJour;
 
 
 
@@ -66,8 +73,11 @@ public class A_sujet_Preparation extends MainActivity {
         lb_nbMessages = (TextView) findViewById(R.id.sujetPreparation_lb_nbMessages);
         lb_nbNonLus = (TextView) findViewById(R.id.sujetPreparation_lb_nbNonLus);
         btn_conv = (ImageButton) findViewById(R.id.sujetPreparation_btn_conv);
-        progressBar_participations = (ProgressBar) findViewById(R.id.sujetPreparation_progressBar);
+        progressBar_participations = (SeekBar) findViewById(R.id.sujetPreparation_progressBar);
         btn_participer = (ImageButton) findViewById(R.id.sujetPreparation_btn_participer);
+        lb_nbParticipants = (TextView) findViewById(R.id.sujetPreparation_lb_nbParticipants);
+        lb_nbParticipantsTotal= (TextView) findViewById(R.id.sujetPreparation_lb_nbParticipantsTotal);
+        lb_erreurAdd= (TextView) findViewById(R.id.sujetPreparation_lb_texteAjoutPart);
 
         //listeners
         btn_conv.setOnClickListener(onOpenConv);
@@ -78,26 +88,42 @@ public class A_sujet_Preparation extends MainActivity {
 
         //initialisation variables
         sdf = new SimpleDateFormat("HH:MM");
-
+        lb_erreurAdd.setVisibility(View.GONE);
 
 
         //récupération du sujet
         Bundle extras = getIntent().getExtras();
         if (extras != null)
         {
+
+            System.out.println("SUJET PREPARATION");
+
             //chargement user
             this.userID=extras.getString("userID");
             part=daoparticipant.getParticipantById(userID);
+            System.out.println(">get user : ");
+            System.out.println(part.mail);
 
             //chargement des données du sujet
             this.sujet = daoSujet.getSujetById(extras.getString("idEntry"));
             this.sujet.creerLesListes(daoMessage, daoparticipant);
-
+            System.out.println(">Sujet chargé : " + sujet.titre);
+            System.out.println(">id : "+ sujet.idSujet);
 
             //recupération projet courant
-            String nomProjet =this.sujet.idSujet.split("_")[0];
+            nomProjet =this.sujet.idSujet.split("_")[0];
+            System.out.println(">get projet from " +nomProjet+" : ");
             projet = daoProjet.getProjetByName(nomProjet);
             projet.creerLesListes(daoJour, daoparticipant);
+
+            System.out.println(projet.nom);
+
+            //récupération du jour courant
+            nomJour =nomProjet+"_"+this.sujet.idSujet.split("_")[1];
+            System.out.println(">get jour from " +nomJour+" : ");
+            jour = daoJour.getJourById(nomJour);
+            jour.creerLesListes(daoSujet);
+            System.out.println(jour.id);
 
             //affichage
             majInterface();
@@ -136,10 +162,67 @@ public class A_sujet_Preparation extends MainActivity {
     View.OnClickListener onParticiper = new View.OnClickListener() {
         public void onClick(View v)
         {
-            sujet.personnesAyantAccepte.add(part);
-            sujet.listeToString();
-            daoSujet.modifier(sujet);
-            progressBar_participations.incrementProgressBy(1);
+
+            System.out.println("user : " + part.mail);
+            System.out.println("liste ayant acceptés : " + sujet.personnesAyantAccepte.size());
+            for (C_Participant p : sujet.personnesAyantAccepte)
+            {
+                System.out.println("    user : " + p.mail);
+                if(p.mail.equals(part.mail))
+                {
+                    System.out.println("A VOTE");
+                }
+            }
+
+            //si l'user na pas encore voté
+            if(pasEncoreVote(sujet.personnesAyantAccepte, part))
+            {
+                System.out.println("non présent dans la liste");
+                sujet.personnesAyantAccepte.add(part);
+                sujet.listeToString();
+                daoSujet.modifier(sujet);
+
+                progressBar_participations.setProgress(sujet.personnesAyantAccepte.size());
+                lb_nbParticipants.setText("" + sujet.personnesAyantAccepte.size());
+
+
+
+
+                //vérifier si on passe le sujet en valide
+                int nbTotal=projet.liste_participants.size();
+                int nbParticipants=sujet.personnesAyantAccepte.size();
+
+                if(nbParticipants/nbTotal>0.5)
+                {
+                    sujet.valide=true;
+
+                    //sauvegarde du sujet dans jour
+                    jour = daoJour.getJourById(nomJour);
+                    jour.creerLesListes(daoSujet);
+
+                    //mettre a jour le jour avec le prix
+                    jour.calculerPrixJournee();
+                    daoJour.modifier(jour);
+
+                    //mettre a jour le projet avec le prix
+                    projet = daoProjet.getProjetByName(nomProjet);
+                    projet.creerLesListes(daoJour, daoparticipant);
+                    projet.calculerPrixSejour();
+                    daoProjet.modifier(projet);
+
+                }
+            }
+            else
+            {
+                lb_erreurAdd.setVisibility(View.VISIBLE);
+                lb_erreurAdd.setText("Vote déjà enregistré");
+            }
+
+
+
+
+
+
 
         }
     };
@@ -214,8 +297,24 @@ public void majInterface()
     //participants
     progressBar_participations.setMax(projet.liste_participants.size());
     progressBar_participations.setProgress(sujet.personnesAyantAccepte.size());
+    progressBar_participations.setEnabled(false);
 
+    lb_nbParticipants.setText(""+sujet.personnesAyantAccepte.size());
+    lb_nbParticipantsTotal.setText(""+projet.liste_participants.size());
 }
+
+
+    private boolean pasEncoreVote(List<C_Participant> personnesAyantVote, C_Participant user)
+    {
+        for (C_Participant p : personnesAyantVote)
+        {
+            if(p.mail.equals(user.mail))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 
 
 

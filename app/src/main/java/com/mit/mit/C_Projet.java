@@ -212,6 +212,15 @@ public class C_Projet {
 
     }
 
+    public void calculerPrixSejour()
+    {
+        this.prixSejour=0;
+        for (C_Jour jour:liste_jours)
+        {
+            this.prixSejour=this.prixSejour+jour.prixJournee;
+        }
+    }
+
 
     public void setListe_jours(List<C_Jour> liste_jours) {
         this.liste_jours = liste_jours;

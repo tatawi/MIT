@@ -17,6 +17,7 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class A_projet_Preparation extends MainActivity {
 
@@ -112,13 +113,13 @@ public class A_projet_Preparation extends MainActivity {
                 LLtexte.setPadding(20,0,40,0);
 
                 TextView lb_jour = new TextView(this);
-                nbParcours++;
-                lb_jour.setText("Journée " + nbParcours);
-                nbParcours=nbParcours-1;
+                sdf = new SimpleDateFormat("EEEE", Locale.FRANCE);
+                lb_jour.setText(sdf.format(j.jour));
                 lb_jour.setTextSize(18);
                 LLtexte.addView(lb_jour);
 
                 TextView lb_date = new TextView(this);
+                sdf = new SimpleDateFormat("dd MMM yyyy");
                 lb_date.setText(sdf.format(j.jour));
                 LLtexte.addView(lb_date);
 
@@ -132,6 +133,7 @@ public class A_projet_Preparation extends MainActivity {
                 btnConv.setId(nbParcours);
                 btnConv.setOnClickListener(onClickConv);
                 LL.addView(btnConv);
+
 
 
                 //INCREMENT DAY

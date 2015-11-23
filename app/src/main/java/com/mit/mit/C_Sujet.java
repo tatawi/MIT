@@ -27,6 +27,7 @@ public class C_Sujet {
     public int duree;
     public boolean auFeeling;
     public double prix;
+    public boolean valide;
 
     public String messagesToString;
     public String personnesAyantAccepteToString;
@@ -61,6 +62,7 @@ public class C_Sujet {
         this.duree = duree;
         this.auFeeling=auFeeling;
         this.prix=prix;
+        this.valide=false;
         this.messagesToString="";
         this.personnesAyantAccepteToString="";
         this.personnesAyantAccepte = new ArrayList<C_Participant>();
@@ -82,13 +84,14 @@ public class C_Sujet {
      *@param messagesToString				List of all C_message's id in string format (separated with ";")
      *@param personnesAyantAccepteToString	List of all accepted member's id in string format (separated with ";")
      */
-    public C_Sujet( int id, String idSujet, String titre, String description, String type, String localisation, Date heure, int duree, String auFeeling, double prix, String messagesToString, String personnesAyantAccepteToString)
+    public C_Sujet( int id, String idSujet, String titre, String description, String type, String localisation, Date heure, int duree, String auFeeling, double prix, String messagesToString, String personnesAyantAccepteToString, String valide)
     {
         super();
         boolean v_feel=false;
+        boolean v_valide=false;
 
         //gestion feeling
-        if (auFeeling=="oui")
+        if (auFeeling.equals("oui"))
         {
             v_feel=true;
         }
@@ -105,13 +108,23 @@ public class C_Sujet {
         this.prix=prix;
         this.messagesToString=messagesToString;
         this.personnesAyantAccepteToString=personnesAyantAccepteToString;
+
+        //gestion bool valide
+        if (valide.equals("oui"))
+        {
+            v_valide=true;
+        }
+        this.valide=v_valide;
     }
 
     /**
      *Empty builder
      */
     public C_Sujet() {
+
         super();
+        this.personnesAyantAccepte = new ArrayList<C_Participant>();
+        this.liste_messages= new ArrayList<C_Message>();
     }
 
 //---------------------------------------------------------------------------------------

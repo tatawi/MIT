@@ -29,6 +29,7 @@ public class DAO_Sujet extends DAO_Bdd {
     public static final String ATTR_DUREE = "duree";
     public static final String ATTR_FEELLING = "auFelling";
     public static final String ATTR_PRIX = "prix";
+    public static final String ATTR_VALIDE = "valide";
     public static final String ATTR_MESSAGES = "messages";
     public static final String ATTR_PERSONNESOK = "personnesAyantAccepte";
     public static final String TABLE_CREATE =
@@ -43,6 +44,7 @@ public class DAO_Sujet extends DAO_Bdd {
                     + ATTR_DUREE + " INTEGER, "
                     + ATTR_FEELLING + " TEXT, "
                     + ATTR_PRIX + " FLOAT, "
+                    + ATTR_VALIDE + " TEXT, "
                     + ATTR_MESSAGES + " TEXT, "
                     + ATTR_PERSONNESOK + " TEXT);";
     public static final String TABLE_DROP = "DROP TABLE IF EXISTS " + TABLE + ";";
@@ -75,6 +77,7 @@ public class DAO_Sujet extends DAO_Bdd {
         value.put(ATTR_DUREE, s.duree);
         value.put(ATTR_FEELLING, s.auFeeling);
         value.put(ATTR_PRIX, s.prix);
+        value.put(ATTR_VALIDE, s.valide);
         value.put(ATTR_MESSAGES, s.messagesToString);
         value.put(ATTR_PERSONNESOK, s.personnesAyantAccepteToString);
 
@@ -114,6 +117,7 @@ public class DAO_Sujet extends DAO_Bdd {
         value.put(ATTR_DUREE, s.duree);
         value.put(ATTR_FEELLING, s.auFeeling);
         value.put(ATTR_PRIX, s.prix);
+        value.put(ATTR_VALIDE, s.valide);
         value.put(ATTR_MESSAGES, s.messagesToString);
         value.put(ATTR_PERSONNESOK, s.personnesAyantAccepteToString);
 
@@ -138,7 +142,7 @@ public class DAO_Sujet extends DAO_Bdd {
         Date lheure=new Date();
         Cursor cursor = bdd.query(
                 TABLE,
-                new String[] { ATTR_ID, ATTR_IDSUJET, ATTR_TITRE, ATTR_DESCRIPTION, ATTR_TYPE, ATTR_LOC, ATTR_HEURE, ATTR_DUREE, ATTR_FEELLING, ATTR_PRIX, ATTR_MESSAGES, ATTR_PERSONNESOK},
+                new String[] { ATTR_ID, ATTR_IDSUJET, ATTR_TITRE, ATTR_DESCRIPTION, ATTR_TYPE, ATTR_LOC, ATTR_HEURE, ATTR_DUREE, ATTR_FEELLING, ATTR_PRIX, ATTR_VALIDE, ATTR_MESSAGES, ATTR_PERSONNESOK},
                 null,
                 null,
                 null,
@@ -169,7 +173,8 @@ public class DAO_Sujet extends DAO_Bdd {
                             cursor.getString(cursor.getColumnIndex(ATTR_FEELLING)),
                             cursor.getDouble(cursor.getColumnIndex(ATTR_PRIX)),
                             cursor.getString(cursor.getColumnIndex(ATTR_MESSAGES)),
-                            cursor.getString(cursor.getColumnIndex(ATTR_PERSONNESOK))
+                            cursor.getString(cursor.getColumnIndex(ATTR_PERSONNESOK)),
+                            cursor.getString(cursor.getColumnIndex(ATTR_VALIDE))
                     )
             );
         }
@@ -191,7 +196,7 @@ public class DAO_Sujet extends DAO_Bdd {
         Date lheure=new Date();
         Cursor cursor = bdd.query(
                 TABLE,
-                new String[] { ATTR_ID, ATTR_IDSUJET, ATTR_TITRE, ATTR_DESCRIPTION, ATTR_TYPE, ATTR_LOC, ATTR_HEURE, ATTR_DUREE, ATTR_FEELLING, ATTR_PRIX, ATTR_MESSAGES, ATTR_PERSONNESOK},
+                new String[] { ATTR_ID, ATTR_IDSUJET, ATTR_TITRE, ATTR_DESCRIPTION, ATTR_TYPE, ATTR_LOC, ATTR_HEURE, ATTR_DUREE, ATTR_FEELLING, ATTR_PRIX, ATTR_VALIDE, ATTR_MESSAGES, ATTR_PERSONNESOK},
                 ATTR_IDSUJET + " = ?",
                 new String[] { id },
                 null,
@@ -222,7 +227,8 @@ public class DAO_Sujet extends DAO_Bdd {
                     cursor.getString(cursor.getColumnIndex(ATTR_FEELLING)),
                     cursor.getDouble(cursor.getColumnIndex(ATTR_PRIX)),
                     cursor.getString(cursor.getColumnIndex(ATTR_MESSAGES)),
-                    cursor.getString(cursor.getColumnIndex(ATTR_PERSONNESOK))
+                    cursor.getString(cursor.getColumnIndex(ATTR_PERSONNESOK)),
+                    cursor.getString(cursor.getColumnIndex(ATTR_VALIDE))
             );
         }
         this.close();

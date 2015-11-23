@@ -118,6 +118,19 @@ public class C_Jour {
     }
 
 
+    public void calculerPrixJournee()
+    {
+        this.prixJournee=0;
+        for (C_Sujet sujet:liste_sujets)
+        {
+            if (sujet.valide)
+            {
+                this.prixJournee=this.prixJournee+(float)sujet.prix;
+            }
+        }
+    }
+
+
 
 
 

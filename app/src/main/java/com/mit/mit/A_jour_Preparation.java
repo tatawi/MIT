@@ -56,13 +56,14 @@ public class A_jour_Preparation extends MainActivity {
 
 
             System.out.println("sujets : "+day.sujetsToString);
-            System.out.println("nombre sujets : "+day.liste_sujets.size());
+            System.out.println("nombre sujets : " + day.liste_sujets.size());
             this.day.creerLesListes(daoSujet);
             System.out.println("CREER LISTES");
             System.out.println("sujets : " + day.sujetsToString);
-            System.out.println("nombre sujets : "+day.liste_sujets.size());
+            System.out.println("nombre sujets : " + day.liste_sujets.size());
 
             setTitle(sdf.format(this.day.jour));
+            lb_montant.setText(""+this.day.prixJournee+" €");
         }
 
 
@@ -78,7 +79,6 @@ public class A_jour_Preparation extends MainActivity {
             sdf = new SimpleDateFormat("HH:mm");
             String titreDescription = "";
             for (C_Sujet s : this.day.liste_sujets)
-            //for(int i=0; i<10; i++)
             {
                 //panel global
                 LinearLayout LLglobal = new LinearLayout(this);
@@ -111,8 +111,8 @@ public class A_jour_Preparation extends MainActivity {
                 //déclarations champs
                 ImageButton img = new ImageButton(this);
                 TextView desc = new TextView(this);
-                TextView h1 = new TextView(this);
-                TextView h2 = new TextView(this);
+                TextView heure = new TextView(this);
+                TextView duree = new TextView(this);
                 TextView cout = new TextView(this);
 
 
@@ -157,20 +157,27 @@ public class A_jour_Preparation extends MainActivity {
 
                 //initialisation champs
                 img.setBackgroundColor(Color.TRANSPARENT);
+
                 desc.setText(titreDescription + s.titre);
                 desc.setTextSize(16);
-                h1.setText(sdf.format(s.heure));
-                h1.setPadding(10, 10, 10, 0);
-                h2.setText(" " + s.duree + " m ");
-                h2.setPadding(10, 10, 10, 0);
+                heure.setText(sdf.format(s.heure));
+                heure.setPadding(10, 10, 10, 0);
+
+                int hour;
+                int min;
+                hour = s.duree / 60;
+                min=s.duree-hour*60;
+                duree.setText(hour+"h"+min);
+                duree.setPadding(10, 10, 10, 0);
+
                 cout.setText(" " + s.prix + " € ");
                 cout.setPadding(10, 10, 10, 0);
 
                 //ajout des champs aux pannels
                 LLleft.addView(img);
                 LLrightUp.addView(desc);
-                LLrightDown.addView(h1);
-                LLrightDown.addView(h2);
+                LLrightDown.addView(heure);
+                LLrightDown.addView(duree);
                 LLrightDown.addView(cout);
 
                 //ajouts panels

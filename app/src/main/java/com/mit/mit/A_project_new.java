@@ -41,6 +41,7 @@ public class A_project_new extends MainActivity {
     private EditText tb_participant;
     private ImageButton btn_creer;
     private ImageButton btn_adduser;
+    private TextView lb_erreurAdd;
     private ListView lv_listViewPart;
     private ImageButton btn_couleur_noir;
     private ImageButton btn_couleur_rouge;
@@ -87,7 +88,7 @@ public class A_project_new extends MainActivity {
         btn_couleur_jaune= (ImageButton) findViewById(R.id.newProject_btn_color_jaune);
         btn_couleur_vert= (ImageButton) findViewById(R.id.newProject_btn_color_vert);
         btn_couleur_violet= (ImageButton) findViewById(R.id.newProject_btn_color_violet);
-
+        lb_erreurAdd = (TextView) findViewById(R.id.newProject_lb_texteAjoutPart);
 
         //listeners
         btn_dateDebut.setOnClickListener(onClickDebutDate);
@@ -109,7 +110,7 @@ public class A_project_new extends MainActivity {
         v_liste_allParticipants=new ArrayList<C_Participant>();
         v_liste_allParticipants=daoparticipant.getParticipants();
         part=new C_Participant();
-
+        lb_erreurAdd.setVisibility(View.GONE);
 
         //getRessources
         Bundle extras = getIntent().getExtras();
@@ -117,6 +118,10 @@ public class A_project_new extends MainActivity {
             this.userID = extras.getString("userID");
             part=daoparticipant.getParticipantById(userID);
             tb_participant.setText(part.mail);
+
+            //ajout participant actuelle au projet
+            v_liste_participantsProjet.add(part);
+            majListView();
         }
     }
 
@@ -206,7 +211,19 @@ public class A_project_new extends MainActivity {
     View.OnClickListener onAddUser = new View.OnClickListener() {
         public void onClick(View v) {
 
-            for(C_Participant p:v_liste_allParticipants)
+            try
+            {
+                v_liste_participantsProjet.add(daoparticipant.getParticipantById(tb_participant.getText().toString()));
+            }
+            catch (Exception e)
+            {
+                lb_erreurAdd.setVisibility(View.VISIBLE);
+                lb_erreurAdd.setText(e.getMessage());
+            }
+            majListView();
+            tb_participant.setText("");
+
+            /*for(C_Participant p:v_liste_allParticipants)
             {
                 if(p.mail.equals(tb_participant.getText().toString()))
                 {
@@ -214,7 +231,7 @@ public class A_project_new extends MainActivity {
                     majListView();
                     tb_participant.setText("");
 
-                    /*AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(pContext);
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(pContext);
                     alertDialogBuilder.setTitle(" "+v_liste_participants.size()+ " "+p.mail+" "+tb_participant.getText().toString());
                     alertDialogBuilder
                             .setCancelable(false)
@@ -225,10 +242,10 @@ public class A_project_new extends MainActivity {
                             });
 
                     AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();*/
+                    alertDialog.show();
 
                 }
-            }
+            }*/
 
 
 
