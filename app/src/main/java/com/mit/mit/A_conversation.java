@@ -2,6 +2,7 @@ package com.mit.mit;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -82,10 +83,15 @@ public class A_conversation extends MainActivity {
         for (C_Message m : this.sujet.liste_messages) {
             //panel global
             LinearLayout LLglobal = new LinearLayout(this);
-            LLglobal.setOrientation(LinearLayout.VERTICAL);
+            LLglobal.setOrientation(LinearLayout.HORIZONTAL);
             LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             LLglobal.setLayoutParams(LLParams);
             LLglobal.setPadding(0, 3, 3, 0);
+
+            //panel textes
+            LinearLayout LLText = new LinearLayout(this);
+            LLText.setOrientation(LinearLayout.VERTICAL);
+            LLText.setLayoutParams(LLParams);
 
             //panel Nom
             LinearLayout LLup = new LinearLayout(this);
@@ -104,16 +110,32 @@ public class A_conversation extends MainActivity {
             date.setText(sdf.format(m.heure));
             date.setPadding(10, 0, 0, 0);
 
+            //configuration messages selon users
             if (!part.mail.equals(m.id_participantEmetteur)) {
-                LLglobal.setPadding(30, 3, 3, 0);
+                ImageButton imgLine = new ImageButton(this);
+                imgLine.setImageResource(R.drawable.ic_project_conv_line);
+                imgLine.setPadding(100, 0, 20, 0);
+                imgLine.setBackgroundColor(Color.TRANSPARENT);
+
+                LLglobal.addView(imgLine);
+                //ic_project_conv_line
+
+            }
+            else
+            {
+                name.setTextColor(Color.parseColor("#ac035d"));
+                text.setTextColor(Color.parseColor("#ac035d"));
+                date.setTextColor(Color.parseColor("#ac035d"));
             }
 
 
             //ajout des champs aux pannels
             LLup.addView(name);
             LLup.addView(date);
-            LLglobal.addView(LLup);
-            LLglobal.addView(text);
+            LLText.addView(LLup);
+            LLText.addView(text);
+
+            LLglobal.addView(LLText);
 
             container_globalLayout.addView(LLglobal);
         }

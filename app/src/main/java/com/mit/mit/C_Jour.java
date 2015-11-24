@@ -118,12 +118,12 @@ public class C_Jour {
     }
 
 
-    public void calculerPrixJournee()
+    public void calculerPrixJournee(int nbTotal)
     {
         this.prixJournee=0;
         for (C_Sujet sujet:liste_sujets)
         {
-            if (sujet.valide)
+            if (sujet.isValide(nbTotal))
             {
                 this.prixJournee=this.prixJournee+(float)sujet.prix;
             }

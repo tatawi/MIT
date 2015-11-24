@@ -189,20 +189,32 @@ public class A_sujet_Preparation extends MainActivity {
 
 
                 //vérifier si on passe le sujet en valide
+
                 int nbTotal=projet.liste_participants.size();
                 int nbParticipants=sujet.personnesAyantAccepte.size();
 
                 if(nbParticipants/nbTotal>0.5)
                 {
+                    //sauvegarde du sujet
+
                     sujet.valide=true;
+                    daoSujet.modifier(sujet);
+
+
+
+
+
 
                     //sauvegarde du sujet dans jour
                     jour = daoJour.getJourById(nomJour);
                     jour.creerLesListes(daoSujet);
 
+
                     //mettre a jour le jour avec le prix
-                    jour.calculerPrixJournee();
+                    jour.calculerPrixJournee(projet.liste_participants.size());
                     daoJour.modifier(jour);
+
+
 
                     //mettre a jour le projet avec le prix
                     projet = daoProjet.getProjetByName(nomProjet);
@@ -346,6 +358,12 @@ public void majInterface()
             startActivity(intent);
 
             return true;
+        }
+
+        if(id==R.id.sujet_home){
+            Intent intent = new Intent(A_sujet_Preparation.this, A_projets.class);
+            intent.putExtra("userID", part.mail);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

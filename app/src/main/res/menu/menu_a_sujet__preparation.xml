@@ -3,9 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools" tools:context="com.mit.mit.A_sujet_Preparation">
 
     <item
+        android:id="@+id/sujet_home"
+        android:icon="@drawable/ic_action_home"
+        app:showAsAction="always"
+        android:title="Projects"/>
+
+    <item
         android:id="@+id/sujet_conv"
         android:icon="@drawable/ic_action_conv"
         app:showAsAction="always"
-        android:title="New project"/>
+        android:title="New subject"/>
+
+
 
 </menu>

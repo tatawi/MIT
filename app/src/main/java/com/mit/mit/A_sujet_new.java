@@ -66,6 +66,8 @@ public class A_sujet_new extends MainActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_a_sujet_new);
 
+        System.out.println("**************************************************************");
+        System.out.println("**A_sujet_New : Création d'un nouveau sujet");
 
         //initialisation objet page
         tb_titre = (EditText) findViewById(R.id.newsujet_tb_sujet);
@@ -124,12 +126,17 @@ public class A_sujet_new extends MainActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null)
         {
+            //récupération utilisateur
             this.userID = extras.getString("userID");
             partAcutel=daoparticipant.getParticipantById(this.userID);
-            //chargement des données du projet
+
+            //récupération jour
             this.day = daoJour.getJourById(extras.getString("idEntry"));
             this.day.creerLesListes(daoSujet);
 
+
+            System.out.println("--user : " + userID);
+            System.out.println("--jour : "+this.day.nomJour);
 
 
         }
@@ -154,8 +161,6 @@ public class A_sujet_new extends MainActivity {
         public void onClick(View v) {
             int hour;
             int min;
-            //sdf = new SimpleDateFormat("EEE d MMM")
-            //public C_Sujet( String titre, String description, String type, String localisation, Date heure, int duree, boolean auFeeling, double prix)
 
             sujet.idSujet=day.nomJour+"_"+tb_titre.getText().toString();
             sujet.titre=tb_titre.getText().toString();
@@ -168,14 +173,12 @@ public class A_sujet_new extends MainActivity {
             sujet.duree=sb_duree.getProgress();
             sujet.auFeeling=false;
             sujet.valide=false;
-            sujet.idSujet=day.nomJour+"_"+tb_titre.getText().toString();
             sujet.personnesAyantAccepte.add(partAcutel);
 
             sujet.listeToString();
 
-            System.out.println("SUJET AVANT AJOUT*****************************");
+            System.out.println("idSujet : " + sujet.idSujet);
             System.out.println("titre : " + sujet.titre);
-
 
             //save sujet
             daoSujet.ajouter(sujet);
@@ -189,6 +192,10 @@ public class A_sujet_new extends MainActivity {
             Intent intent = new Intent(A_sujet_new.this, A_jour_Preparation.class);
             intent.putExtra("idEntry", day.nomJour);
             intent.putExtra("userID", userID);
+
+            System.out.println(">>intent : user : " + userID);
+            System.out.println(">>intent : jour : "+day.nomJour);
+
             startActivity(intent);
 
         }

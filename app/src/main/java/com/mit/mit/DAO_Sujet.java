@@ -66,7 +66,11 @@ public class DAO_Sujet extends DAO_Bdd {
      */
     public void ajouter(C_Sujet s) {
         this.open();
-
+        String valide ="false";
+        if(s.valide)
+        {
+            valide="true";
+        }
         ContentValues value = new ContentValues();
         value.put(ATTR_IDSUJET, s.idSujet);
         value.put(ATTR_TITRE, s.titre);
@@ -77,9 +81,9 @@ public class DAO_Sujet extends DAO_Bdd {
         value.put(ATTR_DUREE, s.duree);
         value.put(ATTR_FEELLING, s.auFeeling);
         value.put(ATTR_PRIX, s.prix);
-        value.put(ATTR_VALIDE, s.valide);
         value.put(ATTR_MESSAGES, s.messagesToString);
         value.put(ATTR_PERSONNESOK, s.personnesAyantAccepteToString);
+        value.put(ATTR_VALIDE, valide);
 
         bdd.insert(TABLE, null, value);
         this.close();
@@ -107,7 +111,11 @@ public class DAO_Sujet extends DAO_Bdd {
      */
     public void modifier(C_Sujet s) {
         this.open();
-
+        String valide ="false";
+        if(s.valide)
+        {
+            valide="true";
+        }
         ContentValues value = new ContentValues();
         value.put(ATTR_TITRE, s.titre);
         value.put(ATTR_DESCRIPTION, s.description);
@@ -117,9 +125,9 @@ public class DAO_Sujet extends DAO_Bdd {
         value.put(ATTR_DUREE, s.duree);
         value.put(ATTR_FEELLING, s.auFeeling);
         value.put(ATTR_PRIX, s.prix);
-        value.put(ATTR_VALIDE, s.valide);
         value.put(ATTR_MESSAGES, s.messagesToString);
         value.put(ATTR_PERSONNESOK, s.personnesAyantAccepteToString);
+        value.put(ATTR_VALIDE, valide);
 
         bdd.update(
                 TABLE,
@@ -142,7 +150,7 @@ public class DAO_Sujet extends DAO_Bdd {
         Date lheure=new Date();
         Cursor cursor = bdd.query(
                 TABLE,
-                new String[] { ATTR_ID, ATTR_IDSUJET, ATTR_TITRE, ATTR_DESCRIPTION, ATTR_TYPE, ATTR_LOC, ATTR_HEURE, ATTR_DUREE, ATTR_FEELLING, ATTR_PRIX, ATTR_VALIDE, ATTR_MESSAGES, ATTR_PERSONNESOK},
+                new String[] { ATTR_ID, ATTR_IDSUJET, ATTR_TITRE, ATTR_DESCRIPTION, ATTR_TYPE, ATTR_LOC, ATTR_HEURE, ATTR_DUREE, ATTR_FEELLING, ATTR_PRIX, ATTR_MESSAGES, ATTR_PERSONNESOK, ATTR_VALIDE},
                 null,
                 null,
                 null,
@@ -196,7 +204,7 @@ public class DAO_Sujet extends DAO_Bdd {
         Date lheure=new Date();
         Cursor cursor = bdd.query(
                 TABLE,
-                new String[] { ATTR_ID, ATTR_IDSUJET, ATTR_TITRE, ATTR_DESCRIPTION, ATTR_TYPE, ATTR_LOC, ATTR_HEURE, ATTR_DUREE, ATTR_FEELLING, ATTR_PRIX, ATTR_VALIDE, ATTR_MESSAGES, ATTR_PERSONNESOK},
+                new String[] { ATTR_ID, ATTR_IDSUJET, ATTR_TITRE, ATTR_DESCRIPTION, ATTR_TYPE, ATTR_LOC, ATTR_HEURE, ATTR_DUREE, ATTR_FEELLING, ATTR_PRIX, ATTR_MESSAGES, ATTR_PERSONNESOK, ATTR_VALIDE},
                 ATTR_IDSUJET + " = ?",
                 new String[] { id },
                 null,

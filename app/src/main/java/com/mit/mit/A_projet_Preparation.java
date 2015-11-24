@@ -43,6 +43,8 @@ public class A_projet_Preparation extends MainActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        System.out.println("**************************************************************");
+        System.out.println("**A_projet_preparation : liste des jours du projet");
 
         //initialiser objets de la page
         setContentView(R.layout.activity_a_projet__preparation);
@@ -57,7 +59,7 @@ public class A_projet_Preparation extends MainActivity {
         if (extras != null)
         {
             this.userID = extras.getString("userID");
-            System.out.println("projets preparation : "+this.userID);
+
 
             //chargement des données du projet
             this.projet = daoProjet.getProjetByName(extras.getString("idEntry"));
@@ -67,6 +69,11 @@ public class A_projet_Preparation extends MainActivity {
             lb_cout.setText(this.projet.prixSejour + " €");
             nbDays=this.projet.liste_jours.size();
             tab_correspButtons=new String[(int)nbDays+7];
+
+            System.out.println("--utilisateur actuel : "+this.userID);
+            System.out.println("--projet : "+this.projet.nom);
+            System.out.println("--nombre de jours : "+nbDays);
+
         }
 
 
@@ -166,77 +173,6 @@ public class A_projet_Preparation extends MainActivity {
 
 
 
-
-
-
-/*
-
-        Date currentDate=this.projet.dateDebut;
-        Calendar c = Calendar.getInstance();
-
-        container_tableLayout.setOrientation(LinearLayout.VERTICAL);
-        LinearLayout LL = new LinearLayout(this);
-        LL.setOrientation(LinearLayout.HORIZONTAL);
-        LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        LL.setLayoutParams(LLParams);
-
-
-        //ADDING BLANK IMAGES
-        c.setTime(currentDate);
-        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK)-2;
-        for(int j=0; j<dayOfWeek; j++)
-        {
-
-            ImageButton btn=new ImageButton(this);
-            btn.setImageResource(R.drawable.ic_cal_blank);
-            btn.setBackgroundColor(Color.TRANSPARENT);
-            LL.addView(btn);
-        }
-
-        //ADD IMAGES BUTTON
-        for(int i=dayOfWeek; i<nbDays+dayOfWeek; i++)
-        {
-            //variables
-            ImageButton btn=new ImageButton(this);
-            sdf = new SimpleDateFormat("dd/MM/yy");
-            String str_buttonID=getDayIDFromDate(currentDate);
-            String fileName=getImageNameForDay(currentDate);
-            int identifier = getResources().getIdentifier(fileName, "drawable", getPackageName());
-
-            //ajoute la ligne suivante si ligne actuelle pleine
-            if(i>0 && i%7==0)
-            {
-                container_tableLayout.addView(LL);
-                LL = new LinearLayout(this);
-                LL.setOrientation(LinearLayout.HORIZONTAL);
-                LL.setLayoutParams(LLParams);
-            }
-
-            //add listener
-            if (!str_buttonID.equals(""))
-            {
-                tab_correspButtons[i]=getDayIDFromDate(currentDate);
-                btn.setId(i);
-                btn.setOnClickListener(onClickDay);
-            }
-
-            btn.setImageResource(identifier);
-            btn.setBackgroundColor(Color.TRANSPARENT);
-            LL.addView(btn);
-
-
-            //INCREMENT DAY
-            c.setTime(currentDate);
-            c.add(Calendar.DATE, 1);
-            currentDate = c.getTime();
-
-
-        }
-        container_tableLayout.addView(LL);
-*/
-
-
-
     }
 
 
@@ -256,6 +192,9 @@ public class A_projet_Preparation extends MainActivity {
             Intent intent = new Intent(A_projet_Preparation.this, A_jour_Preparation.class);
             intent.putExtra("idEntry", dayID);
             intent.putExtra("userID", userID);
+
+            System.out.println(">>intent : user " + userID);
+            System.out.println(">>intent : jourSelectionné : "+dayID);
             startActivity(intent);
         }
     };
@@ -311,18 +250,11 @@ public class A_projet_Preparation extends MainActivity {
     {
         sdf = new SimpleDateFormat("dd/MM/yy");
 
-
         for(C_Jour j:this.projet.liste_jours)
         {
-
-            System.out.print(sdf.format(d)+" =? "+sdf.format(j.jour));
-            System.out.println();
             if(sdf.format(d).equals(sdf.format(j.jour)))
             {
-                System.out.print("OK");
-                System.out.println();
                 sdf = new SimpleDateFormat("dd");
-
                 if(j.isNotification(me))
                 {
                     return "ic_cal_full_"+sdf.format(j.jour);
@@ -332,11 +264,7 @@ public class A_projet_Preparation extends MainActivity {
                     return "ic_cal_"+sdf.format(j.jour);
                 }
             }
-
-
         }
-
-
         return "ic_cal_black_01";
     }
 

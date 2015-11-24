@@ -57,7 +57,6 @@ public class DAO_Jour extends DAO_Bdd {
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         ContentValues value = new ContentValues();
-        //value.put(ATTR_ID, j.id);
         value.put(ATTR_NOMJOUR, j.nomJour);
         value.put(ATTR_DATE, sdf.format(j.jour));
         value.put(ATTR_PRIXJOURNEE, j.prixJournee);
@@ -90,11 +89,11 @@ public class DAO_Jour extends DAO_Bdd {
      */
     public void modifier(C_Jour j) {
         this.open();
-
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         ContentValues value = new ContentValues();
         value.put(ATTR_ID, j.id);
         value.put(ATTR_NOMJOUR, j.nomJour);
-        value.put(ATTR_DATE, j.jour.toString());
+        value.put(ATTR_DATE, formatter.format(j.jour));
         value.put(ATTR_PRIXJOURNEE, j.prixJournee);
         value.put(ATTR_SUJETS, j.sujetsToString);
 
@@ -135,7 +134,7 @@ public class DAO_Jour extends DAO_Bdd {
             }
             catch(Exception e)
             {
-
+                System.out.println("))ERROR warking with date: " +cursor.getString(cursor.getColumnIndex(ATTR_DATE)));
             }
 
             liste_jours.add(
@@ -183,7 +182,7 @@ public class DAO_Jour extends DAO_Bdd {
             }
             catch(Exception e)
             {
-
+                System.out.println("))ERROR warking with date: " +cursor.getString(cursor.getColumnIndex(ATTR_DATE)));
             }
 
             p=new C_Jour(

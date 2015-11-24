@@ -35,35 +35,33 @@ public class A_jour_Preparation extends MainActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_a_jour__preparation);
 
-        //initialisation objet page
+        System.out.println("**************************************************************");
+        System.out.println("**A_Jour_preparation : liste des sujets d'un jour");
+
+        //initialisations
         container_globalLayout = (LinearLayout) findViewById(R.id.jourPrep_layoutContent);
         lb_montant = (TextView) findViewById(R.id.jourPrep_lb_cout);
-
-
-
-        //initialisation variables
         sdf = new SimpleDateFormat("EEE d MMM");
 
-        //récupération du projet
+
+        //récupérations
         Bundle extras = getIntent().getExtras();
         if (extras != null)
         {
+            //utilisateur
             this.userID = extras.getString("userID");
-            System.out.println("jour preparation: "+this.userID);
 
-            //chargement des données du projet
+            //chargement jour
             this.day = daoJour.getJourById(extras.getString("idEntry"));
-
-
-            System.out.println("sujets : "+day.sujetsToString);
-            System.out.println("nombre sujets : " + day.liste_sujets.size());
             this.day.creerLesListes(daoSujet);
-            System.out.println("CREER LISTES");
-            System.out.println("sujets : " + day.sujetsToString);
-            System.out.println("nombre sujets : " + day.liste_sujets.size());
 
             setTitle(sdf.format(this.day.jour));
-            lb_montant.setText(""+this.day.prixJournee+" €");
+            lb_montant.setText("" + this.day.prixJournee + " €");
+
+            System.out.println("--utilisateur courant: " + this.userID);
+            System.out.println("--jourEnparamétres: " + extras.getString("idEntry"));
+            System.out.println("--jourCalculé : " + sdf.format(this.day.jour));
+            System.out.println("--jourID : " + this.day.nomJour);
         }
 
 
@@ -119,37 +117,55 @@ public class A_jour_Preparation extends MainActivity {
                 //personnalisation champs
                 switch (s.type) {
                     case "Transport":
-                        img.setImageResource(R.drawable.ic_jour_transports);
+                        if(s.valide)
+                            img.setImageResource(R.drawable.ic_jour_transports_fill);
+                        else
+                            img.setImageResource(R.drawable.ic_jour_transports);
                         desc.setTextColor(Color.parseColor("#e74c3c"));
                         titreDescription = "[Transport] ";
                         break;
 
                     case "Repas":
-                        img.setImageResource(R.drawable.ic_jour_repas);
+                        if(s.valide)
+                            img.setImageResource(R.drawable.ic_jour_repas_fill);
+                        else
+                            img.setImageResource(R.drawable.ic_jour_repas);
                         desc.setTextColor(Color.parseColor("#2980b9"));
                         titreDescription = "[Repas] ";
                         break;
 
                     case "Visite":
-                        img.setImageResource(R.drawable.ic_jour_visite);
+                        if(s.valide)
+                            img.setImageResource(R.drawable.ic_jour_visite_fill);
+                        else
+                            img.setImageResource(R.drawable.ic_jour_visite);
                         desc.setTextColor(Color.parseColor("#16a085"));
                         titreDescription = "[Visite] ";
                         break;
 
                     case "Logement":
-                        img.setImageResource(R.drawable.ic_jour_logement);
+                        if(s.valide)
+                            img.setImageResource(R.drawable.ic_jour_logement_fill);
+                        else
+                            img.setImageResource(R.drawable.ic_jour_logement);
                         desc.setTextColor(Color.parseColor("#f39c12"));
                         titreDescription = "[Hebergement] ";
                         break;
 
-                    case "loisir":
-                        img.setImageResource(R.drawable.ic_jour_loisir);
+                    case "Loisir":
+                        if(s.valide)
+                            img.setImageResource(R.drawable.ic_jour_loisir_fill);
+                        else
+                            img.setImageResource(R.drawable.ic_jour_loisir);
                         desc.setTextColor(Color.parseColor("#9b59b6"));
                         titreDescription = "[Loisir] ";
                         break;
 
                     case "Libre":
-                        img.setImageResource(R.drawable.ic_jour_libre);
+                        if(s.valide)
+                            img.setImageResource(R.drawable.ic_jour_libre_fill);
+                        else
+                            img.setImageResource(R.drawable.ic_jour_libre);
                         desc.setTextColor(Color.parseColor("#5b5b5b"));
                         titreDescription = "[Libre] ";
                         break;
@@ -292,12 +308,15 @@ public class A_jour_Preparation extends MainActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //ON NEW USER
+        //ADD SUJET
         if (id == R.id.menu_addSujet)
         {
             Intent intent = new Intent(A_jour_Preparation.this, A_sujet_new.class);
-            intent.putExtra("idEntry", this.day.nomJour);
+            System.out.println("Appel de new sujet. jour id = "+day.nomJour);
+            intent.putExtra("idEntry", day.nomJour);
             intent.putExtra("userID", userID);
+            System.out.println(">>intent :user : " + userID);
+            System.out.println(">>intent :jour : " + day.nomJour);
             startActivity(intent);
         }
 

@@ -131,6 +131,23 @@ public class C_Sujet {
 //	FONCTIONS
 //---------------------------------------------------------------------------------------
 
+    public boolean isValide(int nbTotal)
+    {
+        try
+        {
+
+            if(this.personnesAyantAccepte.size()/nbTotal>0.5)
+            {
+                return true;
+            }
+            return false;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
+
     /**
      *Accept subject - Add a user in accepted member list
      *@param me			Member to add
