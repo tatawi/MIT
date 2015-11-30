@@ -123,7 +123,7 @@ public class C_Jour {
         this.prixJournee=0;
         for (C_Sujet sujet:liste_sujets)
         {
-            if (sujet.isValide(nbTotal))
+            if (sujet.valide)
             {
                 this.prixJournee=this.prixJournee+(float)sujet.prix;
             }

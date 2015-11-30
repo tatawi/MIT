@@ -97,6 +97,9 @@ public class A_sujet_new extends MainActivity {
         sw_plus.setChecked(true);
         sw_moins=(Switch)findViewById(R.id.newsujet_switch_moins);
         sw_moins.setChecked(false);
+        sb_hour.setProgress(12);
+        sb_min.setProgress(0);
+        sb_duree.setProgress(60);
 
 
 
@@ -121,7 +124,7 @@ public class A_sujet_new extends MainActivity {
 
         //variables
         sujet =new C_Sujet();
-
+        sujet.prix=0;
         //récupération du jour
         Bundle extras = getIntent().getExtras();
         if (extras != null)
@@ -162,6 +165,10 @@ public class A_sujet_new extends MainActivity {
             int hour;
             int min;
 
+            //ini valeurs base
+            sujet.titre="pas de titre";
+
+            //ini valeurs page
             sujet.idSujet=day.nomJour+"_"+tb_titre.getText().toString();
             sujet.titre=tb_titre.getText().toString();
             sujet.description=tb_description.getText().toString();
@@ -174,11 +181,7 @@ public class A_sujet_new extends MainActivity {
             sujet.auFeeling=false;
             sujet.valide=false;
             sujet.personnesAyantAccepte.add(partAcutel);
-
             sujet.listeToString();
-
-            System.out.println("idSujet : " + sujet.idSujet);
-            System.out.println("titre : " + sujet.titre);
 
             //save sujet
             daoSujet.ajouter(sujet);
@@ -204,12 +207,12 @@ public class A_sujet_new extends MainActivity {
     //bouton logement
     View.OnClickListener onClickButtonLogement = new View.OnClickListener() {
         public void onClick(View v) {
-            btn_logement.setBackgroundColor(Color.parseColor("#d2d2d2"));
-            btn_repas.setBackgroundColor(Color.TRANSPARENT);
-            btn_transport.setBackgroundColor(Color.TRANSPARENT);
-            btn_visite.setBackgroundColor(Color.TRANSPARENT);
-            btn_loisir.setBackgroundColor(Color.TRANSPARENT);
-            btn_libre.setBackgroundColor(Color.TRANSPARENT);
+            btn_logement.setImageResource(R.drawable.ic_jour_logement_fill);
+            btn_repas.setImageResource(R.drawable.ic_jour_repas);
+            btn_transport.setImageResource(R.drawable.ic_jour_transports);
+            btn_visite.setImageResource(R.drawable.ic_jour_visite);
+            btn_loisir.setImageResource(R.drawable.ic_jour_loisir);
+            btn_libre.setImageResource(R.drawable.ic_jour_libre);
             lb_type.setText("Logement");
             lb_type.setTextColor(Color.parseColor("#f39c12"));
         }
@@ -218,12 +221,12 @@ public class A_sujet_new extends MainActivity {
     //bouton repas
     View.OnClickListener onClickButtonRepas = new View.OnClickListener() {
         public void onClick(View v) {
-            btn_repas.setBackgroundColor(Color.parseColor("#d2d2d2"));
-            btn_logement.setBackgroundColor(Color.TRANSPARENT);
-            btn_transport.setBackgroundColor(Color.TRANSPARENT);
-            btn_visite.setBackgroundColor(Color.TRANSPARENT);
-            btn_loisir.setBackgroundColor(Color.TRANSPARENT);
-            btn_libre.setBackgroundColor(Color.TRANSPARENT);
+            btn_logement.setImageResource(R.drawable.ic_jour_logement);
+            btn_repas.setImageResource(R.drawable.ic_jour_repas_fill);
+            btn_transport.setImageResource(R.drawable.ic_jour_transports);
+            btn_visite.setImageResource(R.drawable.ic_jour_visite);
+            btn_loisir.setImageResource(R.drawable.ic_jour_loisir);
+            btn_libre.setImageResource(R.drawable.ic_jour_libre);
             lb_type.setText("Repas");
             lb_type.setTextColor(Color.parseColor("#2980b9"));
         }
@@ -232,12 +235,12 @@ public class A_sujet_new extends MainActivity {
     //bouton transport
     View.OnClickListener onClickButtonTransport = new View.OnClickListener() {
         public void onClick(View v) {
-            btn_transport.setBackgroundColor(Color.parseColor("#d2d2d2"));
-            btn_repas.setBackgroundColor(Color.TRANSPARENT);
-            btn_logement.setBackgroundColor(Color.TRANSPARENT);
-            btn_visite.setBackgroundColor(Color.TRANSPARENT);
-            btn_loisir.setBackgroundColor(Color.TRANSPARENT);
-            btn_libre.setBackgroundColor(Color.TRANSPARENT);
+            btn_logement.setImageResource(R.drawable.ic_jour_logement);
+            btn_repas.setImageResource(R.drawable.ic_jour_repas);
+            btn_transport.setImageResource(R.drawable.ic_jour_transports_fill);
+            btn_visite.setImageResource(R.drawable.ic_jour_visite);
+            btn_loisir.setImageResource(R.drawable.ic_jour_loisir);
+            btn_libre.setImageResource(R.drawable.ic_jour_libre);
             lb_type.setText("Transport");
             lb_type.setTextColor(Color.parseColor("#e74c3c"));
         }
@@ -246,12 +249,12 @@ public class A_sujet_new extends MainActivity {
     //bouton visite
     View.OnClickListener onClickButtonVisite = new View.OnClickListener() {
         public void onClick(View v) {
-            btn_visite.setBackgroundColor(Color.parseColor("#d2d2d2"));
-            btn_repas.setBackgroundColor(Color.TRANSPARENT);
-            btn_transport.setBackgroundColor(Color.TRANSPARENT);
-            btn_logement.setBackgroundColor(Color.TRANSPARENT);
-            btn_loisir.setBackgroundColor(Color.TRANSPARENT);
-            btn_libre.setBackgroundColor(Color.TRANSPARENT);
+            btn_logement.setImageResource(R.drawable.ic_jour_logement);
+            btn_repas.setImageResource(R.drawable.ic_jour_repas);
+            btn_transport.setImageResource(R.drawable.ic_jour_transports);
+            btn_visite.setImageResource(R.drawable.ic_jour_visite_fill);
+            btn_loisir.setImageResource(R.drawable.ic_jour_loisir);
+            btn_libre.setImageResource(R.drawable.ic_jour_libre);
             lb_type.setText("Visite");
             lb_type.setTextColor(Color.parseColor("#16a085"));
         }
@@ -260,12 +263,12 @@ public class A_sujet_new extends MainActivity {
     //bouton loisirs
     View.OnClickListener onClickButtonLoisir= new View.OnClickListener() {
         public void onClick(View v) {
-            btn_loisir.setBackgroundColor(Color.parseColor("#d2d2d2"));
-            btn_repas.setBackgroundColor(Color.TRANSPARENT);
-            btn_transport.setBackgroundColor(Color.TRANSPARENT);
-            btn_visite.setBackgroundColor(Color.TRANSPARENT);
-            btn_logement.setBackgroundColor(Color.TRANSPARENT);
-            btn_libre.setBackgroundColor(Color.TRANSPARENT);
+            btn_logement.setImageResource(R.drawable.ic_jour_logement);
+            btn_repas.setImageResource(R.drawable.ic_jour_repas);
+            btn_transport.setImageResource(R.drawable.ic_jour_transports);
+            btn_visite.setImageResource(R.drawable.ic_jour_visite);
+            btn_loisir.setImageResource(R.drawable.ic_jour_loisir_fill);
+            btn_libre.setImageResource(R.drawable.ic_jour_libre);
             lb_type.setText("Loisir");
             lb_type.setTextColor(Color.parseColor("#9b59b6"));
         }
@@ -274,12 +277,12 @@ public class A_sujet_new extends MainActivity {
     //bouton libre
     View.OnClickListener onClickButtonLibre = new View.OnClickListener() {
         public void onClick(View v) {
-            btn_libre.setBackgroundColor(Color.parseColor("#d2d2d2"));
-            btn_repas.setBackgroundColor(Color.TRANSPARENT);
-            btn_transport.setBackgroundColor(Color.TRANSPARENT);
-            btn_visite.setBackgroundColor(Color.TRANSPARENT);
-            btn_loisir.setBackgroundColor(Color.TRANSPARENT);
-            btn_logement.setBackgroundColor(Color.TRANSPARENT);
+            btn_logement.setImageResource(R.drawable.ic_jour_logement);
+            btn_repas.setImageResource(R.drawable.ic_jour_repas);
+            btn_transport.setImageResource(R.drawable.ic_jour_transports);
+            btn_visite.setImageResource(R.drawable.ic_jour_visite);
+            btn_loisir.setImageResource(R.drawable.ic_jour_loisir);
+            btn_libre.setImageResource(R.drawable.ic_jour_libre_fill);
             lb_type.setText("Libre");
             lb_type.setTextColor(Color.parseColor("#5b5b5b"));
         }

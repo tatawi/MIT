@@ -69,7 +69,6 @@ public class A_project_new extends MainActivity {
         super.onCreate(savedInstanceState);
 
 
-
         //initialisations
         setContentView(R.layout.activity_a_project_new);
         tb_nom = (EditText) findViewById(R.id.newProject_tb_nom);
@@ -117,7 +116,6 @@ public class A_project_new extends MainActivity {
         if (extras != null) {
             this.userID = extras.getString("userID");
             part=daoparticipant.getParticipantById(userID);
-            tb_participant.setText(part.mail);
 
             //ajout participant actuelle au projet
             v_liste_participantsProjet.add(part);
@@ -143,9 +141,6 @@ public class A_project_new extends MainActivity {
 
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             try {
-
-
-
                 v_dateDebut = formatter.parse(tb_dateDebut.getText().toString());
                 v_dateFin = formatter.parse(tb_dateFin.getText().toString());
             } catch (ParseException e) {

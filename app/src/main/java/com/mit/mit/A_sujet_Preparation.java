@@ -196,25 +196,16 @@ public class A_sujet_Preparation extends MainActivity {
                 if(nbParticipants/nbTotal>0.5)
                 {
                     //sauvegarde du sujet
-
                     sujet.valide=true;
                     daoSujet.modifier(sujet);
-
-
-
-
-
 
                     //sauvegarde du sujet dans jour
                     jour = daoJour.getJourById(nomJour);
                     jour.creerLesListes(daoSujet);
 
-
                     //mettre a jour le jour avec le prix
                     jour.calculerPrixJournee(projet.liste_participants.size());
                     daoJour.modifier(jour);
-
-
 
                     //mettre a jour le projet avec le prix
                     projet = daoProjet.getProjetByName(nomProjet);

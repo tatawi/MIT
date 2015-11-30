@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools" tools:context="com.mit.mit.A_sujet_Preparation">
 
     <item
+        android:id="@+id/menu_sujet_delete"
+        android:icon="@drawable/ic_action_delete"
+        app:showAsAction="always"
+        android:title="Supprimer"/>
+
+    <item
         android:id="@+id/sujet_home"
         android:icon="@drawable/ic_action_home"
         app:showAsAction="always"

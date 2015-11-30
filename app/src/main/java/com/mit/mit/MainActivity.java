@@ -10,9 +10,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.parse.Parse;
+import com.parse.ParseObject;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -62,8 +66,20 @@ public class MainActivity extends AppCompatActivity {
         btn_co2.setOnClickListener(onco2);
 
 
+        // Enable Local Datastore
+        try {
+            Parse.enableLocalDatastore(this);
+            Parse.initialize(this, "ZyJ90wtX8SyHiJOBCztcGaAaxLRUyI3JZD4vUptQ", "CZYG6VU5JwXdOe5D4l8i2hWzAqmjKZZa3CeGtAYs");
 
 
+         /*  ParseObject testObject = new ParseObject("TestObject");
+            testObject.put("foo", "bar");
+            testObject.saveInBackground();*/
+        }
+        catch (Exception ex)
+        {
+            System.out.println(ex.getMessage());
+        }
 
     }
 

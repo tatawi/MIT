@@ -91,7 +91,7 @@ public class C_Sujet {
         boolean v_valide=false;
 
         //gestion feeling
-        if (auFeeling.equals("oui"))
+        if (auFeeling.equals("true"))
         {
             v_feel=true;
         }
@@ -110,7 +110,7 @@ public class C_Sujet {
         this.personnesAyantAccepteToString=personnesAyantAccepteToString;
 
         //gestion bool valide
-        if (valide.equals("oui"))
+        if (valide.equals("true"))
         {
             v_valide=true;
         }
