@@ -5,6 +5,9 @@ package com.mit.mit;
         import android.content.ContentValues;
         import android.content.Context;
         import android.database.Cursor;
+
+        import com.parse.ParseObject;
+
         import java.text.SimpleDateFormat;
         import java.util.Date;
 
@@ -87,6 +90,22 @@ public class DAO_Sujet extends DAO_Bdd {
 
         bdd.insert(TABLE, null, value);
         this.close();
+
+        //add on cloud
+        ParseObject Sujet = new ParseObject("Sujet");
+        Sujet.put("idSujet", s.idSujet);
+        Sujet.put("titre", s.titre);
+        Sujet.put("description", s.description);
+        Sujet.put("type", s.type);
+        Sujet.put("localisation", s.localisation);
+        Sujet.put("heure", s.heure.toString());
+        Sujet.put("duree", s.duree);
+        Sujet.put("auFeeling", s.auFeeling);
+        Sujet.put("prix", s.prix);
+        Sujet.put("messagesToString",s.messagesToString);
+        Sujet.put("personnesAyantAccepteToString", s.personnesAyantAccepteToString);
+        Sujet.put("valide", valide);
+        Sujet.saveInBackground();
     }
 
     /**
@@ -103,6 +122,15 @@ public class DAO_Sujet extends DAO_Bdd {
         );
 
         this.close();
+    }
+
+    public void ajouterOUmodifier(C_Sujet s) {
+        C_Sujet dao_s = this.getSujetById(s.idSujet);
+        if (dao_s != null) {
+            this.modifier(s);
+        } else {
+            this.ajouter(s);
+        }
     }
 
     /**

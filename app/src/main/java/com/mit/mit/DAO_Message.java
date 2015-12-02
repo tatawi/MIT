@@ -7,6 +7,9 @@ package com.mit.mit;
         import android.content.ContentValues;
         import android.content.Context;
         import android.database.Cursor;
+
+        import com.parse.ParseObject;
+
         import java.text.SimpleDateFormat;
 
 /**
@@ -63,6 +66,17 @@ public class DAO_Message extends DAO_Bdd {
 
         bdd.insert(TABLE, null, value);
         this.close();
+
+
+        //add on cloud
+        ParseObject Message = new ParseObject("Message");
+        Message.put("id", m.id);
+        Message.put("heure", m.heure.toString());
+        Message.put("message", m.message);
+        Message.put("id_participantEmetteur", m.id_participantEmetteur);
+        Message.put("personnesAyantVuesToString", m.personnesAyantVuesToString);
+
+        Message.saveInBackground();
     }
 
     /**
@@ -75,7 +89,7 @@ public class DAO_Message extends DAO_Bdd {
         bdd.delete(
                 TABLE,
                 ATTR_IDMESSAGE + " = ?",
-                new String[] { id }
+                new String[]{id}
         );
 
         this.close();
@@ -101,9 +115,18 @@ public class DAO_Message extends DAO_Bdd {
                 TABLE,
                 value,
                 ATTR_IDMESSAGE + " = ?",
-                new String[] { String.valueOf(m.id) }
+                new String[]{String.valueOf(m.id)}
         );
         this.close();
+    }
+
+    public void ajouterOUmodifier(C_Message m) {
+        C_Message dao_m = this.getMessageById(m.id);
+        if (dao_m != null) {
+            this.modifier(m);
+        } else {
+            this.ajouter(m);
+        }
     }
 
     /**

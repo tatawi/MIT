@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,8 +12,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     private EditText tb_userID;
     private EditText tb_mdp;
 
-    private Button btn_add1;
     private Button btn_co1;
     private Button btn_co2;
 
@@ -55,13 +58,11 @@ public class MainActivity extends AppCompatActivity {
 
         btn_co1 = (Button) findViewById(R.id.button3);
         btn_co2 = (Button) findViewById(R.id.button4);
-        btn_add1= (Button) findViewById(R.id.button1);
 
         //set listeners
         tb_userID.setOnClickListener(onUserClick);
         btn_connect.setOnClickListener(onConnectClick);
 
-        btn_add1.setOnClickListener(oncreateusers);
         btn_co1.setOnClickListener(onco1);
         btn_co2.setOnClickListener(onco2);
 
@@ -72,9 +73,10 @@ public class MainActivity extends AppCompatActivity {
             Parse.initialize(this, "ZyJ90wtX8SyHiJOBCztcGaAaxLRUyI3JZD4vUptQ", "CZYG6VU5JwXdOe5D4l8i2hWzAqmjKZZa3CeGtAYs");
 
 
-         /*  ParseObject testObject = new ParseObject("TestObject");
-            testObject.put("foo", "bar");
-            testObject.saveInBackground();*/
+            updateUserList();
+            MajDAO();
+
+
         }
         catch (Exception ex)
         {
@@ -82,6 +84,158 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+
+    private void updateUserList()
+    {
+
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Participant");
+        try
+        {
+            List<ParseObject> usersList = query.find();
+            System.out.println("--load users : " + usersList.size());
+            for(ParseObject parse : usersList)
+            {
+                String nom = parse.getString("nom");
+                String prenom = parse.getString("prenom");
+                String mail = parse.getString("mail");
+                String mdp = parse.getString("mdp");
+                C_Participant part = new C_Participant(nom, prenom, mail, mdp);
+                System.out.println("--part find : " + part.mail);
+
+                daoparticipant.ajouterOUmodifier(part);
+            }
+        }
+        catch (ParseException ex)
+        {
+            Log.e("Error", ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+
+    protected void MajDAO()
+    {
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Participant");
+        try
+        {
+            //WORK WITH PROJECTS
+            List<ParseObject> projectsList = query.find();
+            System.out.println("--load projects : " + projectsList.size());
+            for(ParseObject parse : projectsList)
+            {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                C_Projet proj = new C_Projet();
+
+                proj.nom=parse.getString("nom");
+                proj.description=parse.getString("description");
+                proj.prixSejour=(float)parse.getLong("prixSejour");
+                proj.statut=parse.getString("statut");
+                proj.participantsToString=parse.getString("participantsToString");
+                proj.joursToString=parse.getString("joursToString");
+                proj.couleur=parse.getString("couleur");
+
+                try {
+                    proj.dateDebut=sdf.parse(parse.getString("dateDebut"));
+                    proj.dateFin=sdf.parse(parse.getString("dateFin"));
+                }
+                catch (java.text.ParseException e) {
+                        e.printStackTrace();
+                }
+                daoProjet.ajouterOUmodifier(proj);
+            }
+
+
+            //WORK WITH DAYS
+            List<ParseObject> jourList = query.find();
+            System.out.println("--load days : " + jourList.size());
+            for(ParseObject parse : jourList)
+            {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
+                C_Jour jour = new C_Jour();
+
+                jour.nomJour=parse.getString("nomJour");
+                jour.prixJournee=(float)parse.getLong("prixJournee");
+                jour.sujetsToString=parse.getString("sujetsToString");
+                try {
+                    jour.jour=sdf.parse(parse.getString("date"));
+                }
+                catch (java.text.ParseException e) {
+                    e.printStackTrace();
+                }
+                daoJour.ajouterOUmodifier(jour);
+            }
+
+            //WORK WITH SUBJECTS
+            List<ParseObject> subjectList = query.find();
+            System.out.println("--load subjects : " + subjectList.size());
+            for(ParseObject parse : subjectList)
+            {
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:MM");
+                C_Sujet sujet = new C_Sujet();
+
+                sujet.idSujet=parse.getString("idSujet");
+                sujet.titre=parse.getString("titre");
+                sujet.description=parse.getString("description");
+                sujet.type=parse.getString("type");
+                sujet.localisation=parse.getString("localisation");
+                sujet.duree=parse.getInt("duree");
+                sujet.prix=parse.getDouble("prix");
+                sujet.messagesToString=parse.getString("messagesToString");
+                sujet.personnesAyantAccepteToString=parse.getString("personnesAyantAccepteToString");
+                if (parse.getString("valide").equals("true"))
+                {sujet.valide=true;}
+                else
+                {sujet.valide=false;}
+
+                if (parse.getString("auFeeling").equals("true"))
+                {sujet.auFeeling=true;}
+                else
+                {sujet.auFeeling=false;}
+
+                try {
+                    sujet.heure=sdf.parse(parse.getString("heure"));
+                }
+                catch (java.text.ParseException e) {
+                    e.printStackTrace();
+                }
+
+                daoSujet.ajouterOUmodifier(sujet);
+            }
+
+
+            //WORK WITH MESSAGES
+            List<ParseObject> messageList = query.find();
+            System.out.println("--load messages : " + messageList.size());
+            for(ParseObject parse : messageList)
+            {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yy HH:mm");
+                C_Message mess = new C_Message();
+
+                mess.id=parse.getString("id");
+                mess.message=parse.getString("message");
+                mess.id_participantEmetteur=parse.getString("id_participantEmetteur");
+                mess.personnesAyantVuesToString=parse.getString("personnesAyantVuesToString");
+
+                try {
+                    mess.heure=sdf.parse(parse.getString("heure"));
+                }
+                catch (java.text.ParseException e) {
+                    e.printStackTrace();
+                }
+                daoMessage.ajouterOUmodifier(mess);
+
+
+            }
+
+        }
+        catch (ParseException ex)
+        {
+            Log.e("Error", ex.getMessage());
+            ex.printStackTrace();
+        }
+
+    }
+
 
 
 
@@ -126,70 +280,22 @@ public class MainActivity extends AppCompatActivity {
                 tb_mdp.setText("");
             }
 
-
-
-
-
-
-
-           /* for (C_Participant me : daoparticipant.getParticipants())
-            {
-                System.out.println("user :" + me.mail);
-                System.out.println(me.mail + " vs " + tb_userID.getText().toString());
-                if(me.mail.equals(tb_userID.getText().toString()))
-                {
-                    System.out.println(">found");
-                    if(me.mdp.equals(tb_mdp.getText().toString()))
-                    {
-                        System.out.println(">ok");
-                        Intent intent = new Intent(MainActivity.this, A_projets.class);
-                        intent.putExtra("userID", me.mail);
-                        startActivity(intent);
-                    }
-                    else
-                    {
-
-                    }
-                }
-                else
-                {
-                    tb_userID.setText("Utilisateur inconnu");
-                    tb_mdp.setText("");
-                }
-
-            }*/
         }
     };
 
 
 
-
-
-
-    View.OnClickListener oncreateusers = new View.OnClickListener() {
-        public void onClick(View v) {
-            C_Participant part = new C_Participant("BAUDRAIS","Maxime","cnero@hotmail.f","azerty");
-            daoparticipant.ajouter(part);
-
-            C_Participant part2 = new C_Participant("LELOUET","Audrey","audrey","azerty");
-            daoparticipant.ajouter(part2);
-
-            System.out.println("users created");
-        }
-    };
 
     View.OnClickListener onco1 = new View.OnClickListener() {
         public void onClick(View v) {
-            System.out.println("user 1");
-            tb_userID.setText("cnero@hotmail.f");
+            tb_userID.setText("cnero@hotmail.fr");
             tb_mdp.setText("azerty");
         }
     };
 
     View.OnClickListener onco2 = new View.OnClickListener() {
         public void onClick(View v) {
-            System.out.println("user 2");
-            tb_userID.setText("audrey");
+            tb_userID.setText("audrey@mail.fr");
             tb_mdp.setText("azerty");
 
         }

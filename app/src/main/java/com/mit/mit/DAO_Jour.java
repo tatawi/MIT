@@ -6,6 +6,9 @@ import java.util.List;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+
+import com.parse.ParseObject;
+
 import java.text.SimpleDateFormat;
 
 
@@ -64,6 +67,15 @@ public class DAO_Jour extends DAO_Bdd {
 
         bdd.insert(TABLE, null, value);
         this.close();
+
+
+        //add on cloud
+        ParseObject Jour = new ParseObject("Jour");
+        Jour.put("nomJour", j.nomJour);
+        Jour.put("date", sdf.format(j.jour));
+        Jour.put("prixJournee", j.prixJournee);
+        Jour.put("sujetsToString", j.sujetsToString);
+        Jour.saveInBackground();
     }
 
 
@@ -104,6 +116,15 @@ public class DAO_Jour extends DAO_Bdd {
                 new String[]{String.valueOf(j.nomJour)}
         );
         this.close();
+    }
+
+    public void ajouterOUmodifier(C_Jour j) {
+        C_Jour dao_j = this.getJourById(j.nomJour);
+        if (dao_j != null) {
+            this.modifier(j);
+        } else {
+            this.ajouter(j);
+        }
     }
 
 

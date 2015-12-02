@@ -6,6 +6,9 @@ package com.mit.mit;
         import android.content.ContentValues;
         import android.content.Context;
         import android.database.Cursor;
+
+        import com.parse.ParseObject;
+
         import java.text.SimpleDateFormat;
 
 /**
@@ -63,8 +66,6 @@ public class DAO_Projet extends DAO_Bdd {
     public void ajouter(C_Projet p) {
         this.open();
 
-
-
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         ContentValues value = new ContentValues();
@@ -81,6 +82,19 @@ public class DAO_Projet extends DAO_Bdd {
 
         bdd.insert(TABLE, null, value);
         this.close();
+
+        //add on cloud
+        ParseObject Projet = new ParseObject("Projet");
+        Projet.put("nom", p.nom);
+        Projet.put("description", p.description);
+        Projet.put("dateDebut", sdf.format(p.dateDebut));
+        Projet.put("dateFin", sdf.format(p.dateFin));
+        Projet.put("prixSejour", p.prixSejour);
+        Projet.put("statut", p.statut);
+        Projet.put("participantsToString", p.participantsToString);
+        Projet.put("joursToString", p.joursToString);
+        Projet.put("couleur", p.couleur);
+        Projet.saveInBackground();
     }
 
 
@@ -126,6 +140,15 @@ public class DAO_Projet extends DAO_Bdd {
         this.close();
     }
 
+    public void ajouterOUmodifier(C_Projet p) {
+        C_Projet dao_p = this.getProjetById(p.id);
+        if (dao_p != null) {
+            this.modifier(p);
+        } else {
+            this.ajouter(p);
+        }
+    }
+
 
     /**
      *Return all projects in the bdd
@@ -139,7 +162,7 @@ public class DAO_Projet extends DAO_Bdd {
         Date datefin=new Date();
         Cursor cursor = bdd.query(
                 TABLE,
-                new String[] { ATTR_ID, ATTR_NOM, ATTR_DESCRIPTION, ATTR_DATEDEBUT, ATTR_DATEFIN, ATTR_PRIXSEJOUR, ATTR_STATUT, ATTR_PARTICIPANTS, ATTR_JOURS, ATTR_COULEUR },
+                new String[]{ATTR_ID, ATTR_NOM, ATTR_DESCRIPTION, ATTR_DATEDEBUT, ATTR_DATEFIN, ATTR_PRIXSEJOUR, ATTR_STATUT, ATTR_PARTICIPANTS, ATTR_JOURS, ATTR_COULEUR},
                 null,
                 null,
                 null,

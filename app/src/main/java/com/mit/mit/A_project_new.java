@@ -22,6 +22,8 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.parse.ParseObject;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -160,10 +162,13 @@ public class A_project_new extends MainActivity {
 
             //SAUVEGARDE
             daoProjet.ajouter(newprojet);
+
             for (C_Jour j:v_liste_jours)
             {
                 daoJour.ajouter(j);
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
+
+
             }
 
 

@@ -6,6 +6,8 @@ package com.mit.mit;
         import android.content.Context;
         import android.database.Cursor;
 
+        import com.parse.ParseObject;
+
 /**
  *DAO_Bdd : DAO main class
  *
@@ -60,6 +62,14 @@ public class DAO_Participant extends DAO_Bdd {
         value.put(ATTR_MDP, p.mdp);
         bdd.insert(TABLE, null, value);
         this.close();
+
+        //add on cloud
+        ParseObject Participant = new ParseObject("Participant");
+        Participant.put("nom", p.nom);
+        Participant.put("prenom", p.prenom);
+        Participant.put("mail", p.mail);
+        Participant.put("mdp", p.mdp);
+        Participant.saveInBackground();
     }
 
     /**
@@ -72,7 +82,7 @@ public class DAO_Participant extends DAO_Bdd {
         bdd.delete(
                 TABLE,
                 ATTR_ID + " = ?",
-                new String[] { String.valueOf(id) }
+                new String[]{String.valueOf(id)}
         );
 
         this.close();
@@ -95,10 +105,23 @@ public class DAO_Participant extends DAO_Bdd {
                 TABLE,
                 value,
                 ATTR_ID + " = ?",
-                new String[] { String.valueOf(p.id) }
+                new String[]{String.valueOf(p.id)}
         );
 
         this.close();
+    }
+
+    public void ajouterOUmodifier(C_Participant p){
+        C_Participant dao_p = this.getParticipantById(p.mail);
+        if(dao_p!=null)
+        {
+            this.modifier(p);
+        }
+        else
+        {
+            this.ajouter(p);
+        }
+
     }
 
     /**

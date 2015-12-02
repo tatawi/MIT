@@ -10,6 +10,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.parse.ParseObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class A_user_new extends MainActivity {
 
     //Objets de la page
@@ -79,15 +84,31 @@ public class A_user_new extends MainActivity {
                     lb_msg.setText("les mots de passes ne correspondent pas");
                 }
 
-                if(verifOK) {
-                    C_Participant newPart = new C_Participant(nom,prenom,mail,mdp);
+                C_Participant newPart = new C_Participant(nom,prenom,mail,mdp);
+                List<C_Participant> allParts = daoparticipant.getParticipants();
+                for(C_Participant p : allParts)
+                {
+                    if(p.mail.equals(mail))
+                    {
+                        verifOK=false;
+                    }
+                }
+
+                if(verifOK)
+                {
                     daoparticipant.ajouter(newPart);
+
                     Intent intent = new Intent(A_user_new.this, MainActivity.class);
                     startActivity(intent);
                 }
+                else
+                {
+                    lb_msg.setText("L'utilisateur existe déjà");
+                }
 
 
-            }
+                }
+
         });
     }
 
