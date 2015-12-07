@@ -116,40 +116,6 @@ public class C_Message {
     }
 
 
-//---------------------------------------------------------------------------------------
-//	BDD GESTION
-//---------------------------------------------------------------------------------------
-
-    /**
-     *Add class to DAO bdd
-     */
-    public void BDDajouter()
-    {
-        DAO_Message daoMessage = new DAO_Message(this.pContext);
-        listeToString();
-
-        daoMessage.ajouter(this);
-    }
-
-    /**
-     *Modify class in DAO bdd
-     */
-    public void BDDmodifier()
-    {
-        DAO_Message daoMessage = new DAO_Message(this.pContext);
-        listeToString();
-
-        daoMessage.modifier(this);
-    }
-
-    /**
-     *Remove class from DAO bdd
-     */
-    public void BDDsuprimer()
-    {
-        DAO_Message daoMessage = new DAO_Message(this.pContext);
-        daoMessage.supprimer(this.id);
-    }
 
 //---------------------------------------------------------------------------------------
 //	FONCTIONS PRIVATES 

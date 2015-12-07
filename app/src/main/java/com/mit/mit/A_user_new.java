@@ -96,7 +96,7 @@ public class A_user_new extends MainActivity {
 
                 if(verifOK)
                 {
-                    daoparticipant.ajouter(newPart);
+                    daoparticipant.ajouter(newPart, true);
 
                     Intent intent = new Intent(A_user_new.this, MainActivity.class);
                     startActivity(intent);

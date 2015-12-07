@@ -7,7 +7,10 @@ package com.mit.mit;
         import android.content.Context;
         import android.database.Cursor;
 
+        import com.parse.GetCallback;
+        import com.parse.ParseException;
         import com.parse.ParseObject;
+        import com.parse.ParseQuery;
 
         import java.text.SimpleDateFormat;
 
@@ -63,7 +66,7 @@ public class DAO_Projet extends DAO_Bdd {
      *Add an project in bdd
      *@param p			project to add
      */
-    public void ajouter(C_Projet p) {
+    public void ajouter(C_Projet p, boolean online) {
         this.open();
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -83,18 +86,22 @@ public class DAO_Projet extends DAO_Bdd {
         bdd.insert(TABLE, null, value);
         this.close();
 
-        //add on cloud
-        ParseObject Projet = new ParseObject("Projet");
-        Projet.put("nom", p.nom);
-        Projet.put("description", p.description);
-        Projet.put("dateDebut", sdf.format(p.dateDebut));
-        Projet.put("dateFin", sdf.format(p.dateFin));
-        Projet.put("prixSejour", p.prixSejour);
-        Projet.put("statut", p.statut);
-        Projet.put("participantsToString", p.participantsToString);
-        Projet.put("joursToString", p.joursToString);
-        Projet.put("couleur", p.couleur);
-        Projet.saveInBackground();
+        if (online)
+        {
+            //add on cloud
+            ParseObject Projet = new ParseObject("Projet");
+            Projet.put("nom", p.nom);
+            Projet.put("description", p.description);
+            Projet.put("dateDebut", sdf.format(p.dateDebut));
+            Projet.put("dateFin", sdf.format(p.dateFin));
+            Projet.put("prixSejour", p.prixSejour);
+            Projet.put("statut", p.statut);
+            Projet.put("participantsToString", p.participantsToString);
+            Projet.put("joursToString", p.joursToString);
+            Projet.put("couleur", p.couleur);
+            Projet.saveInBackground();
+        }
+
     }
 
 
@@ -111,6 +118,7 @@ public class DAO_Projet extends DAO_Bdd {
                 new String[]{id}
         );
         this.close();
+
     }
 
     /**
@@ -138,6 +146,30 @@ public class DAO_Projet extends DAO_Bdd {
                 new String[]{String.valueOf(p.nom)}
         );
         this.close();
+
+        //modif online
+        final C_Projet pr = p;
+        final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Projet");
+        query.whereEqualTo("nom", p.nom);
+        query.getFirstInBackground(new GetCallback<ParseObject>() {
+            public void done(ParseObject Projet, ParseException e) {
+                if (e == null) {
+                    // Now let's update it with some new data. In this case, only cheatMode and score
+                    // will get sent to the Parse Cloud. playerName hasn't changed.
+                    Projet.put("nom", pr.nom);
+                    Projet.put("description", pr.description);
+                    Projet.put("dateDebut", sdf.format(pr.dateDebut));
+                    Projet.put("dateFin", sdf.format(pr.dateFin));
+                    Projet.put("prixSejour", pr.prixSejour);
+                    Projet.put("statut", pr.statut);
+                    Projet.put("participantsToString", pr.participantsToString);
+                    Projet.put("joursToString", pr.joursToString);
+                    Projet.put("couleur", pr.couleur);
+                    Projet.saveInBackground();
+                }
+            }
+        });
     }
 
     public void ajouterOUmodifier(C_Projet p) {
@@ -145,7 +177,7 @@ public class DAO_Projet extends DAO_Bdd {
         if (dao_p != null) {
             this.modifier(p);
         } else {
-            this.ajouter(p);
+            this.ajouter(p, false);
         }
     }
 

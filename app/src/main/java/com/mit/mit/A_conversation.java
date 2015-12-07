@@ -181,7 +181,7 @@ public class A_conversation extends MainActivity {
 
 
             C_Message message = new C_Message(sujet.idSujet,new Date(), tb_message.getText().toString(), part);
-            daoMessage.ajouter(message);
+            daoMessage.ajouter(message, true);
 
             System.out.println("avant : " + sujet.messagesToString);
             System.out.println("list size : " + sujet.liste_messages.size());

@@ -6,7 +6,10 @@ package com.mit.mit;
         import android.content.Context;
         import android.database.Cursor;
 
+        import com.parse.GetCallback;
+        import com.parse.ParseException;
         import com.parse.ParseObject;
+        import com.parse.ParseQuery;
 
         import java.text.SimpleDateFormat;
         import java.util.Date;
@@ -67,7 +70,7 @@ public class DAO_Sujet extends DAO_Bdd {
      *Add an subject in bdd
      *@param s			subject to add
      */
-    public void ajouter(C_Sujet s) {
+    public void ajouter(C_Sujet s, boolean online) {
         this.open();
         String valide ="false";
         if(s.valide)
@@ -91,21 +94,28 @@ public class DAO_Sujet extends DAO_Bdd {
         bdd.insert(TABLE, null, value);
         this.close();
 
-        //add on cloud
-        ParseObject Sujet = new ParseObject("Sujet");
-        Sujet.put("idSujet", s.idSujet);
-        Sujet.put("titre", s.titre);
-        Sujet.put("description", s.description);
-        Sujet.put("type", s.type);
-        Sujet.put("localisation", s.localisation);
-        Sujet.put("heure", s.heure.toString());
-        Sujet.put("duree", s.duree);
-        Sujet.put("auFeeling", s.auFeeling);
-        Sujet.put("prix", s.prix);
-        Sujet.put("messagesToString",s.messagesToString);
-        Sujet.put("personnesAyantAccepteToString", s.personnesAyantAccepteToString);
-        Sujet.put("valide", valide);
-        Sujet.saveInBackground();
+        if (online) {
+            //add on cloud
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yy HH:mm:ss");
+            ParseObject Sujet = new ParseObject("Sujet");
+            Sujet.put("idSujet", s.idSujet);
+            Sujet.put("titre", s.titre);
+            Sujet.put("description", s.description);
+            Sujet.put("type", s.type);
+            Sujet.put("localisation", s.localisation);
+
+            System.out.println("heure av" + s.heure.toString());
+            System.out.println("heure ap"+ sdf.format(s.heure));
+
+            Sujet.put("heure", sdf.format(s.heure));
+            Sujet.put("duree", s.duree);
+            Sujet.put("auFeeling", s.auFeeling);
+            Sujet.put("prix", s.prix);
+            Sujet.put("messagesToString", s.messagesToString);
+            Sujet.put("personnesAyantAccepteToString", s.personnesAyantAccepteToString);
+            Sujet.put("valide", valide);
+            Sujet.saveInBackground();
+        }
     }
 
     /**
@@ -129,7 +139,7 @@ public class DAO_Sujet extends DAO_Bdd {
         if (dao_s != null) {
             this.modifier(s);
         } else {
-            this.ajouter(s);
+            this.ajouter(s, false);
         }
     }
 
@@ -165,6 +175,37 @@ public class DAO_Sujet extends DAO_Bdd {
         );
 
         this.close();
+
+
+        //modif online
+        final C_Sujet st = s;
+        final SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yy HH:mm:ss");
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Sujet");
+        query.whereEqualTo("idSujet", s.idSujet);
+        query.getFirstInBackground(new GetCallback<ParseObject>() {
+            public void done(ParseObject Sujet, ParseException e) {
+                if (e == null) {
+                    // Now let's update it with some new data. In this case, only cheatMode and score
+                    // will get sent to the Parse Cloud. playerName hasn't changed.
+                    Sujet.put("idSujet", st.idSujet);
+                    Sujet.put("titre", st.titre);
+                    Sujet.put("description", st.description);
+                    Sujet.put("type", st.type);
+                    Sujet.put("localisation", st.localisation);
+                    Sujet.put("heure", sdf.format(st.heure));
+                    Sujet.put("duree", st.duree);
+                    Sujet.put("auFeeling", st.auFeeling);
+                    Sujet.put("prix", st.prix);
+                    Sujet.put("messagesToString", st.messagesToString);
+                    Sujet.put("personnesAyantAccepteToString", st.personnesAyantAccepteToString);
+                    if(st.valide){Sujet.put("valide", "true");}
+                    else {Sujet.put("valide", "false");}
+
+                    Sujet.saveInBackground();
+                }
+            }
+        });
     }
 
     /**

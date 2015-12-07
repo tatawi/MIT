@@ -6,8 +6,12 @@ import java.util.List;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
+import com.parse.GetCallback;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import java.text.SimpleDateFormat;
 
@@ -55,7 +59,7 @@ public class DAO_Jour extends DAO_Bdd {
      *Add an day in bdd
      *@param j			day to add
      */
-    public void ajouter(C_Jour j) {
+    public void ajouter(C_Jour j, boolean online) {
         this.open();
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -68,14 +72,15 @@ public class DAO_Jour extends DAO_Bdd {
         bdd.insert(TABLE, null, value);
         this.close();
 
-
-        //add on cloud
-        ParseObject Jour = new ParseObject("Jour");
-        Jour.put("nomJour", j.nomJour);
-        Jour.put("date", sdf.format(j.jour));
-        Jour.put("prixJournee", j.prixJournee);
-        Jour.put("sujetsToString", j.sujetsToString);
-        Jour.saveInBackground();
+        if (online) {
+            //add on cloud
+            ParseObject Jour = new ParseObject("Jour");
+            Jour.put("nomJour", j.nomJour);
+            Jour.put("date", sdf.format(j.jour));
+            Jour.put("prixJournee", j.prixJournee);
+            Jour.put("sujetsToString", j.sujetsToString);
+            Jour.saveInBackground();
+        }
     }
 
 
@@ -103,7 +108,6 @@ public class DAO_Jour extends DAO_Bdd {
         this.open();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         ContentValues value = new ContentValues();
-        value.put(ATTR_ID, j.id);
         value.put(ATTR_NOMJOUR, j.nomJour);
         value.put(ATTR_DATE, formatter.format(j.jour));
         value.put(ATTR_PRIXJOURNEE, j.prixJournee);
@@ -116,115 +120,130 @@ public class DAO_Jour extends DAO_Bdd {
                 new String[]{String.valueOf(j.nomJour)}
         );
         this.close();
-    }
-
-    public void ajouterOUmodifier(C_Jour j) {
-        C_Jour dao_j = this.getJourById(j.nomJour);
-        if (dao_j != null) {
-            this.modifier(j);
-        } else {
-            this.ajouter(j);
-        }
-    }
 
 
-    /**
-     *Return all days in the bdd
-     *@return 		return a list of C_Jour containing all days
-     */
-    public List<C_Jour> getJours() {
-        this.open();
-        List<C_Jour> liste_jours=new ArrayList<C_Jour>();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        Date day = new Date();
-        Cursor cursor = bdd.query(
-                TABLE,
-                new String[] { ATTR_ID, ATTR_NOMJOUR, ATTR_DATE, ATTR_PRIXJOURNEE, ATTR_SUJETS },
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-
-        for (cursor.moveToFirst() ; !cursor.isAfterLast() ; cursor.moveToNext())
+        //modif online
+        final C_Jour jr = j;
+        final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Jour");
+        query.whereEqualTo("nomJour", j.nomJour);
+        query.getFirstInBackground(new GetCallback<ParseObject>()
         {
-            try {
-                day = formatter.parse(cursor.getString(cursor.getColumnIndex(ATTR_DATE)));
-            }
-            catch(Exception e)
+            public void done(ParseObject Jour, ParseException e)
             {
-                System.out.println("))ERROR warking with date: " +cursor.getString(cursor.getColumnIndex(ATTR_DATE)));
-            }
+                if (e == null)
+                {
+                    // Now let's update it with some new data. In this case, only cheatMode and score
+                    // will get sent to the Parse Cloud. playerName hasn't changed.
+                    Jour.put("nomJour", jr.nomJour);
+                    Jour.put("date", sdf.format(jr.jour));
+                    Jour.put("prixJournee", jr.prixJournee);
+                    Jour.put("sujetsToString", jr.sujetsToString);
+                    Jour.saveInBackground();
+                    }
+                }
+            });
 
-            liste_jours.add(
-                    new C_Jour(
-                            cursor.getInt(cursor.getColumnIndex(ATTR_ID)),
-                            cursor.getString(cursor.getColumnIndex(ATTR_NOMJOUR)),
-                            day,
-                            cursor.getFloat(cursor.getColumnIndex(ATTR_PRIXJOURNEE)),
-                            cursor.getString(cursor.getColumnIndex(ATTR_SUJETS))
-                    )
-            );
-        }
-        this.close();
-        cursor.close();
-        return liste_jours;
+
+
     }
 
+                public void ajouterOUmodifier(C_Jour j) {
+                    C_Jour dao_j = this.getJourById(j.nomJour);
+                    if (dao_j != null) {
+                        this.modifier(j);
+                    } else {
+                        this.ajouter(j, false);
+                    }
+                }
 
 
-    /**
-     *Get one day from the bdd
-     *@param id			day's id to got
-     *@return 			return the day with the id
-     */
-    public C_Jour getJourById(String id) {
-        this.open();
-        C_Jour p = null;
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        Date day = new Date();
-        Cursor cursor = bdd.query(
-                TABLE,
-                new String[] { ATTR_ID, ATTR_NOMJOUR, ATTR_DATE, ATTR_PRIXJOURNEE, ATTR_SUJETS },
-                ATTR_NOMJOUR + " = ?",
-                new String[] { id },
-                null,
-                null,
-                null,
-                null
-        );
+                /**
+                 *Return all days in the bdd
+                 *@return return a list of C_Jour containing all days
+                 */
+                public List<C_Jour> getJours() {
+                    this.open();
+                    List<C_Jour> liste_jours = new ArrayList<C_Jour>();
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                    Date day = new Date();
+                    Cursor cursor = bdd.query(
+                            TABLE,
+                            new String[]{ATTR_ID, ATTR_NOMJOUR, ATTR_DATE, ATTR_PRIXJOURNEE, ATTR_SUJETS},
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null
+                    );
 
-        for (cursor.moveToFirst() ; !cursor.isAfterLast() ; cursor.moveToNext())
-        {
-            try {
-                day = formatter.parse(cursor.getString(cursor.getColumnIndex(ATTR_DATE)));
+                    for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                        try {
+                            day = formatter.parse(cursor.getString(cursor.getColumnIndex(ATTR_DATE)));
+                        } catch (Exception e) {
+                            System.out.println("))ERROR warking with date: " + cursor.getString(cursor.getColumnIndex(ATTR_DATE)));
+                        }
+
+                        liste_jours.add(
+                                new C_Jour(
+                                        cursor.getInt(cursor.getColumnIndex(ATTR_ID)),
+                                        cursor.getString(cursor.getColumnIndex(ATTR_NOMJOUR)),
+                                        day,
+                                        cursor.getFloat(cursor.getColumnIndex(ATTR_PRIXJOURNEE)),
+                                        cursor.getString(cursor.getColumnIndex(ATTR_SUJETS))
+                                )
+                        );
+                    }
+                    this.close();
+                    cursor.close();
+                    return liste_jours;
+                }
+
+
+                /**
+                 *Get one day from the bdd
+                 *@param id            day's id to got
+                 *@return return the day with the id
+                 */
+                public C_Jour getJourById(String id) {
+                    this.open();
+                    C_Jour p = null;
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                    Date day = new Date();
+                    Cursor cursor = bdd.query(
+                            TABLE,
+                            new String[]{ATTR_ID, ATTR_NOMJOUR, ATTR_DATE, ATTR_PRIXJOURNEE, ATTR_SUJETS},
+                            ATTR_NOMJOUR + " = ?",
+                            new String[]{id},
+                            null,
+                            null,
+                            null,
+                            null
+                    );
+
+                    for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                        try {
+                            day = formatter.parse(cursor.getString(cursor.getColumnIndex(ATTR_DATE)));
+                        } catch (Exception e) {
+                            System.out.println("))ERROR warking with date: " + cursor.getString(cursor.getColumnIndex(ATTR_DATE)));
+                        }
+
+                        p = new C_Jour(
+                                cursor.getInt(cursor.getColumnIndex(ATTR_ID)),
+                                cursor.getString(cursor.getColumnIndex(ATTR_NOMJOUR)),
+                                day,
+                                cursor.getFloat(cursor.getColumnIndex(ATTR_PRIXJOURNEE)),
+                                cursor.getString(cursor.getColumnIndex(ATTR_SUJETS))
+                        );
+                    }
+                    this.close();
+                    cursor.close();
+                    return p;
+                }
+
+
             }
-            catch(Exception e)
-            {
-                System.out.println("))ERROR warking with date: " +cursor.getString(cursor.getColumnIndex(ATTR_DATE)));
-            }
-
-            p=new C_Jour(
-                    cursor.getInt(cursor.getColumnIndex(ATTR_ID)),
-                    cursor.getString(cursor.getColumnIndex(ATTR_NOMJOUR)),
-                    day,
-                    cursor.getFloat(cursor.getColumnIndex(ATTR_PRIXJOURNEE)),
-                    cursor.getString(cursor.getColumnIndex(ATTR_SUJETS))
-            );
-        }
-        this.close();
-        cursor.close();
-        return p;
-    }
-
-
-
-
-
-
-}
 
 
 

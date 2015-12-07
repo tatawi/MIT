@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText tb_userID;
     private EditText tb_mdp;
 
+
     private Button btn_co1;
     private Button btn_co2;
 
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private String userID;
     private String mdp;
     protected  C_Participant me;
+    protected boolean onlineMode;
 
 
     @Override
@@ -56,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         tb_userID= (EditText) findViewById(R.id.main_tb_user);
         tb_mdp= (EditText) findViewById(R.id.main_tb_mdp);
 
+
+
         btn_co1 = (Button) findViewById(R.id.button3);
         btn_co2 = (Button) findViewById(R.id.button4);
 
@@ -67,15 +72,14 @@ public class MainActivity extends AppCompatActivity {
         btn_co2.setOnClickListener(onco2);
 
 
+
         // Enable Local Datastore
         try {
             Parse.enableLocalDatastore(this);
             Parse.initialize(this, "ZyJ90wtX8SyHiJOBCztcGaAaxLRUyI3JZD4vUptQ", "CZYG6VU5JwXdOe5D4l8i2hWzAqmjKZZa3CeGtAYs");
 
-
             updateUserList();
             MajDAO();
-
 
         }
         catch (Exception ex)
@@ -85,156 +89,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-    private void updateUserList()
-    {
-
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Participant");
-        try
-        {
-            List<ParseObject> usersList = query.find();
-            System.out.println("--load users : " + usersList.size());
-            for(ParseObject parse : usersList)
-            {
-                String nom = parse.getString("nom");
-                String prenom = parse.getString("prenom");
-                String mail = parse.getString("mail");
-                String mdp = parse.getString("mdp");
-                C_Participant part = new C_Participant(nom, prenom, mail, mdp);
-                System.out.println("--part find : " + part.mail);
-
-                daoparticipant.ajouterOUmodifier(part);
-            }
-        }
-        catch (ParseException ex)
-        {
-            Log.e("Error", ex.getMessage());
-            ex.printStackTrace();
-        }
-    }
-
-    protected void MajDAO()
-    {
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Participant");
-        try
-        {
-            //WORK WITH PROJECTS
-            List<ParseObject> projectsList = query.find();
-            System.out.println("--load projects : " + projectsList.size());
-            for(ParseObject parse : projectsList)
-            {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                C_Projet proj = new C_Projet();
-
-                proj.nom=parse.getString("nom");
-                proj.description=parse.getString("description");
-                proj.prixSejour=(float)parse.getLong("prixSejour");
-                proj.statut=parse.getString("statut");
-                proj.participantsToString=parse.getString("participantsToString");
-                proj.joursToString=parse.getString("joursToString");
-                proj.couleur=parse.getString("couleur");
-
-                try {
-                    proj.dateDebut=sdf.parse(parse.getString("dateDebut"));
-                    proj.dateFin=sdf.parse(parse.getString("dateFin"));
-                }
-                catch (java.text.ParseException e) {
-                        e.printStackTrace();
-                }
-                daoProjet.ajouterOUmodifier(proj);
-            }
-
-
-            //WORK WITH DAYS
-            List<ParseObject> jourList = query.find();
-            System.out.println("--load days : " + jourList.size());
-            for(ParseObject parse : jourList)
-            {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
-                C_Jour jour = new C_Jour();
-
-                jour.nomJour=parse.getString("nomJour");
-                jour.prixJournee=(float)parse.getLong("prixJournee");
-                jour.sujetsToString=parse.getString("sujetsToString");
-                try {
-                    jour.jour=sdf.parse(parse.getString("date"));
-                }
-                catch (java.text.ParseException e) {
-                    e.printStackTrace();
-                }
-                daoJour.ajouterOUmodifier(jour);
-            }
-
-            //WORK WITH SUBJECTS
-            List<ParseObject> subjectList = query.find();
-            System.out.println("--load subjects : " + subjectList.size());
-            for(ParseObject parse : subjectList)
-            {
-                SimpleDateFormat sdf = new SimpleDateFormat("HH:MM");
-                C_Sujet sujet = new C_Sujet();
-
-                sujet.idSujet=parse.getString("idSujet");
-                sujet.titre=parse.getString("titre");
-                sujet.description=parse.getString("description");
-                sujet.type=parse.getString("type");
-                sujet.localisation=parse.getString("localisation");
-                sujet.duree=parse.getInt("duree");
-                sujet.prix=parse.getDouble("prix");
-                sujet.messagesToString=parse.getString("messagesToString");
-                sujet.personnesAyantAccepteToString=parse.getString("personnesAyantAccepteToString");
-                if (parse.getString("valide").equals("true"))
-                {sujet.valide=true;}
-                else
-                {sujet.valide=false;}
-
-                if (parse.getString("auFeeling").equals("true"))
-                {sujet.auFeeling=true;}
-                else
-                {sujet.auFeeling=false;}
-
-                try {
-                    sujet.heure=sdf.parse(parse.getString("heure"));
-                }
-                catch (java.text.ParseException e) {
-                    e.printStackTrace();
-                }
-
-                daoSujet.ajouterOUmodifier(sujet);
-            }
-
-
-            //WORK WITH MESSAGES
-            List<ParseObject> messageList = query.find();
-            System.out.println("--load messages : " + messageList.size());
-            for(ParseObject parse : messageList)
-            {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yy HH:mm");
-                C_Message mess = new C_Message();
-
-                mess.id=parse.getString("id");
-                mess.message=parse.getString("message");
-                mess.id_participantEmetteur=parse.getString("id_participantEmetteur");
-                mess.personnesAyantVuesToString=parse.getString("personnesAyantVuesToString");
-
-                try {
-                    mess.heure=sdf.parse(parse.getString("heure"));
-                }
-                catch (java.text.ParseException e) {
-                    e.printStackTrace();
-                }
-                daoMessage.ajouterOUmodifier(mess);
-
-
-            }
-
-        }
-        catch (ParseException ex)
-        {
-            Log.e("Error", ex.getMessage());
-            ex.printStackTrace();
-        }
-
-    }
 
 
 
@@ -261,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
             try
             {
+
                 me=daoparticipant.getParticipantById(tb_userID.getText().toString());
                 if(me.mdp.equals(tb_mdp.getText().toString()))
                 {
@@ -335,6 +190,177 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, A_gestionParticipants.class);
             startActivity(intent);
         }
+
+        //ON REFRESH
+        if(id==R.id.menu_sujet_refresh)
+        {
+            updateUserList();
+            MajDAO();
+        }
         return super.onOptionsItemSelected(item);
     }
+
+
+
+//---------------------------------------------------------------------------------------
+//	FONCTIONS
+//---------------------------------------------------------------------------------------
+
+    private void updateUserList()
+    {
+
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Participant");
+        try
+        {
+            List<ParseObject> usersList = query.find();
+            System.out.println("--load users : " + usersList.size());
+            for(ParseObject parse : usersList)
+            {
+                String nom = parse.getString("nom");
+                String prenom = parse.getString("prenom");
+                String mail = parse.getString("mail");
+                String mdp = parse.getString("mdp");
+                C_Participant part = new C_Participant(nom, prenom, mail, mdp);
+                System.out.println("--part find : " + part.mail);
+
+                daoparticipant.ajouterOUmodifier(part);
+            }
+        }
+        catch (ParseException ex)
+        {
+            Log.e("Error", ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+
+    protected void MajDAO()
+    {
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Projet");
+        try
+        {
+            //WORK WITH PROJECTS
+            List<ParseObject> projectsList = query.find();
+            System.out.println("--load projects : " + projectsList.size());
+            for(ParseObject parse : projectsList)
+            {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                C_Projet proj = new C_Projet();
+
+                proj.nom=parse.getString("nom");
+                proj.description=parse.getString("description");
+                proj.prixSejour=(float)parse.getLong("prixSejour");
+                proj.statut=parse.getString("statut");
+                proj.participantsToString=parse.getString("participantsToString");
+                proj.joursToString=parse.getString("joursToString");
+                proj.couleur=parse.getString("couleur");
+
+                try {
+                    proj.dateDebut=sdf.parse(parse.getString("dateDebut"));
+                    proj.dateFin=sdf.parse(parse.getString("dateFin"));
+                }
+                catch (java.text.ParseException e) {
+                    e.printStackTrace();
+                }
+                daoProjet.ajouterOUmodifier(proj);
+            }
+
+
+            //WORK WITH DAYS
+            query = new ParseQuery<ParseObject>("Jour");
+            List<ParseObject> jourList = query.find();
+            System.out.println("--load days : " + jourList.size());
+            for(ParseObject parse : jourList)
+            {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
+                C_Jour jour = new C_Jour();
+
+                jour.nomJour=parse.getString("nomJour");
+                jour.prixJournee=(float)parse.getLong("prixJournee");
+                jour.sujetsToString=parse.getString("sujetsToString");
+                try {
+                    jour.jour=sdf.parse(parse.getString("date"));
+                }
+                catch (java.text.ParseException e) {
+                    e.printStackTrace();
+                }
+                daoJour.ajouterOUmodifier(jour);
+            }
+
+            //WORK WITH SUBJECTS
+            query = new ParseQuery<ParseObject>("Sujet");
+            List<ParseObject> subjectList = query.find();
+            System.out.println("--load subjects : " + subjectList.size());
+            for(ParseObject parse : subjectList)
+            {
+                //SimpleDateFormat sdf = new SimpleDateFormat("HH:MM");
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yy HH:mm:ss");
+                C_Sujet sujet = new C_Sujet();
+
+                sujet.idSujet=parse.getString("idSujet");
+                sujet.titre=parse.getString("titre");
+                sujet.description=parse.getString("description");
+                sujet.type=parse.getString("type");
+                sujet.localisation=parse.getString("localisation");
+                sujet.duree=parse.getInt("duree");
+                sujet.prix=parse.getDouble("prix");
+                sujet.messagesToString=parse.getString("messagesToString");
+                sujet.personnesAyantAccepteToString=parse.getString("personnesAyantAccepteToString");
+                sujet.auFeeling=parse.getBoolean("auFeeling");
+
+                if (parse.getString("valide").equals("true"))
+                {sujet.valide=true;}
+                else
+                {sujet.valide=false;}
+
+                try {
+                    sujet.heure=sdf.parse(parse.getString("heure"));
+                }
+                catch (java.text.ParseException e) {
+                    e.printStackTrace();
+                }
+                daoSujet.ajouterOUmodifier(sujet);
+            }
+
+
+            //WORK WITH MESSAGES
+            query = new ParseQuery<ParseObject>("Message");
+            List<ParseObject> messageList = query.find();
+            System.out.println("--load messages : " + messageList.size());
+            for(ParseObject parse : messageList)
+            {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yy HH:mm");
+                C_Message mess = new C_Message();
+
+                mess.id=parse.getString("id");
+                mess.message=parse.getString("message");
+                mess.id_participantEmetteur=parse.getString("id_participantEmetteur");
+                mess.personnesAyantVuesToString=parse.getString("personnesAyantVuesToString");
+
+                try {
+                    mess.heure=sdf.parse(parse.getString("heure"));
+                }
+                catch (java.text.ParseException e) {
+                    e.printStackTrace();
+                }
+                daoMessage.ajouterOUmodifier(mess);
+
+                System.out.println("--msg : " + mess.id);
+                C_Message mss = daoMessage.getMessageById(mess.id);
+
+                System.out.println("--new msg : " + mss.id);
+
+            }
+
+        }
+        catch (ParseException ex)
+        {
+            Log.e("Error", ex.getMessage());
+            ex.printStackTrace();
+        }
+
+    }
+
+
+
+
 }

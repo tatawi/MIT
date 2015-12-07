@@ -184,7 +184,7 @@ public class A_sujet_new extends MainActivity {
             sujet.listeToString();
 
             //save sujet
-            daoSujet.ajouter(sujet);
+            daoSujet.ajouter(sujet, true);
 
             //maj jour
             day.liste_sujets.add(sujet);

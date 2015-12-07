@@ -6,7 +6,10 @@ package com.mit.mit;
         import android.content.Context;
         import android.database.Cursor;
 
+        import com.parse.GetCallback;
+        import com.parse.ParseException;
         import com.parse.ParseObject;
+        import com.parse.ParseQuery;
 
 /**
  *DAO_Bdd : DAO main class
@@ -51,7 +54,7 @@ public class DAO_Participant extends DAO_Bdd {
      *Add an user in bdd
      *@param p			User to add
      */
-    public void ajouter(C_Participant p) {
+    public void ajouter(C_Participant p, boolean online) {
         this.open();
 
         ContentValues value = new ContentValues();
@@ -63,13 +66,15 @@ public class DAO_Participant extends DAO_Bdd {
         bdd.insert(TABLE, null, value);
         this.close();
 
-        //add on cloud
-        ParseObject Participant = new ParseObject("Participant");
-        Participant.put("nom", p.nom);
-        Participant.put("prenom", p.prenom);
-        Participant.put("mail", p.mail);
-        Participant.put("mdp", p.mdp);
-        Participant.saveInBackground();
+        if (online) {
+            //add on cloud
+            ParseObject Participant = new ParseObject("Participant");
+            Participant.put("nom", p.nom);
+            Participant.put("prenom", p.prenom);
+            Participant.put("mail", p.mail);
+            Participant.put("mdp", p.mdp);
+            Participant.saveInBackground();
+        }
     }
 
     /**
@@ -109,6 +114,25 @@ public class DAO_Participant extends DAO_Bdd {
         );
 
         this.close();
+
+        //modif online
+        final C_Participant pt = p;
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Participant");
+        query.whereEqualTo("mail", p.mail);
+        query.getFirstInBackground(new GetCallback<ParseObject>() {
+            public void done(ParseObject Participant, ParseException e) {
+                if (e == null) {
+                    // Now let's update it with some new data. In this case, only cheatMode and score
+                    // will get sent to the Parse Cloud. playerName hasn't changed.
+                    Participant.put("nom", pt.nom);
+                    Participant.put("prenom", pt.prenom);
+                    Participant.put("mail", pt.mail);
+                    Participant.put("mdp", pt.mdp);
+                    Participant.saveInBackground();
+                }
+            }
+        });
+
     }
 
     public void ajouterOUmodifier(C_Participant p){
@@ -119,7 +143,7 @@ public class DAO_Participant extends DAO_Bdd {
         }
         else
         {
-            this.ajouter(p);
+            this.ajouter(p, false);
         }
 
     }
