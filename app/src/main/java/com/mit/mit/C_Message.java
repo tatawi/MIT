@@ -55,6 +55,8 @@ public class C_Message {
         this.id_participantEmetteur = emetteur.mail;
         this.personnesAyantVuesToString = "";
         this.liste_personnesAyantVues= new ArrayList<C_Participant>();
+
+        this.vuPar(emetteur);
     }
 
     /**
@@ -113,6 +115,12 @@ public class C_Message {
             }
         }
         return false;
+    }
+
+    public void vuPar(C_Participant p)
+    {
+        this.liste_personnesAyantVues.add(p);
+        this.listeToString();
     }
 
 

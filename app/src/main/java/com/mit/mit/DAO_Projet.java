@@ -84,12 +84,14 @@ public class DAO_Projet extends DAO_Bdd {
         value.put(ATTR_COULEUR, p.couleur);
 
         bdd.insert(TABLE, null, value);
+        System.out.println("*- ajouté");
         this.close();
 
         if (online)
         {
             //add on cloud
             ParseObject Projet = new ParseObject("Projet");
+            Projet.put("id", p.id);
             Projet.put("nom", p.nom);
             Projet.put("description", p.description);
             Projet.put("dateDebut", sdf.format(p.dateDebut));
@@ -143,7 +145,7 @@ public class DAO_Projet extends DAO_Bdd {
                 TABLE,
                 value,
                 ATTR_ID + " = ?",
-                new String[]{String.valueOf(p.nom)}
+                new String[]{String.valueOf(p.id)}
         );
         this.close();
 
@@ -151,7 +153,7 @@ public class DAO_Projet extends DAO_Bdd {
         final C_Projet pr = p;
         final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Projet");
-        query.whereEqualTo("nom", p.nom);
+        query.whereEqualTo("id", p.id);
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             public void done(ParseObject Projet, ParseException e) {
                 if (e == null) {
@@ -173,10 +175,39 @@ public class DAO_Projet extends DAO_Bdd {
     }
 
     public void ajouterOUmodifier(C_Projet p) {
-        C_Projet dao_p = this.getProjetById(p.id);
+        System.out.println("**working with :" + p.nom);
+        C_Projet dao_p = this.getProjetByName(p.nom);
         if (dao_p != null) {
-            this.modifier(p);
-        } else {
+            System.out.println("**existe : modifications");
+            System.out.println("**titre :" + dao_p.nom);
+            System.out.println("**str :" + dao_p.toString());
+
+
+            this.open();
+
+            ContentValues value = new ContentValues();
+            value.put(ATTR_NOM, p.nom);
+            value.put(ATTR_DESCRIPTION, p.description);
+            value.put(ATTR_DATEDEBUT, p.dateDebut.toString());
+            value.put(ATTR_DATEFIN, p.dateFin.toString());
+            value.put(ATTR_PRIXSEJOUR, p.prixSejour);
+            value.put(ATTR_STATUT, p.statut);
+            value.put(ATTR_PARTICIPANTS, p.participantsToString);
+            value.put(ATTR_JOURS, p.joursToString);
+            value.put(ATTR_COULEUR, p.couleur);
+
+            bdd.update(
+                    TABLE,
+                    value,
+                    ATTR_ID + " = ?",
+                    new String[]{String.valueOf(p.nom)}
+            );
+            this.close();
+
+
+        }
+        else {
+            System.out.println("**ajout dans bdd interne");
             this.ajouter(p, false);
         }
     }

@@ -236,16 +236,18 @@ public class MainActivity extends AppCompatActivity {
     protected void MajDAO()
     {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Projet");
+        System.out.println("--CHARGEMENT INTERNET : " );
         try
         {
             //WORK WITH PROJECTS
             List<ParseObject> projectsList = query.find();
-            System.out.println("--load projects : " + projectsList.size());
+            System.out.println("--[projects] available to download : " + projectsList.size());
             for(ParseObject parse : projectsList)
             {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                 C_Projet proj = new C_Projet();
 
+                proj.id=parse.getInt("id");
                 proj.nom=parse.getString("nom");
                 proj.description=parse.getString("description");
                 proj.prixSejour=(float)parse.getLong("prixSejour");
@@ -262,13 +264,17 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 daoProjet.ajouterOUmodifier(proj);
+                System.out.println("--[projects] " + proj.nom);
+                System.out.println("--[projects] - participants " + proj.participantsToString.toString());
+                System.out.println("--[projects] - jours " + proj.joursToString.toString());
+
             }
 
 
             //WORK WITH DAYS
             query = new ParseQuery<ParseObject>("Jour");
             List<ParseObject> jourList = query.find();
-            System.out.println("--load days : " + jourList.size());
+            System.out.println("--[jours] available to download : " + jourList.size());
             for(ParseObject parse : jourList)
             {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
@@ -284,12 +290,14 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 daoJour.ajouterOUmodifier(jour);
+                System.out.println("--[jours] " + jour.nomJour);
+                System.out.println("--[jours] - sujets " + jour.sujetsToString.toString());
             }
 
             //WORK WITH SUBJECTS
             query = new ParseQuery<ParseObject>("Sujet");
             List<ParseObject> subjectList = query.find();
-            System.out.println("--load subjects : " + subjectList.size());
+            System.out.println("--[sujet] available to download : " + subjectList.size());
             for(ParseObject parse : subjectList)
             {
                 //SimpleDateFormat sdf = new SimpleDateFormat("HH:MM");
@@ -319,13 +327,16 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 daoSujet.ajouterOUmodifier(sujet);
+                System.out.println("--[sujet] " + sujet.titre);
+                System.out.println("--[sujet] - messages " + sujet.messagesToString.toString());
+                System.out.println("--[sujet] - ayant acceptés " + sujet.personnesAyantAccepteToString.toString());
             }
 
 
             //WORK WITH MESSAGES
             query = new ParseQuery<ParseObject>("Message");
             List<ParseObject> messageList = query.find();
-            System.out.println("--load messages : " + messageList.size());
+            System.out.println("--[messages] available to download : " + messageList.size());
             for(ParseObject parse : messageList)
             {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yy HH:mm");
@@ -348,6 +359,9 @@ public class MainActivity extends AppCompatActivity {
                 C_Message mss = daoMessage.getMessageById(mess.id);
 
                 System.out.println("--new msg : " + mss.id);
+                System.out.println("--[messages] " + mess.id);
+                System.out.println("--[messages] - emetteur " + mess.id_participantEmetteur);
+                System.out.println("--[messages] - ayant vu " + mess.personnesAyantVuesToString.toString());
 
             }
 
@@ -357,6 +371,15 @@ public class MainActivity extends AppCompatActivity {
             Log.e("Error", ex.getMessage());
             ex.printStackTrace();
         }
+
+        System.out.println("END IMPORT");
+        List<C_Projet>li = daoProjet.getProjets();
+        System.out.println(li.size() +"projets disponibles");
+        for (C_Projet pj:li)
+        {
+            System.out.println("- "+pj.nom);
+        }
+
 
     }
 

@@ -154,7 +154,7 @@ public class A_project_new extends MainActivity {
 
 
             //CREATION DU PROJET
-            C_Projet newprojet=new C_Projet(pContext, v_nom, v_description, v_dateDebut, v_dateFin,v_couleur);
+            C_Projet newprojet=new C_Projet(v_nom, v_description, v_dateDebut, v_dateFin,v_couleur);
             newprojet.setListe_jours(v_liste_jours);
             newprojet.setListe_participants(v_liste_participantsProjet);
             newprojet.listeToString();

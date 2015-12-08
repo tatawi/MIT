@@ -99,8 +99,8 @@ public class A_sujet_new extends MainActivity {
         sw_moins.setChecked(false);
         sb_hour.setProgress(12);
         sb_min.setProgress(0);
-        sb_duree.setProgress(60);
-
+        lb_time.setText("12h00");
+        lb_time.setText("00h00");
 
 
         //listeners
@@ -181,7 +181,16 @@ public class A_sujet_new extends MainActivity {
             sujet.auFeeling=false;
             sujet.valide=false;
             sujet.personnesAyantAccepte.add(partAcutel);
-            sujet.listeToString();
+
+
+
+
+            //création du premier message auto
+            C_Message message = new C_Message(sujet.idSujet, new Date(), "Création du sujet", partAcutel);
+            daoMessage.ajouter(message, true);
+            sujet.liste_messages.add(message);
+
+
 
             //save sujet
             daoSujet.ajouter(sujet, true);
@@ -190,6 +199,14 @@ public class A_sujet_new extends MainActivity {
             day.liste_sujets.add(sujet);
             day.listeToString();
             daoJour.modifier(day);
+
+
+
+
+
+
+
+
 
             //retour activité
             Intent intent = new Intent(A_sujet_new.this, A_jour_Preparation.class);

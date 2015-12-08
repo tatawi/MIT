@@ -43,11 +43,10 @@ public class C_Projet {
      *@param dateFin			End date
      *@param couleur			couleur
      */
-    public C_Projet( Context pContext, String nom, String description, Date dateDebut, Date dateFin, String couleur)
+    public C_Projet( String nom, String description, Date dateDebut, Date dateFin, String couleur)
     {
         super();
-        this.pContext= pContext;
-        this.id=setID(nom);
+        this.id=setID();
         this.nom = nom;
         this.description = description;
         this.dateDebut = dateDebut;
@@ -70,7 +69,7 @@ public class C_Projet {
     {
         super();
         this.pContext= pContext;
-        this.id=setID(nom);
+        this.id=setID();
         this.nom = nom;
         this.description = description;
         this.dateDebut = dateDebut;
@@ -220,9 +219,9 @@ public class C_Projet {
 
 
 
-    private int setID(String stringID)
+    private int setID()
     {
-        int i=0;
+       /* int i=0;
         int ascii=0;
         while( i < stringID.length())
         {
@@ -230,7 +229,10 @@ public class C_Projet {
             ascii =ascii+ (int) character;
             i++;
         }
-        return ascii;
+        return ascii;*/
+
+        return (int) (new Date().getTime()/1000);
+
     }
 
 
