@@ -361,7 +361,7 @@ public class A_project_new extends MainActivity {
         Date jourEnCour=debut;
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM");
 
-        for(int i=0; i<getDaysBetweenDates(debut, fin); i++)
+        for(int i=0; i<=getDaysBetweenDates(debut, fin); i++)
         {
             //sdf = new SimpleDateFormat("dd-MM");
             C_Jour jour = new C_Jour(v_nom+"_"+sdf.format(jourEnCour), jourEnCour);

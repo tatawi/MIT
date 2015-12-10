@@ -351,6 +351,7 @@ public class MainActivity extends AppCompatActivity {
                     mess.heure=sdf.parse(parse.getString("heure"));
                 }
                 catch (java.text.ParseException e) {
+                    System.out.println("--error : " + e.getMessage());
                     e.printStackTrace();
                 }
                 daoMessage.ajouterOUmodifier(mess);

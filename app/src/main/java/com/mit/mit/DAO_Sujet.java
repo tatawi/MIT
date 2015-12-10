@@ -70,7 +70,9 @@ public class DAO_Sujet extends DAO_Bdd {
      *Add an subject in bdd
      *@param s			subject to add
      */
-    public void ajouter(C_Sujet s, boolean online) {
+    public void ajouter(C_Sujet s, boolean online)
+    {
+        //LOCAL
         this.open();
         String valide ="false";
         if(s.valide)
@@ -94,8 +96,9 @@ public class DAO_Sujet extends DAO_Bdd {
         bdd.insert(TABLE, null, value);
         this.close();
 
-        if (online) {
-            //add on cloud
+        //ONLINE
+        if (online)
+        {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yy HH:mm:ss");
             ParseObject Sujet = new ParseObject("Sujet");
             Sujet.put("idSujet", s.idSujet);
@@ -103,10 +106,6 @@ public class DAO_Sujet extends DAO_Bdd {
             Sujet.put("description", s.description);
             Sujet.put("type", s.type);
             Sujet.put("localisation", s.localisation);
-
-            System.out.println("heure av" + s.heure.toString());
-            System.out.println("heure ap"+ sdf.format(s.heure));
-
             Sujet.put("heure", sdf.format(s.heure));
             Sujet.put("duree", s.duree);
             Sujet.put("auFeeling", s.auFeeling);
@@ -122,19 +121,48 @@ public class DAO_Sujet extends DAO_Bdd {
      *Delete an subject in bdd
      *@param id			subject'id to delete
      */
-    public void supprimer(String id) {
-        this.open();
+    public void supprimer(String id)
+    {
+        try
+        {
+            //LOCAL
+            this.open();
 
-        bdd.delete(
-                TABLE,
-                ATTR_IDSUJET + " = ?",
-                new String[] { id }
-        );
+            bdd.delete(
+                    TABLE,
+                    ATTR_IDSUJET + " = ?",
+                    new String[] { id }
+            );
 
-        this.close();
+            this.close();
+
+            //ONLINE
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Sujet");
+            query.whereEqualTo("idSujet", id);
+            query.getFirstInBackground(new GetCallback<ParseObject>() {
+                public void done(ParseObject Sujet, ParseException e) {
+                    try {
+                        if (e == null) {
+                            Sujet.delete();
+                            Sujet.saveInBackground();
+                        }
+                    } catch (ParseException ex) {
+                        System.out.println("[PARSE ERROR] : " + ex.getMessage());
+                    }
+                }
+            });
+        }
+        catch (Exception ex)
+        {System.out.println("[ERROR] : " +ex.getMessage());}
     }
 
-    public void ajouterOUmodifier(C_Sujet s) {
+
+    /**
+     *Add or modify a subject if exists
+     *@param s			subject to add or modify
+     */
+    public void ajouterOUmodifier(C_Sujet s)
+    {
         C_Sujet dao_s = this.getSujetById(s.idSujet);
         if (dao_s != null) {
             this.modifier(s);
@@ -147,7 +175,9 @@ public class DAO_Sujet extends DAO_Bdd {
      *Delete an subject in bdd
      *@param s			subject to edit
      */
-    public void modifier(C_Sujet s) {
+    public void modifier(C_Sujet s)
+    {
+        //LOCAL
         this.open();
         String valide ="false";
         if(s.valide)
@@ -173,11 +203,9 @@ public class DAO_Sujet extends DAO_Bdd {
                 ATTR_IDSUJET + " = ?",
                 new String[]{String.valueOf(s.idSujet)}
         );
-
         this.close();
 
-
-        //modif online
+        //ONLINE
         final C_Sujet st = s;
         final SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yy HH:mm:ss");
 
@@ -186,8 +214,6 @@ public class DAO_Sujet extends DAO_Bdd {
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             public void done(ParseObject Sujet, ParseException e) {
                 if (e == null) {
-                    // Now let's update it with some new data. In this case, only cheatMode and score
-                    // will get sent to the Parse Cloud. playerName hasn't changed.
                     Sujet.put("idSujet", st.idSujet);
                     Sujet.put("titre", st.titre);
                     Sujet.put("description", st.description);
@@ -201,7 +227,6 @@ public class DAO_Sujet extends DAO_Bdd {
                     Sujet.put("personnesAyantAccepteToString", st.personnesAyantAccepteToString);
                     if(st.valide){Sujet.put("valide", "true");}
                     else {Sujet.put("valide", "false");}
-
                     Sujet.saveInBackground();
                 }
             }

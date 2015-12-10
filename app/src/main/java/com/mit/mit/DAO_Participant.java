@@ -54,9 +54,10 @@ public class DAO_Participant extends DAO_Bdd {
      *Add an user in bdd
      *@param p			User to add
      */
-    public void ajouter(C_Participant p, boolean online) {
+    public void ajouter(C_Participant p, boolean online)
+    {
+        //LOCAL
         this.open();
-
         ContentValues value = new ContentValues();
         value.put(ATTR_ID, p.id);
         value.put(ATTR_NOM, p.nom);
@@ -66,6 +67,7 @@ public class DAO_Participant extends DAO_Bdd {
         bdd.insert(TABLE, null, value);
         this.close();
 
+        //ONLINE
         if (online) {
             //add on cloud
             ParseObject Participant = new ParseObject("Participant");
@@ -81,25 +83,50 @@ public class DAO_Participant extends DAO_Bdd {
      *Delete an user in bdd
      *@param id			User'id to delete
      */
-    public void supprimer(Integer id) {
-        this.open();
+    public void supprimer(String id)
+    {
+        try
+        {
+            //LOCAL
+            this.open();
 
-        bdd.delete(
-                TABLE,
-                ATTR_ID + " = ?",
-                new String[]{String.valueOf(id)}
-        );
+            bdd.delete(
+                    TABLE,
+                    ATTR_MAIL + " = ?",
+                    new String[]{id}
+            );
 
-        this.close();
+            this.close();
+
+            //ONLINE
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Participant");
+            query.whereEqualTo("mail", id);
+            query.getFirstInBackground(new GetCallback<ParseObject>() {
+                public void done(ParseObject Participant, ParseException e) {
+                    try {
+                        if (e == null) {
+                            Participant.delete();
+                            Participant.saveInBackground();
+                        }
+                    } catch (ParseException ex) {
+                        System.out.println("[PARSE ERROR] : " + ex.getMessage());
+                    }
+                }
+            });
+        }
+        catch (Exception ex)
+        {System.out.println("[ERROR] : " +ex.getMessage());}
     }
+
 
     /**
      *Delete an user in bdd
      *@param p			User to edit
      */
-    public void modifier(C_Participant p) {
+    public void modifier(C_Participant p)
+    {
+        //LOCAL
         this.open();
-
         ContentValues value = new ContentValues();
         value.put(ATTR_NOM, p.nom);
         value.put(ATTR_PRENOM, p.prenom);
@@ -115,7 +142,7 @@ public class DAO_Participant extends DAO_Bdd {
 
         this.close();
 
-        //modif online
+        //ONLINE
         final C_Participant pt = p;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Participant");
         query.whereEqualTo("mail", p.mail);
@@ -135,6 +162,11 @@ public class DAO_Participant extends DAO_Bdd {
 
     }
 
+
+    /**
+     *Add a user or modify if not exists
+     *@param p			User to add or modify
+     */
     public void ajouterOUmodifier(C_Participant p){
         C_Participant dao_p = this.getParticipantById(p.mail);
         if(dao_p!=null)
@@ -147,6 +179,7 @@ public class DAO_Participant extends DAO_Bdd {
         }
 
     }
+
 
     /**
      *Return all users in the bdd
@@ -183,6 +216,7 @@ public class DAO_Participant extends DAO_Bdd {
         cursor.close();
         return listParticipants;
     }
+
 
     /**
      *Get one user from the bdd

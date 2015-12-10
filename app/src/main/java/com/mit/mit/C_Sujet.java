@@ -123,6 +123,20 @@ public class C_Sujet {
     public C_Sujet() {
 
         super();
+        this.idSujet="";
+        this.titre="";
+        this.description="";
+        this.type="";
+        this.localisation="";
+        this.heure=new Date();
+        this.duree=0;
+        this.auFeeling=false;
+        this.prix=0;
+        this.valide=false;
+
+        this.messagesToString="";
+        this.personnesAyantAccepteToString="";
+
         this.personnesAyantAccepte = new ArrayList<C_Participant>();
         this.liste_messages= new ArrayList<C_Message>();
     }

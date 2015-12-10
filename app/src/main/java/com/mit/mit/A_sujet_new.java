@@ -182,9 +182,6 @@ public class A_sujet_new extends MainActivity {
             sujet.valide=false;
             sujet.personnesAyantAccepte.add(partAcutel);
 
-
-
-
             //création du premier message auto
             C_Message message = new C_Message(sujet.idSujet, new Date(), "Création du sujet", partAcutel);
             daoMessage.ajouter(message, true);
@@ -193,6 +190,7 @@ public class A_sujet_new extends MainActivity {
 
 
             //save sujet
+            sujet.listeToString();
             daoSujet.ajouter(sujet, true);
 
             //maj jour

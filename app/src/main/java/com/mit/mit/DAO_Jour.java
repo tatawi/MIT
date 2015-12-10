@@ -59,9 +59,10 @@ public class DAO_Jour extends DAO_Bdd {
      *Add an day in bdd
      *@param j			day to add
      */
-    public void ajouter(C_Jour j, boolean online) {
+    public void ajouter(C_Jour j, boolean online)
+    {
+        //LOCAL
         this.open();
-
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         ContentValues value = new ContentValues();
         value.put(ATTR_NOMJOUR, j.nomJour);
@@ -72,8 +73,8 @@ public class DAO_Jour extends DAO_Bdd {
         bdd.insert(TABLE, null, value);
         this.close();
 
+        //ONLINE
         if (online) {
-            //add on cloud
             ParseObject Jour = new ParseObject("Jour");
             Jour.put("nomJour", j.nomJour);
             Jour.put("date", sdf.format(j.jour));
@@ -88,15 +89,37 @@ public class DAO_Jour extends DAO_Bdd {
      *Delete an day in bdd
      *@param id			day'id to delete
      */
-    public void supprimer(String id) {
-        this.open();
+    public void supprimer(String id)
+    {
+        try
+        {
+            //LOCAL
+            this.open();
+            bdd.delete(
+                    TABLE,
+                    ATTR_NOMJOUR + " = ?",
+                    new String[]{id}
+            );
+            this.close();
 
-        bdd.delete(
-                TABLE,
-                ATTR_NOMJOUR + " = ?",
-                new String[]{id}
-        );
-        this.close();
+            //ONLINE
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Jour");
+            query.whereEqualTo("nomJour", id);
+            query.getFirstInBackground(new GetCallback<ParseObject>() {
+                public void done(ParseObject Jour, ParseException e) {
+                    try {
+                        if (e == null) {
+                            Jour.delete();
+                            Jour.saveInBackground();
+                        }
+                    } catch (ParseException ex) {
+                        System.out.println("[PARSE ERROR] : " + ex.getMessage());
+                    }
+                }
+            });
+        }
+        catch (Exception ex)
+        {System.out.println("[ERROR] : " +ex.getMessage());}
     }
 
 
@@ -104,7 +127,9 @@ public class DAO_Jour extends DAO_Bdd {
      *Delete an day in bdd
      *@param j			day to edit
      */
-    public void modifier(C_Jour j) {
+    public void modifier(C_Jour j)
+    {
+        //LOCAL
         this.open();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         ContentValues value = new ContentValues();
@@ -122,7 +147,7 @@ public class DAO_Jour extends DAO_Bdd {
         this.close();
 
 
-        //modif online
+        //ONLINE
         final C_Jour jr = j;
         final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Jour");
@@ -143,19 +168,21 @@ public class DAO_Jour extends DAO_Bdd {
                     }
                 }
             });
-
-
-
     }
 
-                public void ajouterOUmodifier(C_Jour j) {
-                    C_Jour dao_j = this.getJourById(j.nomJour);
-                    if (dao_j != null) {
-                        this.modifier(j);
-                    } else {
-                        this.ajouter(j, false);
-                    }
-                }
+
+    /**
+     *Add or modify a day if it already exists
+     *@param j			day to edit
+     */
+    public void ajouterOUmodifier(C_Jour j) {
+        C_Jour dao_j = this.getJourById(j.nomJour);
+        if (dao_j != null) {
+            this.modifier(j);
+        } else {
+            this.ajouter(j, false);
+        }
+    }
 
 
                 /**

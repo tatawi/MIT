@@ -65,13 +65,15 @@ public class DAO_Projet extends DAO_Bdd {
     /**
      *Add an project in bdd
      *@param p			project to add
+     *@param online		if need to save online
      */
-    public void ajouter(C_Projet p, boolean online) {
+    public void ajouter(C_Projet p, boolean online)
+    {
+        //LOCAL
         this.open();
-
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
         ContentValues value = new ContentValues();
+
         value.put(ATTR_ID, p.id);
         value.put(ATTR_NOM, p.nom);
         value.put(ATTR_DESCRIPTION, p.description);
@@ -87,9 +89,9 @@ public class DAO_Projet extends DAO_Bdd {
         System.out.println("*- ajouté");
         this.close();
 
+        //ONLINE
         if (online)
         {
-            //add on cloud
             ParseObject Projet = new ParseObject("Projet");
             Projet.put("id", p.id);
             Projet.put("nom", p.nom);
@@ -103,7 +105,6 @@ public class DAO_Projet extends DAO_Bdd {
             Projet.put("couleur", p.couleur);
             Projet.saveInBackground();
         }
-
     }
 
 
@@ -111,26 +112,51 @@ public class DAO_Projet extends DAO_Bdd {
      *Delete an project in bdd
      *@param id			project'id to delete
      */
-    public void supprimer(String id) {
-        this.open();
+    public void supprimer(String id)
+    {
+        try
+        {
+            //LOCAL
+            this.open();
+            bdd.delete(
+                    TABLE,
+                    ATTR_ID + " = ?",
+                    new String[]{id}
+            );
+            this.close();
 
-        bdd.delete(
-                TABLE,
-                ATTR_ID + " = ?",
-                new String[]{id}
-        );
-        this.close();
-
+            //ONLINE
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Projet");
+            query.whereEqualTo("id", id);
+            query.getFirstInBackground(new GetCallback<ParseObject>()
+            {
+                public void done(ParseObject Projet, ParseException e)
+                {
+                    try {
+                        if (e == null) {
+                            Projet.delete();
+                            Projet.saveInBackground();
+                        }
+                    } catch (ParseException ex) {
+                        System.out.println("[PARSE ERROR] : " + ex.getMessage());
+                    }
+                }
+            });
+        }
+        catch (Exception ex)
+        {System.out.println("[ERROR] : " +ex.getMessage());}
     }
 
     /**
      *Delete an project in bdd
      *@param p			project to edit
      */
-    public void modifier(C_Projet p) {
+    public void modifier(C_Projet p)
+    {
+        //LOCAL
         this.open();
-
         ContentValues value = new ContentValues();
+
         value.put(ATTR_NOM, p.nom);
         value.put(ATTR_DESCRIPTION, p.description);
         value.put(ATTR_DATEDEBUT, p.dateDebut.toString());
@@ -149,13 +175,15 @@ public class DAO_Projet extends DAO_Bdd {
         );
         this.close();
 
-        //modif online
+        //ONLINE
         final C_Projet pr = p;
         final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Projet");
         query.whereEqualTo("id", p.id);
-        query.getFirstInBackground(new GetCallback<ParseObject>() {
-            public void done(ParseObject Projet, ParseException e) {
+        query.getFirstInBackground(new GetCallback<ParseObject>()
+        {
+            public void done(ParseObject Projet, ParseException e)
+            {
                 if (e == null) {
                     // Now let's update it with some new data. In this case, only cheatMode and score
                     // will get sent to the Parse Cloud. playerName hasn't changed.
@@ -174,18 +202,22 @@ public class DAO_Projet extends DAO_Bdd {
         });
     }
 
-    public void ajouterOUmodifier(C_Projet p) {
-        System.out.println("**working with :" + p.nom);
+
+
+    /**
+     *Add a project or modify it if it already exist
+     *@param p			project to edit
+     */
+    public void ajouterOUmodifier(C_Projet p)
+    {
         C_Projet dao_p = this.getProjetByName(p.nom);
-        if (dao_p != null) {
-            System.out.println("**existe : modifications");
-            System.out.println("**titre :" + dao_p.nom);
-            System.out.println("**str :" + dao_p.toString());
 
-
+        //MODIFY (only on local)
+        if (dao_p != null)
+        {
             this.open();
-
             ContentValues value = new ContentValues();
+
             value.put(ATTR_NOM, p.nom);
             value.put(ATTR_DESCRIPTION, p.description);
             value.put(ATTR_DATEDEBUT, p.dateDebut.toString());
@@ -203,11 +235,10 @@ public class DAO_Projet extends DAO_Bdd {
                     new String[]{String.valueOf(p.nom)}
             );
             this.close();
-
-
         }
-        else {
-            System.out.println("**ajout dans bdd interne");
+        //ADD (only on local)
+        else
+        {
             this.ajouter(p, false);
         }
     }
@@ -242,7 +273,7 @@ public class DAO_Projet extends DAO_Bdd {
             }
             catch(Exception e)
             {
-
+                System.out.println("[ERROR] : " + e.getMessage());
             }
             list_projets.add(
                     new C_Projet(
