@@ -63,6 +63,8 @@ public class A_sujet_Preparation extends MainActivity {
 
 
 
+
+
         //initialisation objet page
         setContentView(R.layout.activity_a_sujet__preparation);
         lb_description = (TextView) findViewById(R.id.sujetPreparation_lb_description);
@@ -260,8 +262,18 @@ public void majInterface()
     lb_duree.setText(hour+"h"+min);
 
     //messages
-    lb_nbMessages.setText("Aucun messages");
-    lb_nbNonLus.setText("Pas de nouveaux messages");
+    if(sujet.liste_messages.size()>1)
+    {
+        lb_nbMessages.setText(""+sujet.liste_messages.size()+" messages");
+    }
+
+    //notifications messages
+    int nouveauMessages = this.nbMessagesNonVus();
+
+    if(nouveauMessages>0)
+    {
+        lb_nbNonLus.setText(""+nouveauMessages+" nouveaux messages");
+    }
 
     //type
     switch (this.sujet.type) {
@@ -317,6 +329,24 @@ public void majInterface()
             }
         }
         return true;
+    }
+
+
+    private int nbMessagesNonVus()
+    {
+        int nbMessages =0;
+
+        for (C_Message m:this.sujet.liste_messages)
+        {
+            m.creerLesListes(daoparticipant);
+            System.out.println("/-/-/ messages : vues : " + m.personnesAyantVuesToString);
+            System.out.println("/-/-/ messages : nbvuesliste : "+m.liste_personnesAyantVues.size());
+            if (!m.aiJeVu(part))
+            {
+                nbMessages++;
+            }
+        }
+        return nbMessages;
     }
 
 

@@ -34,6 +34,7 @@ public class A_jour_Preparation extends MainActivity {
     private String jourID;
     private SimpleDateFormat sdf;
     private String userID;
+    private C_Participant part;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,7 @@ public class A_jour_Preparation extends MainActivity {
         {
             //utilisateur
             this.userID = extras.getString("userID");
+            part= daoparticipant.getParticipantById(userID);
 
             //chargement jour
             this.day = daoJour.getJourById(extras.getString("idEntry"));
@@ -176,6 +178,8 @@ private void affichage()
         String titreDescription = "";
         for (C_Sujet s : this.day.liste_sujets)
         {
+            s.creerLesListes(daoMessage, daoparticipant);
+
             //panel global
             LinearLayout LLglobal = new LinearLayout(this);
             LLglobal.setOrientation(LinearLayout.HORIZONTAL);
@@ -210,7 +214,7 @@ private void affichage()
             TextView heure = new TextView(this);
             TextView duree = new TextView(this);
             TextView cout = new TextView(this);
-
+            TextView valid = new TextView(this);
 
             //personnalisation champs
             switch (s.type) {
@@ -271,21 +275,36 @@ private void affichage()
 
             //initialisation champs
             img.setBackgroundColor(Color.TRANSPARENT);
-
-            desc.setText(titreDescription + s.titre);
             desc.setTextSize(16);
             heure.setText(sdf.format(s.heure));
             heure.setPadding(10, 10, 10, 0);
 
+            if(s.valide)
+            {
+                valid.setText("Validé");
+            }
+            else
+            {
+                valid.setText("Non validé");
+            }
+
+            //time
             int hour;
             int min;
             hour = s.duree / 60;
             min=s.duree-hour*60;
             duree.setText(hour + "h" + min);
             duree.setPadding(10, 10, 10, 0);
-
             cout.setText(" " + s.prix + " € ");
             cout.setPadding(10, 10, 10, 0);
+
+            //notifications
+            desc.setText(titreDescription + s.titre);
+            System.out.println("sujet prep current user : "+part.mail );
+            if(s.isNotificationForMe(part, daoparticipant))
+            {
+                desc.setText("*" +titreDescription + s.titre);
+            }
 
             //ajout des champs aux pannels
             LLleft.addView(img);
@@ -297,10 +316,15 @@ private void affichage()
             //ajouts panels
             LLright.addView(LLrightUp);
             LLright.addView(LLrightDown);
+            LLright.addView(valid);
+
             LLglobal.addView(LLleft);
             LLglobal.addView(LLright);
             LLglobal.setOnClickListener(onClickLayout);
             LLglobal.setOnLongClickListener(onLongClickLayout);
+
+
+
             container_globalLayout.addView(LLglobal);
         }
     }

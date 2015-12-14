@@ -192,10 +192,15 @@ public class C_Sujet {
      *@param me			User using the application
      *@return 			True if user have a notification on this day. False if not.
      */
-    public boolean isNotification(C_Participant me)
+    public boolean isNotificationForMe(C_Participant me, DAO_Participant daopart)
     {
+        System.out.println("isNotificationForMe : user : "+ me.mail);
         for(C_Message msg:liste_messages)
         {
+
+            msg.creerLesListes(daopart);
+            System.out.println("isNotificationForMe : liste str : " + msg.personnesAyantVuesToString);
+            System.out.println("isNotificationForMe : nb liste : " + msg.liste_personnesAyantVues.size());
             if(!msg.aiJeVu(me))
             {
                 return true;

@@ -53,10 +53,9 @@ public class C_Message {
         this.message = message;
         this.emetteur = emetteur;
         this.id_participantEmetteur = emetteur.mail;
-        this.personnesAyantVuesToString = "";
+        this.personnesAyantVuesToString = emetteur.mail;
         this.liste_personnesAyantVues= new ArrayList<C_Participant>();
 
-        this.vuPar(emetteur);
     }
 
     /**
@@ -78,6 +77,7 @@ public class C_Message {
         this.message = message;
         this.heure = heure;
         this.personnesAyantVuesToString=personnesAyantVuesToString;
+        this.liste_personnesAyantVues= new ArrayList<C_Participant>();
     }
 
     /**
@@ -91,14 +91,6 @@ public class C_Message {
 //	FONCTIONS 
 //---------------------------------------------------------------------------------------
 
-    /**
-     *Spefify is the user has seen the message
-     *@param me		User
-     */
-    public void meRajouterAyantVu(C_Participant me)
-    {
-        liste_personnesAyantVues.add(me);
-    }
 
     /**
      *Verify if the user has seen the message
@@ -107,9 +99,10 @@ public class C_Message {
      */
     public boolean aiJeVu(C_Participant me)
     {
+
         for(C_Participant p:this.liste_personnesAyantVues)
         {
-            if(me.id==p.id)
+            if(me.mail.equals(p.mail))
             {
                 return true;
             }
@@ -117,10 +110,28 @@ public class C_Message {
         return false;
     }
 
+    /**
+     *Spefify is the user has seen the message
+     *@param p      	User
+     */
     public void vuPar(C_Participant p)
     {
         this.liste_personnesAyantVues.add(p);
-        this.listeToString();
+    }
+
+    public void creerLesListes(DAO_Participant daopart)
+    {
+        liste_personnesAyantVues=new ArrayList<C_Participant>();
+        String[] parts;
+
+        if(personnesAyantVuesToString.length()>1) {
+            //gestion liste sujets
+            parts = this.personnesAyantVuesToString.split(";");
+            for (int i = 0; i < parts.length; i++) {
+                liste_personnesAyantVues.add(daopart.getParticipantById(parts[i]));
+            }
+        }
+
     }
 
 
@@ -132,12 +143,15 @@ public class C_Message {
     /**
      *Convert class list in string (separated with ";") in order to store data in DAO bdd
      */
-    private void listeToString()
+    public void listeToString()
     {
+        System.out.println("message liste to string");
+        System.out.println("taille : " + this.liste_personnesAyantVues.size());
         this.personnesAyantVuesToString="";
-
         for(C_Participant p:this.liste_personnesAyantVues)
         {
+            System.out.println("l1 : " + this.personnesAyantVuesToString);
+            System.out.println("part : " + p.mail);
             if (personnesAyantVuesToString=="")
             {
                 personnesAyantVuesToString = p.mail;
@@ -146,6 +160,7 @@ public class C_Message {
             {
                 personnesAyantVuesToString = liste_personnesAyantVues + ";" + p.mail;
             }
+            System.out.println("l2 : " + this.personnesAyantVuesToString);
         }
     }
 

@@ -255,7 +255,7 @@ public class A_projet_Preparation extends MainActivity {
             if(sdf.format(d).equals(sdf.format(j.jour)))
             {
                 sdf = new SimpleDateFormat("dd");
-                if(j.isNotification(me))
+                if(j.isNotification(me, daoparticipant))
                 {
                     return "ic_cal_full_"+sdf.format(j.jour);
                 }

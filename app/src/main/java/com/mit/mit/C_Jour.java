@@ -83,11 +83,11 @@ public class C_Jour {
      *@param me			User using the application
      *@return 			True if user have a notification on this day. False if not.
      */
-    public boolean isNotification(C_Participant me)
+    public boolean isNotification(C_Participant me, DAO_Participant daopart)
     {
         try {
             for (C_Sujet sujet : liste_sujets) {
-                if (sujet.isNotification(me)) {
+                if (sujet.isNotificationForMe(me, daopart)) {
                     return true;
                 }
             }

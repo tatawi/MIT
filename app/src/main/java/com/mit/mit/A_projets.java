@@ -376,10 +376,11 @@ public class A_projets extends MainActivity {
             Intent intent = new Intent(A_projets.this, A_project_new.class);
             intent.putExtra("userID", userID);
             startActivity(intent);
+        }
 
-
-
-
+        if(id==R.id.menu_projet_refresh)
+        {
+            MajDAO();
         }
 
         return super.onOptionsItemSelected(item);

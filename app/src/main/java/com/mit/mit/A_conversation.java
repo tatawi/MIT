@@ -81,6 +81,9 @@ public class A_conversation extends MainActivity {
         sdf = new SimpleDateFormat("dd/mm/yy HH:mm");
         String titreDescription = "";
         for (C_Message m : this.sujet.liste_messages) {
+
+            m.creerLesListes(daoparticipant);
+
             //panel global
             LinearLayout LLglobal = new LinearLayout(this);
             LLglobal.setOrientation(LinearLayout.HORIZONTAL);
@@ -138,6 +141,24 @@ public class A_conversation extends MainActivity {
             LLglobal.addView(LLText);
 
             container_globalLayout.addView(LLglobal);
+
+
+            //message vu
+            if(!m.aiJeVu(part))
+            {
+                System.out.println("VU");
+                System.out.println("me = "+part.mail);
+                System.out.println("liste actuelle = " + m.personnesAyantVuesToString);
+                System.out.println("vu = false");
+                m.liste_personnesAyantVues.add(part);
+                System.out.println("add : " + part.mail);
+                //m.listeToString();
+                m.personnesAyantVuesToString=m.personnesAyantVuesToString+";"+part.mail;
+                System.out.println("liste finale: " + m.personnesAyantVuesToString);
+
+                daoMessage.modifier(m);
+            }
+
         }
         container_globalLayout.addView(container_send);
 
