@@ -26,6 +26,7 @@ public class BaseSQLite extends SQLiteOpenHelper {
         db.execSQL(DAO_Jour.TABLE_CREATE);
         db.execSQL(DAO_Sujet.TABLE_CREATE);
         db.execSQL(DAO_Message.TABLE_CREATE);
+        db.execSQL(DAO_Options.TABLE_CREATE);
 
         // Si la table est vide => création d'un user "admin" "admin"
         //db.execSQL(Constante.UTILISATEUR_INITIALIZE);*/
@@ -40,6 +41,7 @@ public class BaseSQLite extends SQLiteOpenHelper {
         db.execSQL(DAO_Jour.TABLE_DROP);
         db.execSQL(DAO_Sujet.TABLE_DROP);
         db.execSQL(DAO_Message.TABLE_DROP);
+        db.execSQL(DAO_Options.TABLE_DROP);
 
         onCreate(db);
     }

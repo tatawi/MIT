@@ -74,7 +74,7 @@
         <activity
             android:name=".A_sujet_Preparation"
             android:label="@string/title_activity_a_sujet__preparation"
-            android:launchMode="singleTop"
+
             android:parentActivityName=".A_jour_Preparation" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

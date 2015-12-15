@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools" tools:context="com.mit.mit.A_projets">
 
     <item
-        android:id="@+id/menu_projet_delete"
+        android:id="@+id/menu_projet_deconnexion"
         android:icon="@drawable/ic_action_delete"
         app:showAsAction="never"
-        android:title="Supprimer"/>
+        android:title="Se déconnecter"/>
 
     <item
         android:id="@+id/menu_projet_refresh"

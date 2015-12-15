@@ -373,6 +373,7 @@ public class A_projets extends MainActivity {
         //CREATE A NEW PROJECT
         if (id == R.id.project_new)
         {
+            System.out.println("new projet");
             Intent intent = new Intent(A_projets.this, A_project_new.class);
             intent.putExtra("userID", userID);
             startActivity(intent);
@@ -381,6 +382,13 @@ public class A_projets extends MainActivity {
         if(id==R.id.menu_projet_refresh)
         {
             MajDAO();
+        }
+
+        if(id==R.id.menu_projet_deconnexion)
+        {
+            daoOptions.supprimerUser();
+            Intent intent = new Intent(A_projets.this, MainActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

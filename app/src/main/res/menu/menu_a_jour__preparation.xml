@@ -2,16 +2,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context="com.mit.mit.A_jour_Preparation">
 
+
+
     <item
-        android:id="@+id/menu_jour_delete"
+        android:id="@+id/menu_jour_deconnexion"
         android:icon="@drawable/ic_action_delete"
         app:showAsAction="never"
-        android:title="Supprimer"/>
+        android:title="Se déconnecter"/>
 
     <item
         android:id="@+id/menu_jour_refresh"
         android:icon="@drawable/ic_action_download"
-        app:showAsAction="never"
+        app:showAsAction="always"
         android:title="Rafraichir"/>
 
     <item

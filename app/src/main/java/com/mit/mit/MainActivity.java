@@ -32,11 +32,13 @@ public class MainActivity extends AppCompatActivity {
     protected DAO_Jour daoJour = new DAO_Jour(this);
     protected DAO_Sujet daoSujet = new DAO_Sujet(this);
     protected DAO_Message daoMessage = new DAO_Message(this);
+    protected DAO_Options daoOptions = new DAO_Options(this);
 
     //objets de la page
     private Button btn_connect;
     private EditText tb_userID;
     private EditText tb_mdp;
+    private Switch sw_remember;
 
 
     private Button btn_co1;
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         btn_connect = (Button) findViewById(R.id.main_btn_connect);
         tb_userID= (EditText) findViewById(R.id.main_tb_user);
         tb_mdp= (EditText) findViewById(R.id.main_tb_mdp);
+        sw_remember= (Switch) findViewById(R.id.main_sw_remember);
 
 
 
@@ -86,6 +89,16 @@ public class MainActivity extends AppCompatActivity {
         {
             System.out.println(ex.getMessage());
         }
+
+
+       /* String userSaved = daoOptions.getSavedUser();
+        if(!userSaved.equals(""))
+        {
+            me=daoparticipant.getParticipantById(userSaved);
+            Intent intent = new Intent(MainActivity.this, A_projets.class);
+            intent.putExtra("userID", me.mail);
+            startActivity(intent);
+        }*/
 
     }
 
@@ -119,6 +132,13 @@ public class MainActivity extends AppCompatActivity {
                 me=daoparticipant.getParticipantById(tb_userID.getText().toString());
                 if(me.mdp.equals(tb_mdp.getText().toString()))
                 {
+                    /*if(sw_remember.isEnabled())
+                    {
+                        System.out.println("saving user ...");
+                        daoOptions.ajouterCurrentUser(me);
+                        System.out.println("... done !");
+                    }*/
+
                     Intent intent = new Intent(MainActivity.this, A_projets.class);
                     intent.putExtra("userID", me.mail);
                     startActivity(intent);

@@ -99,15 +99,22 @@ public class C_Message {
      */
     public boolean aiJeVu(C_Participant me)
     {
-
-        for(C_Participant p:this.liste_personnesAyantVues)
+        try
         {
-            if(me.mail.equals(p.mail))
+            for(C_Participant p:this.liste_personnesAyantVues)
             {
-                return true;
+                if(me.mail.equals(p.mail))
+                {
+                    return true;
+                }
             }
+            return false;
         }
-        return false;
+        catch(Exception ex)
+        {
+            System.out.println("aiJeVu : ERROR : "+ex.getMessage() );
+            return false;
+        }
     }
 
     /**

@@ -194,19 +194,23 @@ public class C_Sujet {
      */
     public boolean isNotificationForMe(C_Participant me, DAO_Participant daopart)
     {
-        System.out.println("isNotificationForMe : user : "+ me.mail);
-        for(C_Message msg:liste_messages)
-        {
-
-            msg.creerLesListes(daopart);
-            System.out.println("isNotificationForMe : liste str : " + msg.personnesAyantVuesToString);
-            System.out.println("isNotificationForMe : nb liste : " + msg.liste_personnesAyantVues.size());
-            if(!msg.aiJeVu(me))
+        try {
+            for (C_Message msg : liste_messages)
             {
-                return true;
+                msg.creerLesListes(daopart);
+
+                if (!msg.aiJeVu(me))
+                {
+                    return true;
+                }
             }
+            return false;
         }
-        return false;
+        catch(Exception ex)
+        {
+            System.out.println("isNotificationForMe : ERROR : "+ex.getMessage() );
+            return false;
+        }
     }
 
 

@@ -15,10 +15,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -44,13 +46,14 @@ public class A_project_new extends MainActivity {
     private ImageButton btn_creer;
     private ImageButton btn_adduser;
     private TextView lb_erreurAdd;
-    private ListView lv_listViewPart;
+    //private ListView lv_listViewPart;
     private ImageButton btn_couleur_noir;
     private ImageButton btn_couleur_rouge;
     private ImageButton btn_couleur_bleu;
     private ImageButton btn_couleur_jaune;
     private ImageButton btn_couleur_vert;
     private ImageButton btn_couleur_violet;
+    private LinearLayout ll_parts;
 
     //variables
     private String v_nom;
@@ -64,6 +67,7 @@ public class A_project_new extends MainActivity {
     private String userID;
     private transient List<C_Participant> v_liste_allParticipants;
     private C_Participant part;
+
 
 
     @Override
@@ -82,7 +86,7 @@ public class A_project_new extends MainActivity {
         tb_participant = (EditText) findViewById(R.id.newProject_tb_participants);
         btn_creer = (ImageButton) findViewById(R.id.newProject_btn_addProject);
         btn_adduser = (ImageButton) findViewById(R.id.newProject_btn_addParticipant);
-        lv_listViewPart = (ListView) findViewById(R.id.newProject_lv_listView);
+        //lv_listViewPart = (ListView) findViewById(R.id.newProject_lv_listView);
         btn_couleur_noir= (ImageButton) findViewById(R.id.newProject_btn_color_noir);
         btn_couleur_rouge= (ImageButton) findViewById(R.id.newProject_btn_color_rouge);
         btn_couleur_bleu= (ImageButton) findViewById(R.id.newProject_btn_color_bleu);
@@ -90,6 +94,7 @@ public class A_project_new extends MainActivity {
         btn_couleur_vert= (ImageButton) findViewById(R.id.newProject_btn_color_vert);
         btn_couleur_violet= (ImageButton) findViewById(R.id.newProject_btn_color_violet);
         lb_erreurAdd = (TextView) findViewById(R.id.newProject_lb_texteAjoutPart);
+        ll_parts = (LinearLayout) findViewById(R.id.newProject_ll_parts);
 
         //listeners
         btn_dateDebut.setOnClickListener(onClickDebutDate);
@@ -113,6 +118,7 @@ public class A_project_new extends MainActivity {
         part=new C_Participant();
         lb_erreurAdd.setVisibility(View.GONE);
 
+
         //getRessources
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -121,7 +127,7 @@ public class A_project_new extends MainActivity {
 
             //ajout participant actuelle au projet
             v_liste_participantsProjet.add(part);
-            majListView();
+            addUserToList(part);
         }
     }
 
@@ -209,48 +215,57 @@ public class A_project_new extends MainActivity {
 
     //bouton ajouter participant
     View.OnClickListener onAddUser = new View.OnClickListener() {
-        public void onClick(View v) {
+        public void onClick(View v)
+        {
 
             try
-            {
-                v_liste_participantsProjet.add(daoparticipant.getParticipantById(tb_participant.getText().toString()));
+            {   C_Participant partToAdd = daoparticipant.getParticipantById(tb_participant.getText().toString());
+                v_liste_participantsProjet.add(partToAdd);
+                addUserToList(partToAdd);
             }
             catch (Exception e)
             {
                 lb_erreurAdd.setVisibility(View.VISIBLE);
                 lb_erreurAdd.setText(e.getMessage());
             }
-            majListView();
+            //majListView();
             tb_participant.setText("");
 
-            /*for(C_Participant p:v_liste_allParticipants)
+
+
+
+
+            //String[] listeStrings = {""};
+           /* List<String> listeStringParticipants = new ArrayList<String>();
+            int i=0;
+            for(C_Participant p:v_liste_participantsProjet)
             {
-                if(p.mail.equals(tb_participant.getText().toString()))
-                {
-                    v_liste_participantsProjet.add(p);
-                    majListView();
-                    tb_participant.setText("");
+                //listeStrings[i]=p.prenom+" "+p.nom;
+                listeStringParticipants.add(p.prenom+" "+p.nom);
+            }
 
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(pContext);
-                    alertDialogBuilder.setTitle(" "+v_liste_participants.size()+ " "+p.mail+" "+tb_participant.getText().toString());
-                    alertDialogBuilder
-                            .setCancelable(false)
-                            .setNegativeButton("Fermer", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
-
-                }
-            }*/
-
-
+            lv_listViewPart.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listeStringParticipants));
+            */
 
         }
     };
+
+    private void addUserToList(C_Participant p)
+    {
+        LinearLayout LLmyPart = new LinearLayout(this);
+        LLmyPart.setOrientation(LinearLayout.HORIZONTAL);
+        LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LLmyPart.setLayoutParams(LLParams);
+
+        TextView LLpart_tb = new TextView(this);
+        LLpart_tb.setText(p.prenom+" "+p.nom);
+        LLmyPart.addView(LLpart_tb);
+
+        ll_parts.addView(LLmyPart);
+
+
+
+    }
 
 
 
@@ -340,7 +355,7 @@ public class A_project_new extends MainActivity {
 //	FONCTIONS
 //---------------------------------------------------------------------------------------
 
-    private void majListView()
+    /*private void majListView()
     {
         //String[] listeStrings = {""};
         List<String> listeStringParticipants = new ArrayList<String>();
@@ -352,7 +367,7 @@ public class A_project_new extends MainActivity {
         }
 
         lv_listViewPart.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listeStringParticipants));
-    }
+    }*/
 
 
     private List<C_Jour> creerListeJours(Date debut, Date fin)

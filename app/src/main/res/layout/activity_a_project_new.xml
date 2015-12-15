@@ -259,6 +259,7 @@
             </GridLayout>
 
 
+
             <TextView
                 android:id="@+id/newProject_lb_texteAjoutPart"
                 android:text="Participants :"
@@ -268,13 +269,18 @@
                 android:layout_height="wrap_content"
                 />
 
-            <ListView
-                android:id="@+id/newProject_lv_listView"
+            <LinearLayout
+                android:id="@+id/newProject_ll_parts"
+                android:orientation="vertical"
                 android:layout_width="fill_parent"
-                android:layout_height="130dp"
-                android:layout_below="@+id/newProject_gridLayout"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:paddingTop="10dp"
+                android:layout_below="@+id/newProject_lb_texteAjoutPart">
 
-                />
+            </LinearLayout>
+
+
 
             <ImageButton
                 android:id="@+id/newProject_btn_addProject"

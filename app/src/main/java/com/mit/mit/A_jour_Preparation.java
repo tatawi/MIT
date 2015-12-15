@@ -383,6 +383,17 @@ private void affichage()
             startActivity(intent);
         }
 
+        if(id==R.id.menu_jour_refresh)
+        {
+            MajDAO();
+        }
+        if(id==R.id.menu_jour_deconnexion)
+        {
+            daoOptions.supprimerUser();
+            Intent intent = new Intent(A_jour_Preparation.this, MainActivity.class);
+            startActivity(intent);
+        }
+
 
         return super.onOptionsItemSelected(item);
     }

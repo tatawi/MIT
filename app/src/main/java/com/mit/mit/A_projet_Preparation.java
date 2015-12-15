@@ -38,6 +38,8 @@ public class A_projet_Preparation extends MainActivity {
     private SimpleDateFormat sdf;
     private String userID;
 
+    private C_Participant part;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +61,7 @@ public class A_projet_Preparation extends MainActivity {
         if (extras != null)
         {
             this.userID = extras.getString("userID");
-
+            this.part=daoparticipant.getParticipantById(this.userID);
 
             //chargement des données du projet
             this.projet = daoProjet.getProjetByName(extras.getString("idEntry"));
@@ -248,14 +250,16 @@ public class A_projet_Preparation extends MainActivity {
 
     private String getImageNameForDay(Date d)
     {
+        System.out.println("getImageNameForDay");
         sdf = new SimpleDateFormat("dd/MM/yy");
 
         for(C_Jour j:this.projet.liste_jours)
         {
             if(sdf.format(d).equals(sdf.format(j.jour)))
             {
+                j.creerLesListes(daoSujet);
                 sdf = new SimpleDateFormat("dd");
-                if(j.isNotification(me, daoparticipant))
+                if(j.isNotification(part, daoMessage, daoparticipant))
                 {
                     return "ic_cal_full_"+sdf.format(j.jour);
                 }
@@ -301,6 +305,18 @@ public class A_projet_Preparation extends MainActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        if(id==R.id.menu_lprojet_refresh)
+        {
+            MajDAO();
+        }
+
+        if(id==R.id.menu_projetPrep_deconnexion)
+        {
+            daoOptions.supprimerUser();
+            Intent intent = new Intent(A_projet_Preparation.this, MainActivity.class);
+            startActivity(intent);
+        }
 
 
 

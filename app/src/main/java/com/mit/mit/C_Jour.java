@@ -83,11 +83,14 @@ public class C_Jour {
      *@param me			User using the application
      *@return 			True if user have a notification on this day. False if not.
      */
-    public boolean isNotification(C_Participant me, DAO_Participant daopart)
+    public boolean isNotification(C_Participant me, DAO_Message daomessage, DAO_Participant daopart)
     {
         try {
-            for (C_Sujet sujet : liste_sujets) {
-                if (sujet.isNotificationForMe(me, daopart)) {
+            for (C_Sujet sujet : liste_sujets)
+            {
+                sujet.creerLesListes(daomessage, daopart);
+                if (sujet.isNotificationForMe(me, daopart))
+                {
                     return true;
                 }
             }
@@ -95,6 +98,7 @@ public class C_Jour {
         }
         catch(Exception ex)
         {
+            System.out.println("isNotification : ERROR : "+ex.getMessage() );
             return false;
         }
     }
