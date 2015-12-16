@@ -52,6 +52,7 @@ public class A_sujet_new extends MainActivity {
     private Switch sw_moins;
 
 
+
     //variables
     private C_Jour day;
     private C_Sujet sujet;
@@ -103,6 +104,9 @@ public class A_sujet_new extends MainActivity {
         lb_time.setText("00h00");
 
 
+
+
+
         //listeners
         btn_logement.setOnClickListener(onClickButtonLogement);
         btn_repas.setOnClickListener(onClickButtonRepas);
@@ -120,7 +124,6 @@ public class A_sujet_new extends MainActivity {
         btn_10.setOnClickListener(onClickButtonPrix);
         btn_50.setOnClickListener(onClickButtonPrix);
         btn_100.setOnClickListener(onClickButtonPrix);
-
 
         //variables
         sujet =new C_Sujet();
@@ -204,18 +207,22 @@ public class A_sujet_new extends MainActivity {
 
 
 
-
-
-
-
             //retour activité
-            Intent intent = new Intent(A_sujet_new.this, A_jour_Preparation.class);
+           /*Intent intent = new Intent(A_sujet_new.this, A_jour_Preparation.class);
             intent.putExtra("idEntry", day.nomJour);
             intent.putExtra("userID", userID);
 
             System.out.println(">>intent : user : " + userID);
             System.out.println(">>intent : jour : "+day.nomJour);
 
+            startActivity(intent);*/
+
+            //activity for position
+            Intent intent = new Intent(A_sujet_new.this, A_sujet_Map_set.class);
+            intent.putExtra("idEntry", day.nomJour);
+            intent.putExtra("sujet", sujet.idSujet);
+            intent.putExtra("userID", userID);
+            intent.putExtra("type", sujet.type);
             startActivity(intent);
 
         }

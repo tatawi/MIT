@@ -71,6 +71,33 @@ public class A_jour_Preparation extends MainActivity {
             System.out.println("--jourCalculé : " + sdf.format(this.day.jour));
             System.out.println("--jourID : " + this.day.nomJour);
             System.out.println("--nb sujets : " + this.day.liste_sujets.size());
+
+
+            try {
+                //Cas ou on vient de creer un sujet
+                if (extras.getString("isFromMap").equals("oui")) {
+                    C_Sujet sujetToModify = daoSujet.getSujetById(extras.getString("sujetID"));
+                    sujetToModify.localisation = extras.getString("adresse");
+
+                /*
+                 intent.putExtra("isTransport", isTransport);
+                intent.putExtra("adresse2", adresse2);
+                 */
+                    daoSujet.modifier(sujetToModify);
+
+                }
+
+
+            }
+            catch (Exception e)
+            {
+
+            }
+
+
+
+
+
         }
 
 

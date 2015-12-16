@@ -61,6 +61,42 @@
                     android:layout_above="@+id/newUser_btn_valider"
                     android:layout_centerHorizontal="true"
                     android:textColor="#ac035d" />
+
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true">
+                <TextView
+                    android:text="Regroupage : "
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_centerHorizontal="true"
+                    />
+
+                <TextView
+                    android:paddingTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_above="@+id/newUser_btn_valider"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="#ac035d" />
+
+                <EditText
+                    android:id="@+id/projetPrep_tb_regroup"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="#ac035d" />
+
+
             </LinearLayout>
 
             <View

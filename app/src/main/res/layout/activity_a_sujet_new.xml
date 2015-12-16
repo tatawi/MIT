@@ -510,24 +510,7 @@
                 android:layout_height="2px"
                 android:background="#ac035d" />
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
 
-                <TextView
-                    android:text="Position :"
-                    android:textSize="20dp"
-                    android:textColor="#ac035d"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_marginBottom="10dp"
-                    />
-
-
-            </LinearLayout>
 
             <ImageButton
                 android:id="@+id/newsujet_btn_addSujet"
