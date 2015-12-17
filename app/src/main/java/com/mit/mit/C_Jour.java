@@ -24,6 +24,7 @@ public class C_Jour {
     public Date jour;
     public float prixJournee;
     public String sujetsToString;
+    public String ville;
 
     public transient List<C_Sujet> liste_sujets;
 
@@ -45,6 +46,7 @@ public class C_Jour {
         this.jour = jour;
         this.prixJournee=0;
         this.sujetsToString="";
+        this.ville="";
     }
 
     /**
@@ -55,7 +57,7 @@ public class C_Jour {
      *@param prixJournee		Day's current cost in float
      *@param sujets			String containing all C_Sujet's Is separated by ";"
      */
-    public C_Jour( int id, String nomJour, Date jour, float prixJournee, String sujets)
+    public C_Jour( int id, String nomJour, Date jour, float prixJournee, String sujets, String ville)
     {
         super();
         this.id = id;
@@ -64,6 +66,7 @@ public class C_Jour {
         this.prixJournee = prixJournee;
         this.sujetsToString=sujets;
         this.liste_sujets=new ArrayList<C_Sujet>();
+        this.ville = ville;
     }
 
     /**

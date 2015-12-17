@@ -31,14 +31,10 @@ public class A_sujet_Map_set extends FragmentActivity {
     private Marker point2;
 
     private Context context;
-    private C_Sujet sujet;
-    private C_Participant part;
-    private String sujetID;
-    private String jourId;
-    private String userID;
     private String adresse;
     private String adresse2;
     private boolean isTransport;
+    private String villeIni;
 
 
 
@@ -63,10 +59,7 @@ public class A_sujet_Map_set extends FragmentActivity {
         if (extras != null)
         {
             String typeSujet;
-            //get data
-            this.userID = extras.getString("userID");
-            this.sujetID= extras.getString("sujet");
-            this.jourId= extras.getString("idEntry");
+            this.villeIni = extras.getString("location");
             typeSujet= extras.getString("type");
 
             if (typeSujet.equals("Transport"))
@@ -75,6 +68,28 @@ public class A_sujet_Map_set extends FragmentActivity {
             {isTransport=false;}
 
         }
+
+        double lati=0;
+        double longi=0;
+        try {
+            Geocoder geocoder = new Geocoder(context);
+            List<Address> addresses;
+            addresses = geocoder.getFromLocationName(this.villeIni, 1);
+            if (addresses.size() > 0) {
+                lati = addresses.get(0).getLatitude();
+                longi = addresses.get(0).getLongitude();
+            }
+        }
+        catch (IOException ex)
+        {
+            System.out.println("Error : "+ ex.getMessage());
+        }
+
+        point1=mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(lati, longi))
+                .title(this.villeIni)
+                .draggable(true)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 
     }
 
@@ -180,10 +195,10 @@ public class A_sujet_Map_set extends FragmentActivity {
 
 
             Intent intent = new Intent(A_sujet_Map_set.this, A_jour_Preparation.class);
-            intent.putExtra("idEntry", jourId);
-            intent.putExtra("userID", userID);
+            //intent.putExtra("idEntry", jourId);
+            //intent.putExtra("userID", userID);
             intent.putExtra("isFromMap", "oui");
-            intent.putExtra("sujetID", sujetID);
+            //intent.putExtra("sujetID", sujetID);
             intent.putExtra("isTransport", isTransport);
             intent.putExtra("adresse", adresse);
             intent.putExtra("adresse2", adresse2);

@@ -54,9 +54,11 @@ public class A_sujet_new extends MainActivity {
 
 
     //variables
+    private C_Options options;
     private C_Jour day;
     private C_Sujet sujet;
     private C_Participant partAcutel;
+
     private SimpleDateFormat sdf;
     private String userID;
 
@@ -128,13 +130,21 @@ public class A_sujet_new extends MainActivity {
         //variables
         sujet =new C_Sujet();
         sujet.prix=0;
+
         //récupération du jour
-        Bundle extras = getIntent().getExtras();
+        this.options=daoOptions.getOption();
+        this.partAcutel=daoparticipant.getParticipantById(options.userid);
+        this.day=daoJour.getJourById(options.jourid);
+
+        this.day.creerLesListes(daoSujet);
+        System.out.println("--user : " + userID);
+        System.out.println("--jour : " + this.day.nomJour);
+
+       /* Bundle extras = getIntent().getExtras();
         if (extras != null)
         {
             //récupération utilisateur
-            this.userID = extras.getString("userID");
-            partAcutel=daoparticipant.getParticipantById(this.userID);
+
 
             //récupération jour
             this.day = daoJour.getJourById(extras.getString("idEntry"));
@@ -145,7 +155,7 @@ public class A_sujet_new extends MainActivity {
             System.out.println("--jour : "+this.day.nomJour);
 
 
-        }
+        }*/
 
 
 
@@ -218,10 +228,13 @@ public class A_sujet_new extends MainActivity {
             startActivity(intent);*/
 
             //activity for position
+            /*Intent intent = new Intent(A_sujet_new.this, A_jour_Preparation.class);
+            options.sujetid=sujet.idSujet;
+            daoOptions.modifier(options);
+            startActivity(intent);*/
+
             Intent intent = new Intent(A_sujet_new.this, A_sujet_Map_set.class);
-            intent.putExtra("idEntry", day.nomJour);
-            intent.putExtra("sujet", sujet.idSujet);
-            intent.putExtra("userID", userID);
+            intent.putExtra("location", day.ville);
             intent.putExtra("type", sujet.type);
             startActivity(intent);
 

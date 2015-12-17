@@ -31,10 +31,13 @@ public class A_conversation extends MainActivity {
 
     //variables
     private C_Sujet sujet;
+    private C_Options options;
+    private C_Participant part;
+
     //private List<C_Message> liste_messages;
     private SimpleDateFormat sdf;
-    private String userID;
-    private C_Participant part;
+
+
 
 
     @Override
@@ -54,6 +57,12 @@ public class A_conversation extends MainActivity {
         //variables
         //liste_messages= new ArrayList<C_Message>();
 
+        this.options=daoOptions.getOption();
+        this.part=daoparticipant.getParticipantById(options.userid);
+        this.sujet=daoSujet.getSujetById(options.sujetid);
+        this.sujet.creerLesListes(daoMessage, daoparticipant);
+        setTitle("[" + this.sujet.type + "] " + this.sujet.titre);
+        /*
         //récupération du sujet
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -65,7 +74,7 @@ public class A_conversation extends MainActivity {
             this.sujet.creerLesListes(daoMessage, daoparticipant);
             System.out.println("string messages : "+ this.sujet.messagesToString);
             setTitle("[" + this.sujet.type + "] " + this.sujet.titre);
-        }
+        }*/
 
         //scroll.fullScroll(View.FOCUS_DOWN) also should work.
         affichage();

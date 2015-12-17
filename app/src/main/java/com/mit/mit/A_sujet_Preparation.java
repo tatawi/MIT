@@ -44,14 +44,15 @@ public class A_sujet_Preparation extends MainActivity {
 
 
     //variables
-    private C_Sujet sujet;
-    private SimpleDateFormat sdf;
-    private String userID;
+    private C_Options options;
+    private C_Participant part;
     private C_Projet projet;
     private C_Jour jour;
-    private C_Participant part;
+    private C_Sujet sujet;
 
-    private String nomProjet;
+
+    private SimpleDateFormat sdf;
+
     private String nomJour;
 
 
@@ -92,9 +93,28 @@ public class A_sujet_Preparation extends MainActivity {
         sdf = new SimpleDateFormat("HH:MM");
         lb_erreurAdd.setVisibility(View.GONE);
 
+        this.options=daoOptions.getOption();
+
+        this.part=daoparticipant.getParticipantById(options.userid);
+
+
+        this.projet = daoProjet.getProjetByName(options.projetid);
+        this.projet.creerLesListes(daoJour, daoparticipant);
+
+        this.sujet=daoSujet.getSujetById(options.sujetid);
+        this.sujet.creerLesListes(daoMessage, daoparticipant);
+
+        this.nomJour =projet.nom+"_"+this.sujet.idSujet.split("_")[1];
+        this.jour=daoJour.getJourById(options.jourid);
+        this.jour.creerLesListes(daoSujet);
+
+
+
+        //affichage
+        majInterface();
 
         //récupération du sujet
-        Bundle extras = getIntent().getExtras();
+       /* Bundle extras = getIntent().getExtras();
         if (extras != null)
         {
 
@@ -129,7 +149,7 @@ public class A_sujet_Preparation extends MainActivity {
 
             //affichage
             majInterface();
-        }
+        }*/
 
     }
 
@@ -152,8 +172,9 @@ public class A_sujet_Preparation extends MainActivity {
 
 
             Intent intent = new Intent(A_sujet_Preparation.this, A_conversation.class);
-            intent.putExtra("idEntry", sujet.idSujet);
-            intent.putExtra("userID", userID);
+
+            //intent.putExtra("idEntry", sujet.idSujet);
+            //intent.putExtra("userID", userID);
             startActivity(intent);
 
         }
@@ -210,7 +231,7 @@ public class A_sujet_Preparation extends MainActivity {
                     daoJour.modifier(jour);
 
                     //mettre a jour le projet avec le prix
-                    projet = daoProjet.getProjetByName(nomProjet);
+                    projet = daoProjet.getProjetByName(projet.nom);
                     projet.creerLesListes(daoJour, daoparticipant);
                     projet.calculerPrixSejour();
                     daoProjet.modifier(projet);
@@ -374,8 +395,8 @@ public void majInterface()
         if (id == R.id.sujet_conv) {
 
             Intent intent = new Intent(A_sujet_Preparation.this, A_conversation.class);
-            intent.putExtra("idEntry", sujet.idSujet);
-            intent.putExtra("userID", userID);
+            //intent.putExtra("idEntry", sujet.idSujet);
+            //intent.putExtra("userID", userID);
             startActivity(intent);
 
             return true;

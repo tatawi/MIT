@@ -46,7 +46,6 @@ public class A_project_new extends MainActivity {
     private ImageButton btn_creer;
     private ImageButton btn_adduser;
     private TextView lb_erreurAdd;
-    //private ListView lv_listViewPart;
     private ImageButton btn_couleur_noir;
     private ImageButton btn_couleur_rouge;
     private ImageButton btn_couleur_bleu;
@@ -56,6 +55,9 @@ public class A_project_new extends MainActivity {
     private LinearLayout ll_parts;
 
     //variables
+    private C_Options options;
+    private C_Participant part;
+
     private String v_nom;
     private String v_description;
     private Date v_dateDebut;
@@ -64,16 +66,14 @@ public class A_project_new extends MainActivity {
     private String v_couleur="noir";
     private transient List<C_Jour> v_liste_jours;
     private transient List<C_Participant> v_liste_participantsProjet;
-    private String userID;
     private transient List<C_Participant> v_liste_allParticipants;
-    private C_Participant part;
+
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         //initialisations
         setContentView(R.layout.activity_a_project_new);
@@ -86,7 +86,6 @@ public class A_project_new extends MainActivity {
         tb_participant = (EditText) findViewById(R.id.newProject_tb_participants);
         btn_creer = (ImageButton) findViewById(R.id.newProject_btn_addProject);
         btn_adduser = (ImageButton) findViewById(R.id.newProject_btn_addParticipant);
-        //lv_listViewPart = (ListView) findViewById(R.id.newProject_lv_listView);
         btn_couleur_noir= (ImageButton) findViewById(R.id.newProject_btn_color_noir);
         btn_couleur_rouge= (ImageButton) findViewById(R.id.newProject_btn_color_rouge);
         btn_couleur_bleu= (ImageButton) findViewById(R.id.newProject_btn_color_bleu);
@@ -120,7 +119,7 @@ public class A_project_new extends MainActivity {
 
 
         //getRessources
-        Bundle extras = getIntent().getExtras();
+       /* Bundle extras = getIntent().getExtras();
         if (extras != null) {
             this.userID = extras.getString("userID");
             part=daoparticipant.getParticipantById(userID);
@@ -128,7 +127,14 @@ public class A_project_new extends MainActivity {
             //ajout participant actuelle au projet
             v_liste_participantsProjet.add(part);
             addUserToList(part);
-        }
+        }*/
+
+        //get infos
+        options=daoOptions.getOption();
+        part=daoparticipant.getParticipantById(options.userid);
+
+        v_liste_participantsProjet.add(part);
+        addUserToList(part);
     }
 
 
@@ -182,7 +188,7 @@ public class A_project_new extends MainActivity {
 
             //RETOUR PAGE PRECEDENTE
             Intent intent = new Intent(A_project_new.this, A_projets.class);
-            intent.putExtra("userID", userID);
+            //intent.putExtra("userID", userID);
             startActivity(intent);
         }
     };
@@ -228,24 +234,8 @@ public class A_project_new extends MainActivity {
                 lb_erreurAdd.setVisibility(View.VISIBLE);
                 lb_erreurAdd.setText(e.getMessage());
             }
-            //majListView();
             tb_participant.setText("");
 
-
-
-
-
-            //String[] listeStrings = {""};
-           /* List<String> listeStringParticipants = new ArrayList<String>();
-            int i=0;
-            for(C_Participant p:v_liste_participantsProjet)
-            {
-                //listeStrings[i]=p.prenom+" "+p.nom;
-                listeStringParticipants.add(p.prenom+" "+p.nom);
-            }
-
-            lv_listViewPart.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listeStringParticipants));
-            */
 
         }
     };
@@ -262,7 +252,6 @@ public class A_project_new extends MainActivity {
         LLmyPart.addView(LLpart_tb);
 
         ll_parts.addView(LLmyPart);
-
 
 
     }
@@ -355,21 +344,6 @@ public class A_project_new extends MainActivity {
 //	FONCTIONS
 //---------------------------------------------------------------------------------------
 
-    /*private void majListView()
-    {
-        //String[] listeStrings = {""};
-        List<String> listeStringParticipants = new ArrayList<String>();
-        int i=0;
-        for(C_Participant p:v_liste_participantsProjet)
-        {
-            //listeStrings[i]=p.prenom+" "+p.nom;
-            listeStringParticipants.add(p.prenom+" "+p.nom);
-        }
-
-        lv_listViewPart.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listeStringParticipants));
-    }*/
-
-
     private List<C_Jour> creerListeJours(Date debut, Date fin)
     {
         List<C_Jour>maListeJours=new ArrayList<C_Jour>();
@@ -392,7 +366,6 @@ public class A_project_new extends MainActivity {
             jourEnCour = cal.getTime();
         }
 
-        //public C_Jour(String nomJour, Date jour)
 
 
 

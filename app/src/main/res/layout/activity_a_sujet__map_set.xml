@@ -39,19 +39,17 @@
             android:id="@+id/newsujet_linearlayout_global"
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
+            android:layout_height="300dp"
             android:paddingRight="10dp">
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:id="@+id/map"
+    android:layout_height="350dp" android:id="@+id/map"
     tools:context="com.mit.mit.A_sujet_Map_set"
     android:name="com.google.android.gms.maps.SupportMapFragment" />
 
     <Button
+        android:paddingTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Valider"

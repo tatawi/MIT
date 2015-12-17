@@ -7,30 +7,77 @@
     tools:context="com.mit.mit.A_jour_Preparation">
 
     <LinearLayout
-        android:id="@+id/jourPrep_layoutFirst"
-        android:orientation="horizontal"
+        android:id="@+id/projetPrep_globalLayout"
+        android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        >
-        <TextView
-            android:id="@+id/jourPrep_lb_txtCout"
-            android:text="Coût de la journée : "
-            android:textSize="25dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_above="@+id/newUser_btn_valider"
-            android:layout_marginBottom="10dp"
-            />
+        android:layout_height="fill_parent">
 
-        <TextView
-            android:id="@+id/jourPrep_lb_cout"
-            android:text="125€"
-            android:textSize="25dp"
+
+        <LinearLayout
+            android:id="@+id/jourPrep_layoutFirst"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/jourPrep_lb_txtCout"
+                android:text="Coût de la journée : "
+                android:textSize="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_above="@+id/newUser_btn_valider"
+                android:layout_marginBottom="10dp"
+                />
+
+            <TextView
+                android:id="@+id/jourPrep_lb_cout"
+                android:text="125€"
+                android:textSize="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/newUser_btn_valider"
+                android:textColor="#ac035d" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/newUser_btn_valider"
-            android:textColor="#ac035d" />
+            android:layout_alignParentLeft="true">
+            <TextView
+                android:layout_marginTop="12dp"
+                android:text="Ville : "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_centerHorizontal="true"
+                />
+
+            <EditText
+                android:id="@+id/jourPrep_tb_ville"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:textColor="#ac035d" />
+
+            <ImageButton
+                android:paddingTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/jourPrep_btn_save"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_save"
+                android:background="@null"/>
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2px"
+            android:background="#ac035d"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp" />
     </LinearLayout>
 
     <ScrollView
@@ -40,7 +87,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="100dp">
 
 
 

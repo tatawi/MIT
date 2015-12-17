@@ -32,13 +32,14 @@ public class A_projet_Preparation extends MainActivity {
     private LinearLayout container_tableLayout;
 
     //variables
-    private C_Projet projet;
+
     private double nbDays;
     private String tab_correspButtons[];
     private SimpleDateFormat sdf;
-    private String userID;
 
     private C_Participant part;
+    private C_Options options;
+    private C_Projet projet;
 
 
     @Override
@@ -57,7 +58,21 @@ public class A_projet_Preparation extends MainActivity {
 
 
         //récupération du projet
-        Bundle extras = getIntent().getExtras();
+        this.options=daoOptions.getOption();
+        this.part=daoparticipant.getParticipantById(options.userid);
+        this.projet=daoProjet.getProjetByName(options.projetid);
+
+        this.projet.creerLesListes(daoJour, daoparticipant);
+        setTitle(this.projet.nom);
+        lb_description.setText(this.projet.description);
+        lb_cout.setText(this.projet.prixSejour + " €");
+        nbDays=this.projet.liste_jours.size();
+        tab_correspButtons=new String[(int)nbDays+7];
+
+        System.out.println("--utilisateur actuel : "+this.part.mail);
+        System.out.println("--projet : "+this.projet.nom);
+        System.out.println("--nombre de jours : "+nbDays);
+       /* Bundle extras = getIntent().getExtras();
         if (extras != null)
         {
             this.userID = extras.getString("userID");
@@ -76,7 +91,7 @@ public class A_projet_Preparation extends MainActivity {
             System.out.println("--projet : "+this.projet.nom);
             System.out.println("--nombre de jours : "+nbDays);
 
-        }
+        }*/
 
 
         /*---------------------------
@@ -140,7 +155,7 @@ public class A_projet_Preparation extends MainActivity {
                 btnConv.setImageResource(R.drawable.ic_projet_prep_conv);
                 btnConv.setBackgroundColor(Color.TRANSPARENT);
                 btnConv.setId(nbParcours);
-                btnConv.setOnClickListener(onClickConv);
+               // btnConv.setOnClickListener(onClickConv);
                 LL.addView(btnConv);
 
 
@@ -192,10 +207,12 @@ public class A_projet_Preparation extends MainActivity {
             String dayID=tab_correspButtons[button.getId()];
 
             Intent intent = new Intent(A_projet_Preparation.this, A_jour_Preparation.class);
-            intent.putExtra("idEntry", dayID);
-            intent.putExtra("userID", userID);
+            options.jourid=dayID;
+            daoOptions.modifier(options);
+            //intent.putExtra("idEntry", dayID);
+            //intent.putExtra("userID", userID);
 
-            System.out.println(">>intent : user " + userID);
+            System.out.println(">>intent : user " + part.mail);
             System.out.println(">>intent : jourSelectionné : "+dayID);
             startActivity(intent);
         }
@@ -204,7 +221,7 @@ public class A_projet_Preparation extends MainActivity {
 
 
     //BOUTON SELECTION MESSAGE
-    View.OnClickListener onClickConv = new View.OnClickListener()
+   /* View.OnClickListener onClickConv = new View.OnClickListener()
     {
         public void onClick(View v) {
             ImageButton button = (ImageButton)v;
@@ -215,7 +232,7 @@ public class A_projet_Preparation extends MainActivity {
             intent.putExtra("userID", userID);
             startActivity(intent);
         }
-    };
+    };*/
 
 
 
@@ -313,7 +330,7 @@ public class A_projet_Preparation extends MainActivity {
 
         if(id==R.id.menu_projetPrep_deconnexion)
         {
-            daoOptions.supprimerUser();
+            daoOptions.supprimer(options);
             Intent intent = new Intent(A_projet_Preparation.this, MainActivity.class);
             startActivity(intent);
         }

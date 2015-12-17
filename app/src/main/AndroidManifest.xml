@@ -9,6 +9,7 @@
     <!--
  The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but are recommended.
+         android:launchMode="singleTop"
     -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -35,7 +36,6 @@
         <activity
             android:name=".A_projets"
             android:label="@string/title_activity_a_projets"
-            android:launchMode="singleTop"
             android:parentActivityName=".MainActivity" >
         </activity>
         <activity
@@ -56,7 +56,6 @@
         <activity
             android:name=".A_projet_Preparation"
             android:label="@string/title_activity_a_projet__preparation"
-            android:launchMode="singleTop"
             android:parentActivityName=".A_projets" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -65,7 +64,6 @@
         <activity
             android:name=".A_jour_Preparation"
             android:label="@string/title_activity_a_jour__preparation"
-            android:launchMode="singleTop"
             android:parentActivityName=".A_projet_Preparation" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

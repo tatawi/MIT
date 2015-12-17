@@ -12,10 +12,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,19 +29,28 @@ public class A_jour_Preparation extends MainActivity {
     //objets de la page
     private TextView lb_montant;
     private LinearLayout container_globalLayout;
+    private EditText tb_ville;
+    private ImageButton btn_save;
 
 
     //variables
-    private C_Jour day;
+
     private String jourID;
     private SimpleDateFormat sdf;
-    private String userID;
+
     private C_Participant part;
+    private C_Options options;
+    private C_Jour day;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_a_jour__preparation);
+
+
+        tb_ville = (EditText) findViewById(R.id.jourPrep_tb_ville);
+        btn_save = (ImageButton) findViewById(R.id.jourPrep_btn_save);
+        btn_save.setOnClickListener(onSave);
 
         System.out.println("**************************************************************");
         System.out.println("**A_Jour_preparation : liste des sujets d'un jour");
@@ -50,54 +61,39 @@ public class A_jour_Preparation extends MainActivity {
         sdf = new SimpleDateFormat("EEE d MMM");
 
 
+        this.options=daoOptions.getOption();
+        this.part=daoparticipant.getParticipantById(options.userid);
+        this.day=daoJour.getJourById(options.jourid);
+
+        this.day.creerLesListes(daoSujet);
+        jourID=day.nomJour;
+
+        setTitle(sdf.format(this.day.jour));
+        lb_montant.setText("" + this.day.prixJournee + " €");
+
+        System.out.println("--utilisateur courant: " + options.userid);
+        System.out.println("--jourEnparamétres: " + options.jourid);
+        System.out.println("--jourCalculé : " + sdf.format(this.day.jour));
+        System.out.println("--jourID : " + this.day.nomJour);
+        System.out.println("--nb sujets : " + this.day.liste_sujets.size());
+
         //récupérations
-        Bundle extras = getIntent().getExtras();
-        if (extras != null)
-        {
-            //utilisateur
-            this.userID = extras.getString("userID");
-            part= daoparticipant.getParticipantById(userID);
-
-            //chargement jour
-            this.day = daoJour.getJourById(extras.getString("idEntry"));
-            this.day.creerLesListes(daoSujet);
-            jourID=day.nomJour;
-
-            setTitle(sdf.format(this.day.jour));
-            lb_montant.setText("" + this.day.prixJournee + " €");
-
-            System.out.println("--utilisateur courant: " + this.userID);
-            System.out.println("--jourEnparamétres: " + extras.getString("idEntry"));
-            System.out.println("--jourCalculé : " + sdf.format(this.day.jour));
-            System.out.println("--jourID : " + this.day.nomJour);
-            System.out.println("--nb sujets : " + this.day.liste_sujets.size());
-
-
-            try {
-                //Cas ou on vient de creer un sujet
-                if (extras.getString("isFromMap").equals("oui")) {
-                    C_Sujet sujetToModify = daoSujet.getSujetById(extras.getString("sujetID"));
-                    sujetToModify.localisation = extras.getString("adresse");
+        try {
+            Bundle extras = getIntent().getExtras();
+            //Cas ou on vient de creer un sujet
+            if (extras.getString("isFromMap").equals("oui")) {
+                C_Sujet sujetToModify = daoSujet.getSujetById(extras.getString("sujetID"));
+                sujetToModify.localisation = extras.getString("adresse");
 
                 /*
                  intent.putExtra("isTransport", isTransport);
                 intent.putExtra("adresse2", adresse2);
                  */
-                    daoSujet.modifier(sujetToModify);
-
-                }
-
-
+                daoSujet.modifier(sujetToModify);
             }
-            catch (Exception e)
-            {
-
-            }
-
-
-
-
-
+        }
+        catch (Exception e)
+        {
         }
 
 
@@ -105,8 +101,6 @@ public class A_jour_Preparation extends MainActivity {
 
 
         affichage();
-
-
 
     }
 
@@ -120,8 +114,10 @@ public class A_jour_Preparation extends MainActivity {
                 if(s.id==selectedLL.getId())
                 {
                     Intent intent = new Intent(A_jour_Preparation.this, A_sujet_Preparation.class);
-                    intent.putExtra("idEntry", s.idSujet);
-                    intent.putExtra("userID", userID);
+                    options.sujetid=s.idSujet;
+                    daoOptions.modifier(options);
+                    //intent.putExtra("idEntry", s.idSujet);
+                    //intent.putExtra("userID", userID);
                     startActivity(intent);
                 }
             }
@@ -194,7 +190,18 @@ public class A_jour_Preparation extends MainActivity {
     };
 
 
-private void affichage()
+    //BOUTTON save
+    View.OnClickListener onSave = new View.OnClickListener() {
+        public void onClick(View v) {
+            day.ville=tb_ville.getText().toString();
+            daoJour.modifier(day);
+            tb_ville.setText("");
+        }
+    };
+
+
+
+    private void affichage()
 {
     day=daoJour.getJourById(jourID);
     day.creerLesListes(daoSujet);
@@ -371,19 +378,6 @@ private void affichage()
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -402,11 +396,12 @@ private void affichage()
         if (id == R.id.menu_addSujet)
         {
             Intent intent = new Intent(A_jour_Preparation.this, A_sujet_new.class);
-            System.out.println("Appel de new sujet. jour id = "+day.nomJour);
-            intent.putExtra("idEntry", day.nomJour);
-            intent.putExtra("userID", userID);
-            System.out.println(">>intent :user : " + userID);
-            System.out.println(">>intent :jour : " + day.nomJour);
+            System.out.println("Appel de new sujet. jour id = " + day.nomJour);
+
+            //intent.putExtra("idEntry", day.nomJour);
+           // intent.putExtra("userID", userID);
+            System.out.println(">>intent :user : " + options.userid);
+            System.out.println(">>intent :jour : " + options.jourid);
             startActivity(intent);
         }
 
@@ -416,7 +411,8 @@ private void affichage()
         }
         if(id==R.id.menu_jour_deconnexion)
         {
-            daoOptions.supprimerUser();
+            //daoOptions.supprimerUser();
+            daoOptions.supprimer(options);
             Intent intent = new Intent(A_jour_Preparation.this, MainActivity.class);
             startActivity(intent);
         }

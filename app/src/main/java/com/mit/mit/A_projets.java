@@ -31,22 +31,27 @@ public class A_projets extends MainActivity {
     private LinearLayout ll_center;
 
     //variables
-    private List<C_Projet> list_projets;
+    private C_Options options;
     private C_Participant part;
+    private List<C_Projet> list_projets;
+
     private SimpleDateFormat sdf;
-    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //récupération de l'utilisateur
+        options=daoOptions.getOption();
+        part=daoparticipant.getParticipantById(options.userid);
+
+        /*
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             this.userID = extras.getString("userID");
             part=daoparticipant.getParticipantById(userID);
             System.out.println("liste projets : "+this.userID);
-        }
+        }*/
 
         //initialiser objets de la page
         setContentView(R.layout.activity_a_projets);
@@ -281,8 +286,10 @@ public class A_projets extends MainActivity {
                 if(p.id==selectedLL.getId())
                 {
                     Intent intent = new Intent(A_projets.this, A_projet_Preparation.class);
-                    intent.putExtra("idEntry", p.nom);
-                    intent.putExtra("userID", userID);
+                    options.projetid=p.nom;
+                    daoOptions.modifier(options);
+                    //intent.putExtra("idEntry", p.nom);
+                    //intent.putExtra("userID", userID);
                     startActivity(intent);
                 }
             }
@@ -375,7 +382,7 @@ public class A_projets extends MainActivity {
         {
             System.out.println("new projet");
             Intent intent = new Intent(A_projets.this, A_project_new.class);
-            intent.putExtra("userID", userID);
+            //intent.putExtra("userID", userID);
             startActivity(intent);
         }
 
@@ -386,7 +393,7 @@ public class A_projets extends MainActivity {
 
         if(id==R.id.menu_projet_deconnexion)
         {
-            daoOptions.supprimerUser();
+            daoOptions.supprimer(options);
             Intent intent = new Intent(A_projets.this, MainActivity.class);
             startActivity(intent);
         }

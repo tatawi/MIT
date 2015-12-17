@@ -132,15 +132,11 @@ public class MainActivity extends AppCompatActivity {
                 me=daoparticipant.getParticipantById(tb_userID.getText().toString());
                 if(me.mdp.equals(tb_mdp.getText().toString()))
                 {
-                    /*if(sw_remember.isEnabled())
-                    {
-                        System.out.println("saving user ...");
-                        daoOptions.ajouterCurrentUser(me);
-                        System.out.println("... done !");
-                    }*/
+                    C_Options options = new C_Options(me);
+                    daoOptions.ajouter(options);
 
                     Intent intent = new Intent(MainActivity.this, A_projets.class);
-                    intent.putExtra("userID", me.mail);
+                    //intent.putExtra("userID", me.mail);
                     startActivity(intent);
                 }
                 else
