@@ -31,6 +31,7 @@ public class DAO_Sujet extends DAO_Bdd {
     public static final String ATTR_DESCRIPTION = "description";
     public static final String ATTR_TYPE = "type";
     public static final String ATTR_LOC = "localisation";
+    public static final String ATTR_LOC2 = "localisation2";
     public static final String ATTR_HEURE = "heure";
     public static final String ATTR_DUREE = "duree";
     public static final String ATTR_FEELLING = "auFelling";
@@ -46,6 +47,7 @@ public class DAO_Sujet extends DAO_Bdd {
                     + ATTR_DESCRIPTION + " TEXT, "
                     + ATTR_TYPE + " TEXT, "
                     + ATTR_LOC + " TEXT, "
+                    + ATTR_LOC2 + " TEXT, "
                     + ATTR_HEURE + " TEXT, "
                     + ATTR_DUREE + " INTEGER, "
                     + ATTR_FEELLING + " TEXT, "
@@ -85,6 +87,7 @@ public class DAO_Sujet extends DAO_Bdd {
         value.put(ATTR_DESCRIPTION, s.description);
         value.put(ATTR_TYPE, s.type);
         value.put(ATTR_LOC, s.localisation);
+        value.put(ATTR_LOC2, s.localisation2);
         value.put(ATTR_HEURE, s.heure.toString());
         value.put(ATTR_DUREE, s.duree);
         value.put(ATTR_FEELLING, s.auFeeling);
@@ -106,6 +109,7 @@ public class DAO_Sujet extends DAO_Bdd {
             Sujet.put("description", s.description);
             Sujet.put("type", s.type);
             Sujet.put("localisation", s.localisation);
+            Sujet.put("localisation2", s.localisation2);
             Sujet.put("heure", sdf.format(s.heure));
             Sujet.put("duree", s.duree);
             Sujet.put("auFeeling", s.auFeeling);
@@ -189,6 +193,7 @@ public class DAO_Sujet extends DAO_Bdd {
         value.put(ATTR_DESCRIPTION, s.description);
         value.put(ATTR_TYPE, s.type);
         value.put(ATTR_LOC, s.localisation);
+        value.put(ATTR_LOC2, s.localisation2);
         value.put(ATTR_HEURE, s.heure.toString());
         value.put(ATTR_DUREE, s.duree);
         value.put(ATTR_FEELLING, s.auFeeling);
@@ -219,6 +224,7 @@ public class DAO_Sujet extends DAO_Bdd {
                     Sujet.put("description", st.description);
                     Sujet.put("type", st.type);
                     Sujet.put("localisation", st.localisation);
+                    Sujet.put("localisation2", st.localisation2);
                     Sujet.put("heure", sdf.format(st.heure));
                     Sujet.put("duree", st.duree);
                     Sujet.put("auFeeling", st.auFeeling);
@@ -244,7 +250,7 @@ public class DAO_Sujet extends DAO_Bdd {
         Date lheure=new Date();
         Cursor cursor = bdd.query(
                 TABLE,
-                new String[] { ATTR_ID, ATTR_IDSUJET, ATTR_TITRE, ATTR_DESCRIPTION, ATTR_TYPE, ATTR_LOC, ATTR_HEURE, ATTR_DUREE, ATTR_FEELLING, ATTR_PRIX, ATTR_MESSAGES, ATTR_PERSONNESOK, ATTR_VALIDE},
+                new String[] { ATTR_ID, ATTR_IDSUJET, ATTR_TITRE, ATTR_DESCRIPTION, ATTR_TYPE, ATTR_LOC, ATTR_LOC2, ATTR_HEURE, ATTR_DUREE, ATTR_FEELLING, ATTR_PRIX, ATTR_MESSAGES, ATTR_PERSONNESOK, ATTR_VALIDE},
                 null,
                 null,
                 null,
@@ -270,6 +276,7 @@ public class DAO_Sujet extends DAO_Bdd {
                             cursor.getString(cursor.getColumnIndex(ATTR_DESCRIPTION)),
                             cursor.getString(cursor.getColumnIndex(ATTR_TYPE)),
                             cursor.getString(cursor.getColumnIndex(ATTR_LOC)),
+                            cursor.getString(cursor.getColumnIndex(ATTR_LOC2)),
                             lheure,
                             cursor.getInt(cursor.getColumnIndex(ATTR_DUREE)),
                             cursor.getString(cursor.getColumnIndex(ATTR_FEELLING)),
@@ -298,7 +305,7 @@ public class DAO_Sujet extends DAO_Bdd {
         Date lheure=new Date();
         Cursor cursor = bdd.query(
                 TABLE,
-                new String[] { ATTR_ID, ATTR_IDSUJET, ATTR_TITRE, ATTR_DESCRIPTION, ATTR_TYPE, ATTR_LOC, ATTR_HEURE, ATTR_DUREE, ATTR_FEELLING, ATTR_PRIX, ATTR_MESSAGES, ATTR_PERSONNESOK, ATTR_VALIDE},
+                new String[] { ATTR_ID, ATTR_IDSUJET, ATTR_TITRE, ATTR_DESCRIPTION, ATTR_TYPE, ATTR_LOC, ATTR_LOC2, ATTR_HEURE, ATTR_DUREE, ATTR_FEELLING, ATTR_PRIX, ATTR_MESSAGES, ATTR_PERSONNESOK, ATTR_VALIDE},
                 ATTR_IDSUJET + " = ?",
                 new String[] { id },
                 null,
@@ -324,6 +331,7 @@ public class DAO_Sujet extends DAO_Bdd {
                     cursor.getString(cursor.getColumnIndex(ATTR_DESCRIPTION)),
                     cursor.getString(cursor.getColumnIndex(ATTR_TYPE)),
                     cursor.getString(cursor.getColumnIndex(ATTR_LOC)),
+                    cursor.getString(cursor.getColumnIndex(ATTR_LOC2)),
                     lheure,
                     cursor.getInt(cursor.getColumnIndex(ATTR_DUREE)),
                     cursor.getString(cursor.getColumnIndex(ATTR_FEELLING)),

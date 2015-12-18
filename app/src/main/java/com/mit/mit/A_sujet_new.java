@@ -228,14 +228,14 @@ public class A_sujet_new extends MainActivity {
             startActivity(intent);*/
 
             //activity for position
-            /*Intent intent = new Intent(A_sujet_new.this, A_jour_Preparation.class);
+            //Intent intent = new Intent(A_sujet_new.this, A_jour_Preparation.class);
             options.sujetid=sujet.idSujet;
             daoOptions.modifier(options);
-            startActivity(intent);*/
+            //startActivity(intent);
 
             Intent intent = new Intent(A_sujet_new.this, A_sujet_Map_set.class);
-            intent.putExtra("location", day.ville);
-            intent.putExtra("type", sujet.type);
+            //intent.putExtra("location", day.ville);
+            //intent.putExtra("type", sujet.type);
             startActivity(intent);
 
         }

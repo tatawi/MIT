@@ -55,10 +55,10 @@
 
             <EditText
                 android:id="@+id/jourPrep_tb_ville"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:textColor="#ac035d" />
+                 />
 
             <ImageButton
                 android:paddingTop="10dp"

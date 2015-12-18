@@ -70,6 +70,7 @@ public class A_jour_Preparation extends MainActivity {
 
         setTitle(sdf.format(this.day.jour));
         lb_montant.setText("" + this.day.prixJournee + " €");
+        tb_ville.setText(day.ville);
 
         System.out.println("--utilisateur courant: " + options.userid);
         System.out.println("--jourEnparamétres: " + options.jourid);
@@ -195,7 +196,8 @@ public class A_jour_Preparation extends MainActivity {
         public void onClick(View v) {
             day.ville=tb_ville.getText().toString();
             daoJour.modifier(day);
-            tb_ville.setText("");
+            tb_ville.setTextColor(Color.parseColor("#ac035d"));
+
         }
     };
 

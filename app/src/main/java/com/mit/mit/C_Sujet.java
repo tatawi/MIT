@@ -23,6 +23,7 @@ public class C_Sujet {
     public String description;
     public String type;
     public String localisation;
+    public String localisation2;
     public Date heure;
     public int duree;
     public boolean auFeeling;
@@ -51,13 +52,14 @@ public class C_Sujet {
      *@param auFeeling			If it's a feeling subject
      *@param prix				Subject's price
      */
-    public C_Sujet( String titre, String description, String type, String localisation, Date heure, int duree, boolean auFeeling, double prix)
+    public C_Sujet( String titre, String description, String type, String localisation, String localisation2, Date heure, int duree, boolean auFeeling, double prix)
     {
         super();
         this.titre = titre;
         this.description = description;
         this.type = type;
         this.localisation = localisation;
+        this.localisation2=localisation2;
         this.heure = heure;
         this.duree = duree;
         this.auFeeling=auFeeling;
@@ -72,9 +74,9 @@ public class C_Sujet {
     /**
      *DAO builder - load a subject from bdd
      *@param id								Id of the day containing the subject
-     *@param idSujet								Id of the day containing the subject
+     *@param idSujet						Id of the day containing the subject
      *@param titre							Subject's title
-     *@param description						Subject's description
+     *@param description					Subject's description
      *@param type							Subject's type
      *@param localisation					Subject's localisation
      *@param heure							Subject's start time
@@ -84,7 +86,7 @@ public class C_Sujet {
      *@param messagesToString				List of all C_message's id in string format (separated with ";")
      *@param personnesAyantAccepteToString	List of all accepted member's id in string format (separated with ";")
      */
-    public C_Sujet( int id, String idSujet, String titre, String description, String type, String localisation, Date heure, int duree, String auFeeling, double prix, String messagesToString, String personnesAyantAccepteToString, String valide)
+    public C_Sujet( int id, String idSujet, String titre, String description, String type, String localisation, String localisation2, Date heure, int duree, String auFeeling, double prix, String messagesToString, String personnesAyantAccepteToString, String valide)
     {
         super();
         boolean v_feel=false;
@@ -102,6 +104,7 @@ public class C_Sujet {
         this.description = description;
         this.type = type;
         this.localisation = localisation;
+        this.localisation2 = localisation2;
         this.heure = heure;
         this.duree = duree;
         this.auFeeling=v_feel;
@@ -128,6 +131,7 @@ public class C_Sujet {
         this.description="";
         this.type="";
         this.localisation="";
+        this.localisation2="";
         this.heure=new Date();
         this.duree=0;
         this.auFeeling=false;

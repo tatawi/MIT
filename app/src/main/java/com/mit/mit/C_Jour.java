@@ -46,7 +46,7 @@ public class C_Jour {
         this.jour = jour;
         this.prixJournee=0;
         this.sujetsToString="";
-        this.ville="";
+        this.ville="null";
     }
 
     /**

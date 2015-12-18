@@ -7,10 +7,14 @@ import android.location.Geocoder;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -19,6 +23,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class A_sujet_Map_set extends FragmentActivity {
@@ -27,14 +32,25 @@ public class A_sujet_Map_set extends FragmentActivity {
     private ImageButton btn_marker;
     private EditText tb_adresse;
     private Button btn_ok;
+    private LinearLayout ll_adresses;
+    EditText tb_addr;
+
     private Marker point1;
     private Marker point2;
 
     private Context context;
-    private String adresse;
-    private String adresse2;
-    private boolean isTransport;
-    private String villeIni;
+    private DAO_Sujet daoSujet;
+    private DAO_Options daoOptions;
+    private DAO_Jour daoJour;
+
+    private C_Options options;
+    private C_Sujet sujet;
+    private C_Jour jour;
+
+    //private String adresse;
+    private String destination;
+
+    private LatLng coord;
 
 
 
@@ -45,17 +61,26 @@ public class A_sujet_Map_set extends FragmentActivity {
         setContentView(R.layout.activity_a_sujet__map_set);
         setUpMapIfNeeded();
 
-
         context=this.getApplicationContext();
+        daoSujet = new DAO_Sujet(context);
+        daoOptions = new DAO_Options(context);
+        daoJour = new DAO_Jour(context);
+
         tb_adresse = (EditText) findViewById(R.id.sujet_map_set_tb_adress);
         btn_marker = (ImageButton) findViewById(R.id.sujet_map_set_btn_search);
         btn_ok = (Button) findViewById(R.id.sujet_map_set_btn_OK);
+        ll_adresses= (LinearLayout) findViewById(R.id.sujet_map_ll_adreses);
 
         btn_marker.setOnClickListener(onSearchAdress);
         btn_ok.setOnClickListener(onClickbtnOk);
 
         //récupérations
-        Bundle extras = getIntent().getExtras();
+        this.options=daoOptions.getOption();
+        this.sujet=daoSujet.getSujetById(options.sujetid);
+        this.jour=daoJour.getJourById(options.jourid);
+
+        System.out.println("****"+sujet.idSujet);
+        /*Bundle extras = getIntent().getExtras();
         if (extras != null)
         {
             String typeSujet;
@@ -67,31 +92,124 @@ public class A_sujet_Map_set extends FragmentActivity {
             else
             {isTransport=false;}
 
+        }*/
+
+
+
+        //ajout champs is transport
+        if(sujet.type.equals("Transport"))
+        {
+            LinearLayout llAdd= new LinearLayout(this);
+            llAdd.setOrientation(LinearLayout.HORIZONTAL);
+            LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            llAdd.setLayoutParams(LLParams);
+
+            TextView lb_titre = new TextView(this);
+            tb_addr = new EditText(this);
+            lb_titre.setText("Destination : ");
+
+            llAdd.addView(lb_titre);
+            llAdd.addView(tb_addr);
+
+            ll_adresses.addView(llAdd);
         }
 
+        initialiserMap();
+
+    }
+
+    private void initialiserMap()
+    {
         double lati=0;
         double longi=0;
-        try {
+
+        try
+        {
             Geocoder geocoder = new Geocoder(context);
             List<Address> addresses;
-            addresses = geocoder.getFromLocationName(this.villeIni, 1);
+            addresses = geocoder.getFromLocationName(this.jour.ville, 1);
             if (addresses.size() > 0) {
                 lati = addresses.get(0).getLatitude();
                 longi = addresses.get(0).getLongitude();
             }
+            this.coord=new LatLng(lati, longi);
+
+            /*point1=mMap.addMarker(new MarkerOptions()
+                    .position(coord)
+                    .title(this.jour.ville)
+                    .draggable(true)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));*/
+
+
+            moveToCurrentLocation(coord);
+
         }
         catch (IOException ex)
         {
             System.out.println("Error : "+ ex.getMessage());
         }
+    }
 
-        point1=mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(lati, longi))
-                .title(this.villeIni)
-                .draggable(true)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+
+
+    private void setMarkerToAdress(String adresse)
+    {
+        double lati=0;
+        double longi=0;
+
+        try
+        {
+            Geocoder geocoder = new Geocoder(context);
+            List<Address> addresses;
+            addresses = geocoder.getFromLocationName(adresse, 1);
+            if (addresses.size() > 0) {
+                lati = addresses.get(0).getLatitude();
+                longi = addresses.get(0).getLongitude();
+            }
+            this.coord=new LatLng(lati, longi);
+
+            point1=mMap.addMarker(new MarkerOptions()
+                    .position(coord)
+                    .title(adresse)
+                    .draggable(true)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+
+
+            if(sujet.type.equals("Transport"))
+            {
+                addresses = geocoder.getFromLocationName(this.destination, 1);
+                if (addresses.size() > 0) {
+                    lati = addresses.get(0).getLatitude();
+                    longi = addresses.get(0).getLongitude();
+                }
+                this.coord=new LatLng(lati, longi);
+
+                point2=mMap.addMarker(new MarkerOptions()
+                        .position(coord)
+                        .title(adresse)
+                        .draggable(true)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+            }
+
+        }
+        catch (IOException ex)
+        {
+            System.out.println("Error : "+ ex.getMessage());
+        }
+    }
+
+    private void moveToCurrentLocation(LatLng currentLocation)
+    {
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,15));
+        // Zoom in, animating the camera.
+        mMap.animateCamera(CameraUpdateFactory.zoomIn());
+        // Zoom out to zoom level 10, animating with a duration of 2 seconds.
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+
 
     }
+
+
 
     @Override
     protected void onResume() {
@@ -139,43 +257,17 @@ public class A_sujet_Map_set extends FragmentActivity {
 
 
 
-    //bouton ajouter participant
+    //bouton ajouter adresse
     View.OnClickListener onSearchAdress = new View.OnClickListener() {
         public void onClick(View v)
         {
-            double latitude=0;
-            double longitude=0;
-            try {
-                Geocoder geocoder = new Geocoder(context);
-                List<Address> addresses;
-                addresses = geocoder.getFromLocationName(tb_adresse.getText().toString(), 1);
-                if (addresses.size() > 0) {
-                    latitude = addresses.get(0).getLatitude();
-                    longitude = addresses.get(0).getLongitude();
-                }
-            }
-            catch (IOException ex)
+
+
+            if(sujet.type.equals("Transport"))
             {
-                System.out.println("Error : "+ ex.getMessage());
+                destination=tb_addr.getText().toString();
             }
-
-
-            point1=mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(latitude, longitude))
-                    .title("Here")
-                    .draggable(true)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-
-            if(isTransport)
-            {
-                point2=mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(latitude, longitude))
-                        .title("Here")
-                        .draggable(true)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
-            }
-
-
+            setMarkerToAdress(tb_adresse.getText().toString());
 
         }
     };
@@ -184,25 +276,17 @@ public class A_sujet_Map_set extends FragmentActivity {
     View.OnClickListener onClickbtnOk = new View.OnClickListener() {
         public void onClick(View v)
         {
-            LatLng position = point1.getPosition();
-            adresse=position.latitude+";"+position.longitude;
-
-            if (isTransport)
+            if(sujet.type.equals("Transport"))
             {
                 LatLng position2 = point2.getPosition();
-                adresse2=position2.latitude+";"+position2.longitude;
+                sujet.localisation2=position2.latitude+";"+position2.longitude;
             }
 
+            LatLng position = point1.getPosition();
+            sujet.localisation=position.latitude+";"+position.longitude;
+            daoSujet.modifier(sujet);
 
             Intent intent = new Intent(A_sujet_Map_set.this, A_jour_Preparation.class);
-            //intent.putExtra("idEntry", jourId);
-            //intent.putExtra("userID", userID);
-            intent.putExtra("isFromMap", "oui");
-            //intent.putExtra("sujetID", sujetID);
-            intent.putExtra("isTransport", isTransport);
-            intent.putExtra("adresse", adresse);
-            intent.putExtra("adresse2", adresse2);
-
             startActivity(intent);
 
 
