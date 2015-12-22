@@ -199,7 +199,7 @@ public class A_sujet_new extends MainActivity {
             C_Message message = new C_Message(sujet.idSujet, new Date(), "Création du sujet", partAcutel);
 
             System.out.println("sujet new : add msg : " + message.personnesAyantVuesToString);
-            daoMessage.ajouter(message, true);
+            daoMessage.ajouter(message, options.online);
             sujet.liste_messages.add(message);
 
 

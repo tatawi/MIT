@@ -120,7 +120,7 @@ public class DAO_Projet extends DAO_Bdd {
             this.open();
             bdd.delete(
                     TABLE,
-                    ATTR_ID + " = ?",
+                    ATTR_NOM + " = ?",
                     new String[]{id}
             );
             this.close();

@@ -173,11 +173,11 @@ public class A_project_new extends MainActivity {
 
 
             //SAUVEGARDE
-            daoProjet.ajouter(newprojet, true);
+            daoProjet.ajouter(newprojet, options.online);
 
             for (C_Jour j:v_liste_jours)
             {
-                daoJour.ajouter(j, true);
+                daoJour.ajouter(j, options.online);
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
 
 

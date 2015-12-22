@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 public class DAO_Bdd {
 
     // Si mise à jour de la base de données => incrémenter VERSION
-    protected final static int VERSION = 2;
+    protected final static int VERSION = 3;
 
     protected final static String NOM = "database.db";
     protected SQLiteDatabase bdd = null;

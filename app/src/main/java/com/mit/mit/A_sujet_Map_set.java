@@ -16,11 +16,14 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -51,6 +54,7 @@ public class A_sujet_Map_set extends FragmentActivity {
     private String destination;
 
     private LatLng coord;
+
 
 
 
@@ -116,6 +120,8 @@ public class A_sujet_Map_set extends FragmentActivity {
 
         initialiserMap();
 
+
+
     }
 
     private void initialiserMap()
@@ -173,7 +179,7 @@ public class A_sujet_Map_set extends FragmentActivity {
                     .title(adresse)
                     .draggable(true)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-
+            moveToCurrentLocation(coord);
 
             if(sujet.type.equals("Transport"))
             {
@@ -262,12 +268,24 @@ public class A_sujet_Map_set extends FragmentActivity {
         public void onClick(View v)
         {
 
+        if(!tb_adresse.getText().toString().equals(""))
+        {
+            try {
+                point1.remove();
+                point2.remove();
+            }
+            catch (Exception e)
+            {
+
+            }
 
             if(sujet.type.equals("Transport"))
             {
                 destination=tb_addr.getText().toString();
             }
             setMarkerToAdress(tb_adresse.getText().toString());
+        }
+
 
         }
     };
@@ -293,3 +311,6 @@ public class A_sujet_Map_set extends FragmentActivity {
         }
     };
 }
+
+
+

@@ -9,7 +9,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 
 import com.parse.Parse;
@@ -33,12 +35,15 @@ public class MainActivity extends AppCompatActivity {
     protected DAO_Sujet daoSujet = new DAO_Sujet(this);
     protected DAO_Message daoMessage = new DAO_Message(this);
     protected DAO_Options daoOptions = new DAO_Options(this);
+    private C_Options options;
 
     //objets de la page
     private Button btn_connect;
     private EditText tb_userID;
     private EditText tb_mdp;
-    private Switch sw_remember;
+    private CheckBox cb_remember;
+    private CheckBox cb_offline;
+    private ProgressBar pb_load;
 
 
     private Button btn_co1;
@@ -56,13 +61,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        System.out.println("--INI");
+
         //find objects
         btn_connect = (Button) findViewById(R.id.main_btn_connect);
         tb_userID= (EditText) findViewById(R.id.main_tb_user);
         tb_mdp= (EditText) findViewById(R.id.main_tb_mdp);
-        sw_remember= (Switch) findViewById(R.id.main_sw_remember);
-
-
+        cb_remember = (CheckBox) findViewById(R.id.main_cb_remember);
+        cb_offline = (CheckBox) findViewById(R.id.main_cb_offline);
+        pb_load = (ProgressBar) findViewById(R.id.main_pb_load);
 
         btn_co1 = (Button) findViewById(R.id.button3);
         btn_co2 = (Button) findViewById(R.id.button4);
@@ -74,15 +81,15 @@ public class MainActivity extends AppCompatActivity {
         btn_co1.setOnClickListener(onco1);
         btn_co2.setOnClickListener(onco2);
 
-
+        pb_load.setVisibility(View.GONE);
 
         // Enable Local Datastore
         try {
             Parse.enableLocalDatastore(this);
             Parse.initialize(this, "ZyJ90wtX8SyHiJOBCztcGaAaxLRUyI3JZD4vUptQ", "CZYG6VU5JwXdOe5D4l8i2hWzAqmjKZZa3CeGtAYs");
 
-            updateUserList();
-            MajDAO();
+            //updateUserList();
+            //MajDAO();
 
         }
         catch (Exception ex)
@@ -90,15 +97,24 @@ public class MainActivity extends AppCompatActivity {
             System.out.println(ex.getMessage());
         }
 
-
-       /* String userSaved = daoOptions.getSavedUser();
-        if(!userSaved.equals(""))
+        //vérification remember me
+        try
         {
-            me=daoparticipant.getParticipantById(userSaved);
-            Intent intent = new Intent(MainActivity.this, A_projets.class);
-            intent.putExtra("userID", me.mail);
-            startActivity(intent);
-        }*/
+            System.out.println("--VERIF REMEMBER");
+            this.options = daoOptions.getOption();
+            if (options.rememberme)
+            {
+                System.out.println("--OK = oui");
+                //Intent intent = new Intent(MainActivity.this, A_projets.class);
+                //startActivity(intent);
+            }
+        }
+        catch (Exception ex)
+        {
+            System.out.println("[ERROR]"+ex.getMessage());
+        }
+
+
 
     }
 
@@ -128,15 +144,31 @@ public class MainActivity extends AppCompatActivity {
 
             try
             {
+                C_Options MYoptions = new C_Options();
 
+                //offline
+                if(!cb_offline.isChecked())
+                {
+                    pb_load.setVisibility(View.VISIBLE);
+                    updateUserList();
+                    MajDAO();
+                    MYoptions.online=true;
+                }
+
+
+                //user
                 me=daoparticipant.getParticipantById(tb_userID.getText().toString());
+
                 if(me.mdp.equals(tb_mdp.getText().toString()))
                 {
-                    C_Options options = new C_Options(me);
-                    daoOptions.ajouter(options);
+                    if (cb_remember.isChecked())
+                    {
+                        //MYoptions.rememberme=true;
+                    }
+                    MYoptions.userid=me.mail;
+                    daoOptions.ajouter(MYoptions);
 
                     Intent intent = new Intent(MainActivity.this, A_projets.class);
-                    //intent.putExtra("userID", me.mail);
                     startActivity(intent);
                 }
                 else
@@ -147,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
             }
             catch (Exception e)
             {
+                System.out.println("[ERROR]"+e.getMessage());
                 tb_userID.setText("Utilisateur inconnu");
                 tb_mdp.setText("");
             }
@@ -299,6 +332,7 @@ public class MainActivity extends AppCompatActivity {
                 jour.nomJour=parse.getString("nomJour");
                 jour.prixJournee=(float)parse.getLong("prixJournee");
                 jour.sujetsToString=parse.getString("sujetsToString");
+                jour.ville=parse.getString("ville");
                 try {
                     jour.jour=sdf.parse(parse.getString("date"));
                 }
@@ -308,6 +342,7 @@ public class MainActivity extends AppCompatActivity {
                 daoJour.ajouterOUmodifier(jour);
                 System.out.println("--[jours] " + jour.nomJour);
                 System.out.println("--[jours] - sujets " + jour.sujetsToString.toString());
+                pb_load.setProgress(1);
             }
 
             //WORK WITH SUBJECTS
@@ -346,6 +381,7 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("--[sujet] " + sujet.titre);
                 System.out.println("--[sujet] - messages " + sujet.messagesToString.toString());
                 System.out.println("--[sujet] - ayant acceptés " + sujet.personnesAyantAccepteToString.toString());
+                pb_load.setProgress(1);
             }
 
 
@@ -379,6 +415,7 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("--[messages] " + mess.id);
                 System.out.println("--[messages] - emetteur " + mess.id_participantEmetteur);
                 System.out.println("--[messages] - ayant vu " + mess.personnesAyantVuesToString.toString());
+                pb_load.setProgress(1);
 
             }
 

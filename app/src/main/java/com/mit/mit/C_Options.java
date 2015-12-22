@@ -12,18 +12,31 @@ public class C_Options {
     public String projetid;
     public String jourid;
     public String sujetid;
-    public String online;
+    public boolean rememberme;
+    public boolean online;
 
     /**
      *Empty builder
      */
+
+    public C_Options() {
+        super();
+        this.userid = "";
+        this.projetid = "null";
+        this.jourid = "null";
+        this.sujetid = "null";
+        this.rememberme= false;
+        this.online = true;
+    }
+
     public C_Options(C_Participant p) {
         super();
         this.userid = p.mail;
         this.projetid = "null";
         this.jourid = "null";
         this.sujetid = "null";
-        this.online = "null";
+        this.rememberme= false;
+        this.online = true;
     }
 
     /**
@@ -34,20 +47,21 @@ public class C_Options {
      *@param jourid		User's mail adress
      *@param sujetid		User's password
      */
-    public C_Options(int id, String userid, String projetid, String jourid, String sujetid, String online) {
+    public C_Options(int id, String userid, String projetid, String jourid, String sujetid, boolean remember, boolean online) {
         super();
         this.id = id;
         this.userid = userid;
         this.projetid = projetid;
         this.jourid = jourid;
         this.sujetid = sujetid;
+        this.rememberme = remember;
         this.online = online;
     }
 
-    public C_Options() {
-        super();
 
-    }
+
+
+
 
 
 

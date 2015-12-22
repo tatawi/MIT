@@ -28,6 +28,7 @@ public class DAO_Options extends DAO_Bdd {
     public static final String ATTR_PROJETID = "projetid";
     public static final String ATTR_JOURID = "jourid";
     public static final String ATTR_SUJETID = "sujetid";
+    public static final String ATTR_REMEMBERME = "rememberme";
     public static final String ATTR_ONLINE = "online";
     public static final String TABLE_CREATE =
             "CREATE TABLE " + TABLE + "("
@@ -36,6 +37,7 @@ public class DAO_Options extends DAO_Bdd {
                     + ATTR_PROJETID + " TEXT, "
                     + ATTR_JOURID + " TEXT, "
                     + ATTR_SUJETID + " TEXT, "
+                    + ATTR_REMEMBERME + " TEXT, "
                     + ATTR_ONLINE + " TEXT);";
     public static final String TABLE_DROP = "DROP TABLE IF EXISTS " + TABLE + ";";
 
@@ -61,7 +63,24 @@ public class DAO_Options extends DAO_Bdd {
         value.put(ATTR_PROJETID, o.projetid);
         value.put(ATTR_JOURID, o.jourid);
         value.put(ATTR_SUJETID, o.sujetid);
-        value.put(ATTR_ONLINE, o.online);
+
+        if(o.rememberme)
+        {
+            value.put(ATTR_REMEMBERME, "true");
+        }
+        else
+        {
+            value.put(ATTR_REMEMBERME, "false");
+        }
+
+        if(o.online)
+        {
+            value.put(ATTR_ONLINE, "true");
+        }
+        else
+        {
+            value.put(ATTR_ONLINE, "false");
+        }
 
         bdd.insert(TABLE, null, value);
         this.close();
@@ -79,8 +98,18 @@ public class DAO_Options extends DAO_Bdd {
                     new String[]{o.userid}
             );
             this.close();
-        }
 
+
+    }
+
+
+    public void supprimerALL()
+    {
+        //LOCAL
+        this.open();
+        bdd.execSQL("delete from " + TABLE);
+        this.close();
+    }
 
 
     public void modifier(C_Options o)
@@ -93,6 +122,7 @@ public class DAO_Options extends DAO_Bdd {
         value.put(ATTR_PROJETID, o.projetid);
         value.put(ATTR_JOURID, o.jourid);
         value.put(ATTR_SUJETID, o.sujetid);
+        value.put(ATTR_REMEMBERME, o.rememberme);
         value.put(ATTR_ONLINE, o.online);
 
         bdd.update(
@@ -133,7 +163,7 @@ public class DAO_Options extends DAO_Bdd {
         Date day = new Date();
         Cursor cursor = bdd.query(
                 TABLE,
-                new String[]{ATTR_ID, ATTR_USERID, ATTR_PROJETID, ATTR_JOURID, ATTR_SUJETID, ATTR_ONLINE},
+                new String[]{ATTR_ID, ATTR_USERID, ATTR_PROJETID, ATTR_JOURID, ATTR_SUJETID, ATTR_REMEMBERME, ATTR_ONLINE},
                 ATTR_USERID + " = ?",
                 new String[]{id},
                 null,
@@ -143,14 +173,28 @@ public class DAO_Options extends DAO_Bdd {
         );
 
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            boolean online;
+            boolean remember;
 
+            if(cursor.getString(cursor.getColumnIndex(ATTR_REMEMBERME)).equals("true")) {
+                remember=true;
+            } else {
+                remember=false;
+            }
+
+            if(cursor.getString(cursor.getColumnIndex(ATTR_ONLINE)).equals("true")) {
+                online=true;
+            } else {
+                online=false;
+            }
             o = new C_Options(
                     cursor.getInt(cursor.getColumnIndex(ATTR_ID)),
                     cursor.getString(cursor.getColumnIndex(ATTR_USERID)),
                     cursor.getString(cursor.getColumnIndex(ATTR_PROJETID)),
                     cursor.getString(cursor.getColumnIndex(ATTR_JOURID)),
                     cursor.getString(cursor.getColumnIndex(ATTR_SUJETID)),
-                    cursor.getString(cursor.getColumnIndex(ATTR_ONLINE))
+                    remember,
+                    online
             );
         }
         this.close();
@@ -166,7 +210,7 @@ public class DAO_Options extends DAO_Bdd {
         C_Options option = new C_Options();
         Cursor cursor = bdd.query(
                 TABLE,
-                new String[]{ATTR_ID, ATTR_USERID, ATTR_PROJETID, ATTR_JOURID, ATTR_SUJETID, ATTR_ONLINE},
+                new String[]{ATTR_ID, ATTR_USERID, ATTR_PROJETID, ATTR_JOURID, ATTR_SUJETID, ATTR_REMEMBERME, ATTR_ONLINE},
                 null,
                 null,
                 null,
@@ -177,6 +221,22 @@ public class DAO_Options extends DAO_Bdd {
 
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
 
+            boolean online;
+            boolean remember;
+
+            if(cursor.getString(cursor.getColumnIndex(ATTR_REMEMBERME)).equals("true")) {
+                remember=true;
+            } else {
+                remember=false;
+            }
+
+            if(cursor.getString(cursor.getColumnIndex(ATTR_ONLINE)).equals("true")) {
+                online=true;
+            } else {
+                online=false;
+            }
+
+
 
             liste_options.add(
                     new C_Options(
@@ -185,7 +245,8 @@ public class DAO_Options extends DAO_Bdd {
                             cursor.getString(cursor.getColumnIndex(ATTR_PROJETID)),
                             cursor.getString(cursor.getColumnIndex(ATTR_JOURID)),
                             cursor.getString(cursor.getColumnIndex(ATTR_SUJETID)),
-                            cursor.getString(cursor.getColumnIndex(ATTR_ONLINE))
+                            remember,
+                            online
                     )
             );
         }

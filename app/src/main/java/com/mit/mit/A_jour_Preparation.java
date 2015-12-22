@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -47,20 +48,17 @@ public class A_jour_Preparation extends MainActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_a_jour__preparation);
 
-
         tb_ville = (EditText) findViewById(R.id.jourPrep_tb_ville);
         btn_save = (ImageButton) findViewById(R.id.jourPrep_btn_save);
+        lb_montant = (TextView) findViewById(R.id.jourPrep_lb_cout);
+
         btn_save.setOnClickListener(onSave);
+        container_globalLayout = (LinearLayout) findViewById(R.id.jourPrep_layoutContent);
 
         System.out.println("**************************************************************");
         System.out.println("**A_Jour_preparation : liste des sujets d'un jour");
 
         //initialisations
-        container_globalLayout = (LinearLayout) findViewById(R.id.jourPrep_layoutContent);
-        lb_montant = (TextView) findViewById(R.id.jourPrep_lb_cout);
-        sdf = new SimpleDateFormat("EEE d MMM");
-
-
         this.options=daoOptions.getOption();
         this.part=daoparticipant.getParticipantById(options.userid);
         this.day=daoJour.getJourById(options.jourid);
@@ -68,9 +66,32 @@ public class A_jour_Preparation extends MainActivity {
         this.day.creerLesListes(daoSujet);
         jourID=day.nomJour;
 
+
+
+        sdf = new SimpleDateFormat("EEE d MMM");
+
         setTitle(sdf.format(this.day.jour));
         lb_montant.setText("" + this.day.prixJournee + " €");
+
+        //GESTION VILLE
         tb_ville.setText(day.ville);
+        if(day.ville.equals(""))
+        {
+            tb_ville.setText("Entrez un emplacement");
+            tb_ville.setTextColor(Color.LTGRAY);
+            tb_ville.setTypeface(null, Typeface.ITALIC);
+        }
+        tb_ville.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tb_ville.setText("");
+                tb_ville.setTextColor(Color.BLACK);
+                tb_ville.setTypeface(null, Typeface.NORMAL);
+            }
+        });
+
+
+
 
         System.out.println("--utilisateur courant: " + options.userid);
         System.out.println("--jourEnparamétres: " + options.jourid);

@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class A_projets extends MainActivity {
@@ -257,6 +258,7 @@ public class A_projets extends MainActivity {
                 LLglobal.addView(LLleft);
                 LLglobal.addView(LLright);
                 LLglobal.setOnClickListener(onClickLayout);
+                LLglobal.setOnLongClickListener(onLongClickLayout);
                 ll_center.addView(LLglobal);
 
 
@@ -332,6 +334,72 @@ public class A_projets extends MainActivity {
     };
 
 
+    //ON LONG CLICK = REMOVE
+    View.OnLongClickListener onLongClickLayout = new View.OnLongClickListener() {
+        public boolean onLongClick(View v) {
+            LinearLayout selectedLL = (LinearLayout) v;
+
+            for (C_Projet p:list_projets)
+            {
+                if(p.id==selectedLL.getId())
+                {
+                    p.creerLesListes(daoJour, daoparticipant);
+                    final C_Projet projetToDel = p;
+
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    //REMOVE OK
+
+
+
+
+                                    for(C_Jour jourTodel:projetToDel.liste_jours)
+                                    {
+                                        jourTodel.creerLesListes(daoSujet);
+
+                                        for (C_Sujet sujetToDel:jourTodel.liste_sujets)
+                                        {
+                                            sujetToDel.creerLesListes(daoMessage, daoparticipant);
+
+                                            for(C_Message messageToDel:sujetToDel.liste_messages)
+                                            {
+                                                daoMessage.supprimer(messageToDel.id);
+                                            }
+                                            daoSujet.supprimer(sujetToDel.idSujet);
+                                        }
+                                        daoJour.supprimer(jourTodel.nomJour);
+                                    }
+                                    daoProjet.supprimer(projetToDel.nom);
+
+
+                                    majAffichage();
+                                    setAffichage("Preparation");
+
+
+
+
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //No button clicked
+                                    break;
+                            }
+                        }
+                    };
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(pContext);
+                    builder.setMessage("Delete "+p.nom+" ?").setPositiveButton("Yes", dialogClickListener)
+                            .setNegativeButton("No", dialogClickListener).show();
+
+                }
+            }
+            return true;
+        }
+    };
+
 
              /*       AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(pContext);
                     alertDialogBuilder.setTitle(p.nom);
@@ -393,7 +461,8 @@ public class A_projets extends MainActivity {
 
         if(id==R.id.menu_projet_deconnexion)
         {
-            daoOptions.supprimer(options);
+            //daoOptions.supprimer(options);
+            daoOptions.supprimerALL();
             Intent intent = new Intent(A_projets.this, MainActivity.class);
             startActivity(intent);
         }

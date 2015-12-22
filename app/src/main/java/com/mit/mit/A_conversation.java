@@ -211,7 +211,7 @@ public class A_conversation extends MainActivity {
 
 
             C_Message message = new C_Message(sujet.idSujet,new Date(), tb_message.getText().toString(), part);
-            daoMessage.ajouter(message, true);
+            daoMessage.ajouter(message, options.online);
 
 
             sujet.liste_messages.add(message);
