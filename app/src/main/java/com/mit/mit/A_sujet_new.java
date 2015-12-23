@@ -132,7 +132,7 @@ public class A_sujet_new extends MainActivity {
         sujet.prix=0;
 
         //récupération du jour
-        this.options=daoOptions.getOption();
+        this.options=daoOptions.getOptionByUserId();
         this.partAcutel=daoparticipant.getParticipantById(options.userid);
         this.day=daoJour.getJourById(options.jourid);
 

@@ -57,7 +57,7 @@ public class A_conversation extends MainActivity {
         //variables
         //liste_messages= new ArrayList<C_Message>();
 
-        this.options=daoOptions.getOption();
+        this.options=daoOptions.getOptionByUserId();
         this.part=daoparticipant.getParticipantById(options.userid);
         this.sujet=daoSujet.getSujetById(options.sujetid);
         this.sujet.creerLesListes(daoMessage, daoparticipant);

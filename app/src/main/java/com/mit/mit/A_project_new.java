@@ -130,7 +130,7 @@ public class A_project_new extends MainActivity {
         }*/
 
         //get infos
-        options=daoOptions.getOption();
+        options=daoOptions.getOptionByUserId();
         part=daoparticipant.getParticipantById(options.userid);
 
         v_liste_participantsProjet.add(part);

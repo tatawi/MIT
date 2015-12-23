@@ -20,6 +20,8 @@
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
+
+
             <TextView
                 android:id="@+id/jourPrep_lb_txtCout"
                 android:text="Coût de la journée : "

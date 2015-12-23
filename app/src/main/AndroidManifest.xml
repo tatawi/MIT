@@ -31,20 +31,18 @@
         <activity
             android:name=".A_user_new"
             android:label="@string/title_activity_a_user_new"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".A_Connexion" >
         </activity>
         <activity
             android:name=".A_projets"
             android:label="@string/title_activity_a_projets"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".A_Connexion" >
         </activity>
         <activity
             android:name=".A_gestionParticipants"
             android:label="@string/title_activity_a_gestion_participants"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mit.mit.MainActivity" />
+            android:parentActivityName=".A_Connexion" >
+
         </activity>
         <activity
             android:name=".A_project_new"
@@ -104,6 +102,10 @@
         <activity
             android:name=".A_sujet_Map_set"
             android:label="@string/title_activity_a_sujet__map_set" >
+        </activity>
+        <activity
+            android:name=".A_Connexion"
+            android:label="@string/title_activity_a__connexion" >
         </activity>
     </application>
 

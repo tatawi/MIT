@@ -93,7 +93,7 @@ public class A_sujet_Preparation extends MainActivity {
         sdf = new SimpleDateFormat("HH:MM");
         lb_erreurAdd.setVisibility(View.GONE);
 
-        this.options=daoOptions.getOption();
+        this.options=daoOptions.getOptionByUserId();
 
         this.part=daoparticipant.getParticipantById(options.userid);
 

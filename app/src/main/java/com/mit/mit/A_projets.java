@@ -1,6 +1,9 @@
 package com.mit.mit;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -24,6 +27,8 @@ import java.util.List;
 
 public class A_projets extends MainActivity {
 
+
+
     //objets de la page
     //private ListView lv_listeAffichage;
     private ImageButton btn_enPreparation;
@@ -41,9 +46,16 @@ public class A_projets extends MainActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActionBar actionBar = getActionBar();
+
+        System.out.println("ON PROJECT PAGE");
 
         //récupération de l'utilisateur
-        options=daoOptions.getOption();
+        options=daoOptions.getOptionByUserId();
+
+        System.out.println("----user : " + options.userid);
+        System.out.println("----online : "+options.online);
+        System.out.println("----saved user : "+options.userSaved);
         part=daoparticipant.getParticipantById(options.userid);
 
         /*

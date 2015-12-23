@@ -58,7 +58,7 @@ public class A_projet_Preparation extends MainActivity {
 
 
         //récupération du projet
-        this.options=daoOptions.getOption();
+        this.options=daoOptions.getOptionByUserId();
         this.part=daoparticipant.getParticipantById(options.userid);
         this.projet=daoProjet.getProjetByName(options.projetid);
 
@@ -330,7 +330,7 @@ public class A_projet_Preparation extends MainActivity {
 
         if(id==R.id.menu_projetPrep_deconnexion)
         {
-            daoOptions.supprimer(options);
+            daoOptions.supprimer();
             Intent intent = new Intent(A_projet_Preparation.this, MainActivity.class);
             startActivity(intent);
         }

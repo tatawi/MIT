@@ -98,7 +98,7 @@ public class A_user_new extends MainActivity {
                 {
                     daoparticipant.ajouter(newPart, true);
 
-                    Intent intent = new Intent(A_user_new.this, MainActivity.class);
+                    Intent intent = new Intent(A_user_new.this, A_Connexion.class);
                     startActivity(intent);
                 }
                 else

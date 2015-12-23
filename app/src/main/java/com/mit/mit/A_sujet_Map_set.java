@@ -79,7 +79,7 @@ public class A_sujet_Map_set extends FragmentActivity {
         btn_ok.setOnClickListener(onClickbtnOk);
 
         //récupérations
-        this.options=daoOptions.getOption();
+        this.options=daoOptions.getOptionByUserId();
         this.sujet=daoSujet.getSujetById(options.sujetid);
         this.jour=daoJour.getJourById(options.jourid);
 

@@ -16,6 +16,7 @@
     <string name="title_activity_a_conversation">A_conversation</string>
     <string name="title_activity_a__map_set">Map</string>
     <string name="title_activity_a_sujet__map_set">Map</string>
+    <string name="title_activity_a__connexion">A_Connexion</string>
 
 
 </resources>

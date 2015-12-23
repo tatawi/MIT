@@ -59,7 +59,7 @@ public class A_jour_Preparation extends MainActivity {
         System.out.println("**A_Jour_preparation : liste des sujets d'un jour");
 
         //initialisations
-        this.options=daoOptions.getOption();
+        this.options=daoOptions.getOptionByUserId();
         this.part=daoparticipant.getParticipantById(options.userid);
         this.day=daoJour.getJourById(options.jourid);
 
@@ -435,7 +435,7 @@ public class A_jour_Preparation extends MainActivity {
         if(id==R.id.menu_jour_deconnexion)
         {
             //daoOptions.supprimerUser();
-            daoOptions.supprimer(options);
+            daoOptions.supprimer();
             Intent intent = new Intent(A_jour_Preparation.this, MainActivity.class);
             startActivity(intent);
         }

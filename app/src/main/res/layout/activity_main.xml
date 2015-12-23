@@ -7,123 +7,54 @@
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true">
 
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
 
     <LinearLayout
+        android:paddingTop="20dp"
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-
-    <ImageView
-        android:src="@drawable/main_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        android:id="@+id/imageView"
-        android:layout_marginBottom="30dp"/>
-
-
-    <TextView
-        android:id="@+id/main_lb_user"
-        android:text="Utilisateur :"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_gravity="center"/>
-
-    <EditText
-        android:id="@+id/main_tb_user"
-        android:inputType="textEmailAddress"
-        android:textColor="#ac035d"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:layout_marginBottom="20dp"
-        android:layout_gravity="center"/>
+        android:id="@+id/mainAC_ll"
+        >
 
 
 
-    <TextView
-        android:id="@+id/main_lb_mdp"
-        android:text="Mot de passe :"
-        android:hint="password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_gravity="center"/>
-
-    <EditText
-        android:id="@+id/main_tb_mdp"
-        android:inputType="textPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:layout_marginBottom="10dp"
-        android:textColor="#ac035d"
-        android:layout_gravity="center"/>
-
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Se souvenir de moi"
-            android:id="@+id/main_cb_remember"
-            android:layout_gravity="center" />
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center">
-
-            <Button
-                android:id="@+id/main_btn_connect"
-                android:text="Se connecter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#ac035d"
-                android:layout_gravity="center"/>
-
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/main_pb_load"
-                android:layout_gravity="center" />
-
-            </LinearLayout>
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hors ligne"
-            android:id="@+id/main_cb_offline"
-            android:layout_gravity="center" />
-
-        <LinearLayout
-            android:orientation="horizontal"
+        <ImageButton
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:background="@null"
+            android:id="@+id/mainAC_img"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/main_logo_sized"/>
 
-        <Button
+
+        <TextView
+            android:paddingTop="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="co u1"
-            android:id="@+id/button3" />
+            android:textSize="40dp"
+            android:text="Manage Your Trip"
+            android:textColor="#ac035d"
+            android:layout_gravity="center_horizontal" />
 
-        <Button
+        <TextView
+            android:paddingTop="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="co u2"
-            android:id="@+id/button4" />
+            android:textSize="20dp"
+            android:text="Clic anywhere to start !"
+            android:textStyle="italic"
+            android:textColor="#ac035d"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="40dp"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Offline"
+            android:id="@+id/mainAC_cb"
+            android:layout_gravity="center_horizontal" />
 
 
-        </LinearLayout>
-
-
-
-
-    </LinearLayout>
-    </ScrollView>
+</LinearLayout>
 
 </RelativeLayout>
