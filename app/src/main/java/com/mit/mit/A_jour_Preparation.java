@@ -111,7 +111,7 @@ public class A_jour_Preparation extends MainActivity {
                  intent.putExtra("isTransport", isTransport);
                 intent.putExtra("adresse2", adresse2);
                  */
-                daoSujet.modifier(sujetToModify);
+                daoSujet.modifier(sujetToModify, options.online);
             }
         }
         catch (Exception e)
@@ -172,11 +172,11 @@ public class A_jour_Preparation extends MainActivity {
                                     //delete messages
                                     for (C_Message msgToDel:sujetToDel.liste_messages)
                                     {
-                                        daoMessage.supprimer(msgToDel.id);
+                                        daoMessage.supprimer(msgToDel.id, options.online);
                                     }
 
                                     //delete subject
-                                    daoSujet.supprimer(sujetToDel.idSujet);
+                                    daoSujet.supprimer(sujetToDel.idSujet, options.online);
 
                                     //maj jour
                                     for (Iterator<C_Sujet> iter = day.liste_sujets.listIterator(); iter.hasNext(); )
@@ -187,7 +187,7 @@ public class A_jour_Preparation extends MainActivity {
                                     }
                                     //TODO prix
                                     day.listeToString();
-                                    daoJour.modifier(day);
+                                    daoJour.modifier(day, options.online);
 
                                     affichage();
 
@@ -216,7 +216,7 @@ public class A_jour_Preparation extends MainActivity {
     View.OnClickListener onSave = new View.OnClickListener() {
         public void onClick(View v) {
             day.ville=tb_ville.getText().toString();
-            daoJour.modifier(day);
+            daoJour.modifier(day, options.online);
             tb_ville.setTextColor(Color.parseColor("#ac035d"));
 
         }

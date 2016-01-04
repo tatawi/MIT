@@ -165,7 +165,7 @@ public class A_conversation extends MainActivity {
                 m.personnesAyantVuesToString=m.personnesAyantVuesToString+";"+part.mail;
                 System.out.println("liste finale: " + m.personnesAyantVuesToString);
 
-                daoMessage.modifier(m);
+                daoMessage.modifier(m, options.online);
             }
 
         }
@@ -217,7 +217,7 @@ public class A_conversation extends MainActivity {
             sujet.liste_messages.add(message);
             sujet.listeToString();
 
-            daoSujet.modifier(sujet);
+            daoSujet.modifier(sujet, options.online);
 
             tb_message.setText("");
             affichage();

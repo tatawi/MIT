@@ -82,25 +82,12 @@ public class A_sujet_Map_set extends FragmentActivity {
         this.options=daoOptions.getOptionByUserId();
         this.sujet=daoSujet.getSujetById(options.sujetid);
         this.jour=daoJour.getJourById(options.jourid);
+        this.jour.creerLesListes(daoSujet);
 
         System.out.println("****"+sujet.idSujet);
-        /*Bundle extras = getIntent().getExtras();
-        if (extras != null)
-        {
-            String typeSujet;
-            this.villeIni = extras.getString("location");
-            typeSujet= extras.getString("type");
-
-            if (typeSujet.equals("Transport"))
-            {isTransport=true;}
-            else
-            {isTransport=false;}
-
-        }*/
 
 
-
-        //ajout champs is transport
+        //ajout champs if transport
         if(sujet.type.equals("Transport"))
         {
             LinearLayout llAdd= new LinearLayout(this);
@@ -131,20 +118,27 @@ public class A_sujet_Map_set extends FragmentActivity {
 
         try
         {
-            Geocoder geocoder = new Geocoder(context);
-            List<Address> addresses;
-            addresses = geocoder.getFromLocationName(this.jour.ville, 1);
-            if (addresses.size() > 0) {
-                lati = addresses.get(0).getLatitude();
-                longi = addresses.get(0).getLongitude();
+            //if internet access
+            if(options.online)
+            {
+                Geocoder geocoder = new Geocoder(context);
+                List<Address> addresses;
+                addresses = geocoder.getFromLocationName(this.jour.ville, 1);
+                if (addresses.size() > 0) {
+                    lati = addresses.get(0).getLatitude();
+                    longi = addresses.get(0).getLongitude();
+                }
+                this.coord=new LatLng(lati, longi);
             }
-            this.coord=new LatLng(lati, longi);
 
-            /*point1=mMap.addMarker(new MarkerOptions()
-                    .position(coord)
-                    .title(this.jour.ville)
-                    .draggable(true)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));*/
+            //offline
+            else
+            {
+                //get approximate coord
+                this.coord=getApproximateCoord();
+            }
+
+
 
 
             moveToCurrentLocation(coord);
@@ -157,7 +151,7 @@ public class A_sujet_Map_set extends FragmentActivity {
     }
 
 
-
+    //position marker on the map from an adress
     private void setMarkerToAdress(String adresse)
     {
         double lati=0;
@@ -204,6 +198,8 @@ public class A_sujet_Map_set extends FragmentActivity {
         }
     }
 
+
+    //move camera to position
     private void moveToCurrentLocation(LatLng currentLocation)
     {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,15));
@@ -211,8 +207,25 @@ public class A_sujet_Map_set extends FragmentActivity {
         mMap.animateCamera(CameraUpdateFactory.zoomIn());
         // Zoom out to zoom level 10, animating with a duration of 2 seconds.
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+    }
 
 
+    //calculate an approximative position from all other subjets in the current day
+    private LatLng getApproximateCoord()
+    {
+        LatLng theCoord;
+        double longi=0;
+        double lati=0;
+
+        //TODO get aproxi coord for offline map
+        /*for(C_Sujet s: jour.liste_sujets)
+        {
+
+        }*/
+
+
+
+        return new LatLng(lati, longi);
     }
 
 
@@ -302,7 +315,7 @@ public class A_sujet_Map_set extends FragmentActivity {
 
             LatLng position = point1.getPosition();
             sujet.localisation=position.latitude+";"+position.longitude;
-            daoSujet.modifier(sujet);
+            daoSujet.modifier(sujet, options.online);
 
             Intent intent = new Intent(A_sujet_Map_set.this, A_jour_Preparation.class);
             startActivity(intent);

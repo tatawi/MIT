@@ -44,7 +44,7 @@ public class A_Connexion extends MainActivity {
     private String userID;
     private String mdp;
     protected  C_Participant me;
-    protected boolean online = false;
+    protected boolean offline = false;
 
 
     @Override
@@ -52,7 +52,9 @@ public class A_Connexion extends MainActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_a__connexion);
 
-        System.out.println("--INI");
+        //-------------------------------------------------------------------------------------------
+        //INITIALISATIONS
+        System.out.println(">>>>A_Connexion");
 
         //find objects
         btn_connect = (Button) findViewById(R.id.main_btn_connect);
@@ -74,20 +76,44 @@ public class A_Connexion extends MainActivity {
         pb_load.setVisibility(View.GONE);
 
 
+        //-------------------------------------------------------------------------------------------
+        //LOAD OPTIONS IF EXISTS
         try
         {
+            System.out.println("--Verif Options & remember");
+            this.options = daoOptions.getOptionByUserId();
+            System.out.println("Option found");
+            //vérification userSaved
+            if (options.userSaved)
+            {
+                System.out.println("remember user is true : "+options.userid);
+                Intent intent = new Intent(A_Connexion.this, A_projets.class);
+                startActivity(intent);
+            }
+        }
+        catch (Exception ex)
+        {
+            System.out.println("[ERROR]"+ex.getMessage());
+        }
 
+
+        //-------------------------------------------------------------------------------------------
+        //LOAD ONLINE
+        try
+        {
+            System.out.println("--Verif Online");
             Bundle extras = getIntent().getExtras();
             if (extras != null)
             {
-                if( extras.getString("offline").equals("true"))
-                {
-                    online=false;
+                if( extras.getString("offline").equals("True"))
+                {offline=true;
+                    System.out.println("Offline");
                 }
                 else
-                {
-                    online=true;
+                {offline=false;
+                    System.out.println("Online");
                 }
+
 
             }
         }
@@ -98,9 +124,11 @@ public class A_Connexion extends MainActivity {
 
 
 
-        // Enable Local Datastore
+        //-------------------------------------------------------------------------------------------
+        // PARSE - Enable Local Datastore
         try
         {
+            System.out.println("--Loading parse");
             Parse.enableLocalDatastore(this);
             Parse.initialize(this, "ZyJ90wtX8SyHiJOBCztcGaAaxLRUyI3JZD4vUptQ", "CZYG6VU5JwXdOe5D4l8i2hWzAqmjKZZa3CeGtAYs");
         }
@@ -110,26 +138,7 @@ public class A_Connexion extends MainActivity {
         }
 
 
-        //load options
-        try
-        {
-            System.out.println("--VERIF REMEMBER");
-            this.options = daoOptions.getOptionByUserId();
 
-            //vérification userSaved
-            if (options.userSaved)
-            {
-            /*System.out.println("--OK = oui");
-            Intent intent = new Intent(MainActivity.this, A_projets.class);
-            startActivity(intent);*/
-            }
-
-
-        }
-        catch (Exception ex)
-        {
-            System.out.println("[ERROR]"+ex.getMessage());
-        }
 
 
 
@@ -151,6 +160,8 @@ public class A_Connexion extends MainActivity {
 //	LISTENERS
 //---------------------------------------------------------------------------------------
 
+
+    //-------------------------------------------------------------------------------------------
     //TB_user
     View.OnClickListener onUserClick = new View.OnClickListener() {
         public void onClick(View v) {
@@ -158,18 +169,23 @@ public class A_Connexion extends MainActivity {
         }
     };
 
+
+    //-------------------------------------------------------------------------------------------
     //BTN_Connect
     View.OnClickListener onConnectClick = new View.OnClickListener() {
         public void onClick(View v) {
-            boolean isOnline=true;
+            boolean isOnline=false;
             boolean isUserSaved=false;
+
+
+            //Chargement des données internet si online true
             try
             {
                 pb_load.setVisibility(View.VISIBLE);
-                System.out.println("**options created");
                 //offline
-                if(!online)
+                if(!offline)
                 {
+                    System.out.println("ONLINE");
                     Thread thread = new Thread(){
                         public void run(){
                             System.out.println("**offline non checked");
@@ -181,50 +197,43 @@ public class A_Connexion extends MainActivity {
                     thread.start();
                     thread.join();
                     isOnline=true;
-
                 }
 
-                // Wait for all of the threads to finish.
+                /*// Wait for all of the threads to finish.
                 for (Thread thread : list_threads)
                 {
                     try
-                    {
-                        System.out.println("**wait thread");
-                        thread.join();
-                    }
+                    {thread.join();}
                     catch(Exception ex)
-                    {
-                        System.out.println("[ERROR THREAD]"+ex.getMessage());
-                    }
-
+                    {System.out.println("[ERROR THREAD]"+ex.getMessage());}
                 }
-                pb_load.setVisibility(View.GONE);
+                pb_load.setVisibility(View.GONE);*/
 
-                //user
+
+
+                //VERIFY USER
                 me=daoparticipant.getParticipantById(tb_userID.getText().toString());
                 System.out.println("**user loaded");
                 if(me.mdp.equals(tb_mdp.getText().toString()))
                 {
+                    //remermber user
                     if (cb_remember.isChecked())
-                    {
-                        System.out.println("**save user");
-                        isUserSaved=true;
-                    }
+                    {isUserSaved=true;}
+
                     System.out.println(" user : "+me.nom);
                     System.out.println(" user : "+me.mail);
+
+                    //suppr OPTIONS existants
+                    try
+                    {daoOptions.supprimer();}
+                    catch(Exception ex)
+                    {System.out.println("[ERROR DEL OPT]"+ex.getMessage());}
+
+                    //Création OPTION
                     C_Options MYoptions = new C_Options(me, isOnline, isUserSaved);
                     daoOptions.ajouter(MYoptions);
-                    System.out.println("**add user to options");
-                    System.out.println("**options saved");
 
-
-                    /*System.out.println("----verif options");
-                    C_Options op = daoOptions.getOption();
-                    System.out.println("----user : "+op.userid);
-                    System.out.println("----online : "+op.online);
-                    System.out.println("----saved user : "+op.userSaved);*/
-
-
+                    //OPEN
                     Intent intent = new Intent(A_Connexion.this, A_projets.class);
                     startActivity(intent);
                 }
@@ -247,7 +256,8 @@ public class A_Connexion extends MainActivity {
 
 
 
-
+    //-------------------------------------------------------------------------------------------
+    //
     View.OnClickListener onco1 = new View.OnClickListener() {
         public void onClick(View v) {
             tb_userID.setText("cnero@hotmail.fr");
@@ -255,6 +265,9 @@ public class A_Connexion extends MainActivity {
         }
     };
 
+
+    //-------------------------------------------------------------------------------------------
+    //
     View.OnClickListener onco2 = new View.OnClickListener() {
         public void onClick(View v) {
             tb_userID.setText("audrey@mail.fr");
@@ -275,7 +288,7 @@ public class A_Connexion extends MainActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_a__connexion, menu);
         return true;
     }
 
@@ -288,6 +301,14 @@ public class A_Connexion extends MainActivity {
         if (id == R.id.menu_new)
         {
             Intent intent = new Intent(A_Connexion.this, A_user_new.class);
+            if(offline)
+            {
+                intent.putExtra("offline", "True");
+            }
+            else
+            {
+                intent.putExtra("offline", "False");
+            }
             startActivity(intent);
         }
 
@@ -295,6 +316,14 @@ public class A_Connexion extends MainActivity {
         if (id == R.id.menu_participants)
         {
             Intent intent = new Intent(A_Connexion.this, A_gestionParticipants.class);
+            if(offline)
+            {
+                intent.putExtra("offline", "True");
+            }
+            else
+            {
+                intent.putExtra("offline", "False");
+            }
             startActivity(intent);
         }
 

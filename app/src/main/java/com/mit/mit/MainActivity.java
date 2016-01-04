@@ -72,7 +72,15 @@ public class MainActivity extends AppCompatActivity {
     View.OnClickListener onClickImage = new View.OnClickListener() {
         public void onClick(View v) {
             Intent intent = new Intent(MainActivity.this, A_Connexion.class);
-            intent.putExtra("offline", cb_offline.isChecked());
+
+            if(cb_offline.isChecked())
+            {
+                intent.putExtra("offline", "True");
+            }
+            else
+            {
+                intent.putExtra("offline", "False");
+            }
             startActivity(intent);
 
         }
@@ -82,7 +90,14 @@ public class MainActivity extends AppCompatActivity {
     View.OnClickListener onClickLayout = new View.OnClickListener() {
         public void onClick(View v) {
             Intent intent = new Intent(MainActivity.this, A_Connexion.class);
-            intent.putExtra("offline", cb_offline.isChecked());
+            if(cb_offline.isChecked())
+            {
+                intent.putExtra("offline", "True");
+            }
+            else
+            {
+                intent.putExtra("offline", "False");
+            }
             startActivity(intent);
         }
     };
@@ -148,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
                         C_Participant part = new C_Participant(nom, prenom, mail, mdp);
                         System.out.println("--part find : " + part.mail);
 
-                        daoparticipant.ajouterOUmodifier(part);
+                        daoparticipant.ajouterOUmodifier(part, true);
                     }
                 }
                 catch (ParseException ex)
@@ -157,38 +172,6 @@ public class MainActivity extends AppCompatActivity {
                     ex.printStackTrace();
                 }
             }
-
-
-        //thread.start();
-        //list_threads.add(thread);
-
-                /*
-        new Thread(new Runnable() {
-            public void run(){
-                ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Participant");
-                try
-                {
-                    List<ParseObject> usersList = query.find();
-                    System.out.println("--load users : " + usersList.size());
-                    for(ParseObject parse : usersList)
-                    {
-                        String nom = parse.getString("nom");
-                        String prenom = parse.getString("prenom");
-                        String mail = parse.getString("mail");
-                        String mdp = parse.getString("mdp");
-                        C_Participant part = new C_Participant(nom, prenom, mail, mdp);
-                        System.out.println("--part find : " + part.mail);
-
-                        daoparticipant.ajouterOUmodifier(part);
-                    }
-                }
-                catch (ParseException ex)
-                {
-                    Log.e("Error", ex.getMessage());
-                    ex.printStackTrace();
-                }
-            }
-        }).start();*/
 
 
 
@@ -246,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
                         } catch (java.text.ParseException e) {
                             e.printStackTrace();
                         }
-                        daoJour.ajouterOUmodifier(jour);
+                        daoJour.ajouterOUmodifier(jour, true);
                         System.out.println("--[jours] " + jour.nomJour);
                         System.out.println("--[jours] - sujets " + jour.sujetsToString.toString());
 
@@ -283,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
                         } catch (java.text.ParseException e) {
                             e.printStackTrace();
                         }
-                        daoSujet.ajouterOUmodifier(sujet);
+                        daoSujet.ajouterOUmodifier(sujet, true);
                         System.out.println("--[sujet] " + sujet.titre);
                         System.out.println("--[sujet] - messages " + sujet.messagesToString.toString());
                         System.out.println("--[sujet] - ayant acceptés " + sujet.personnesAyantAccepteToString.toString());
@@ -309,7 +292,7 @@ public class MainActivity extends AppCompatActivity {
                             System.out.println("--error : " + e.getMessage());
                             e.printStackTrace();
                         }
-                        daoMessage.ajouterOUmodifier(mess);
+                        daoMessage.ajouterOUmodifier(mess, true);
 
                         System.out.println("--msg : " + mess.id);
                         C_Message mss = daoMessage.getMessageById(mess.id);

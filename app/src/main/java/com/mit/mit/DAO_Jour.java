@@ -61,7 +61,7 @@ public class DAO_Jour extends DAO_Bdd {
      *Add an day in bdd
      *@param j			day to add
      */
-    public void ajouter(C_Jour j, boolean online)
+    public void ajouter(C_Jour j, boolean SaveOnline)
     {
         //LOCAL
         this.open();
@@ -77,7 +77,7 @@ public class DAO_Jour extends DAO_Bdd {
         this.close();
 
         //ONLINE
-        if (online) {
+        if (SaveOnline) {
             ParseObject Jour = new ParseObject("Jour");
             Jour.put("nomJour", j.nomJour);
             Jour.put("date", sdf.format(j.jour));
@@ -93,7 +93,7 @@ public class DAO_Jour extends DAO_Bdd {
      *Delete an day in bdd
      *@param id			day'id to delete
      */
-    public void supprimer(String id)
+    public void supprimer(String id, boolean SaveOnline)
     {
         try
         {
@@ -106,24 +106,27 @@ public class DAO_Jour extends DAO_Bdd {
             );
             this.close();
 
+
             //ONLINE
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("Jour");
-            query.whereEqualTo("nomJour", id);
-            query.getFirstInBackground(new GetCallback<ParseObject>() {
-                public void done(ParseObject Jour, ParseException e) {
-                    try {
-                        if (e == null) {
-                            Jour.delete();
-                            Jour.saveInBackground();
+            if (SaveOnline) {
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("Jour");
+                query.whereEqualTo("nomJour", id);
+                query.getFirstInBackground(new GetCallback<ParseObject>() {
+                    public void done(ParseObject Jour, ParseException e) {
+                        try {
+                            if (e == null) {
+                                Jour.delete();
+                                Jour.saveInBackground();
+                            }
+                        } catch (ParseException ex) {
+                            System.out.println("[PARSE ERROR] : " + ex.getMessage());
                         }
-                    } catch (ParseException ex) {
-                        System.out.println("[PARSE ERROR] : " + ex.getMessage());
                     }
-                }
-            });
+                });
+            }
         }
         catch (Exception ex)
-        {System.out.println("[ERROR] : " +ex.getMessage());}
+        {System.out.println("[ERROR BDD] : " +ex.getMessage());}
     }
 
 
@@ -131,7 +134,7 @@ public class DAO_Jour extends DAO_Bdd {
      *Delete an day in bdd
      *@param j			day to edit
      */
-    public void modifier(C_Jour j)
+    public void modifier(C_Jour j, boolean SaveOnline)
     {
         //LOCAL
         this.open();
@@ -153,27 +156,26 @@ public class DAO_Jour extends DAO_Bdd {
 
 
         //ONLINE
-        final C_Jour jr = j;
-        final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Jour");
-        query.whereEqualTo("nomJour", j.nomJour);
-        query.getFirstInBackground(new GetCallback<ParseObject>()
-        {
-            public void done(ParseObject Jour, ParseException e)
-            {
-                if (e == null)
-                {
-                    // Now let's update it with some new data. In this case, only cheatMode and score
-                    // will get sent to the Parse Cloud. playerName hasn't changed.
-                    Jour.put("nomJour", jr.nomJour);
-                    Jour.put("date", sdf.format(jr.jour));
-                    Jour.put("prixJournee", jr.prixJournee);
-                    Jour.put("sujetsToString", jr.sujetsToString);
-                    Jour.put("ville", jr.ville);
-                    Jour.saveInBackground();
+        if (SaveOnline) {
+            final C_Jour jr = j;
+            final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Jour");
+            query.whereEqualTo("nomJour", j.nomJour);
+            query.getFirstInBackground(new GetCallback<ParseObject>() {
+                public void done(ParseObject Jour, ParseException e) {
+                    if (e == null) {
+                        // Now let's update it with some new data. In this case, only cheatMode and score
+                        // will get sent to the Parse Cloud. playerName hasn't changed.
+                        Jour.put("nomJour", jr.nomJour);
+                        Jour.put("date", sdf.format(jr.jour));
+                        Jour.put("prixJournee", jr.prixJournee);
+                        Jour.put("sujetsToString", jr.sujetsToString);
+                        Jour.put("ville", jr.ville);
+                        Jour.saveInBackground();
                     }
                 }
             });
+        }
     }
 
 
@@ -181,10 +183,10 @@ public class DAO_Jour extends DAO_Bdd {
      *Add or modify a day if it already exists
      *@param j			day to edit
      */
-    public void ajouterOUmodifier(C_Jour j) {
+    public void ajouterOUmodifier(C_Jour j, boolean SaveOnline) {
         C_Jour dao_j = this.getJourById(j.nomJour);
         if (dao_j != null) {
-            this.modifier(j);
+            this.modifier(j, SaveOnline);
         } else {
             this.ajouter(j, false);
         }

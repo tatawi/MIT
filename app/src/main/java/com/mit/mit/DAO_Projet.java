@@ -67,7 +67,7 @@ public class DAO_Projet extends DAO_Bdd {
      *@param p			project to add
      *@param online		if need to save online
      */
-    public void ajouter(C_Projet p, boolean online)
+    public void ajouter(C_Projet p, boolean SaveOnline)
     {
         //LOCAL
         this.open();
@@ -90,8 +90,7 @@ public class DAO_Projet extends DAO_Bdd {
         this.close();
 
         //ONLINE
-        if (online)
-        {
+        if (SaveOnline) {
             ParseObject Projet = new ParseObject("Projet");
             Projet.put("id", p.id);
             Projet.put("nom", p.nom);
@@ -112,7 +111,7 @@ public class DAO_Projet extends DAO_Bdd {
      *Delete an project in bdd
      *@param id			project'id to delete
      */
-    public void supprimer(String id)
+    public void supprimer(String id, boolean SaveOnline)
     {
         try
         {
@@ -126,22 +125,22 @@ public class DAO_Projet extends DAO_Bdd {
             this.close();
 
             //ONLINE
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("Projet");
-            query.whereEqualTo("id", id);
-            query.getFirstInBackground(new GetCallback<ParseObject>()
-            {
-                public void done(ParseObject Projet, ParseException e)
-                {
-                    try {
-                        if (e == null) {
-                            Projet.delete();
-                            Projet.saveInBackground();
+            if (SaveOnline) {
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("Projet");
+                query.whereEqualTo("nom", id);
+                query.getFirstInBackground(new GetCallback<ParseObject>() {
+                    public void done(ParseObject Projet, ParseException e) {
+                        try {
+                            if (e == null) {
+                                Projet.delete();
+                                Projet.saveInBackground();
+                            }
+                        } catch (ParseException ex) {
+                            System.out.println("[PARSE ERROR] : " + ex.getMessage());
                         }
-                    } catch (ParseException ex) {
-                        System.out.println("[PARSE ERROR] : " + ex.getMessage());
                     }
-                }
-            });
+                });
+            }
         }
         catch (Exception ex)
         {System.out.println("[ERROR] : " +ex.getMessage());}
@@ -151,7 +150,7 @@ public class DAO_Projet extends DAO_Bdd {
      *Delete an project in bdd
      *@param p			project to edit
      */
-    public void modifier(C_Projet p)
+    public void modifier(C_Projet p, boolean SaveOnline)
     {
         //LOCAL
         this.open();
@@ -176,30 +175,30 @@ public class DAO_Projet extends DAO_Bdd {
         this.close();
 
         //ONLINE
-        final C_Projet pr = p;
-        final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Projet");
-        query.whereEqualTo("id", p.id);
-        query.getFirstInBackground(new GetCallback<ParseObject>()
-        {
-            public void done(ParseObject Projet, ParseException e)
-            {
-                if (e == null) {
-                    // Now let's update it with some new data. In this case, only cheatMode and score
-                    // will get sent to the Parse Cloud. playerName hasn't changed.
-                    Projet.put("nom", pr.nom);
-                    Projet.put("description", pr.description);
-                    Projet.put("dateDebut", sdf.format(pr.dateDebut));
-                    Projet.put("dateFin", sdf.format(pr.dateFin));
-                    Projet.put("prixSejour", pr.prixSejour);
-                    Projet.put("statut", pr.statut);
-                    Projet.put("participantsToString", pr.participantsToString);
-                    Projet.put("joursToString", pr.joursToString);
-                    Projet.put("couleur", pr.couleur);
-                    Projet.saveInBackground();
+        if (SaveOnline) {
+            final C_Projet pr = p;
+            final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Projet");
+            query.whereEqualTo("id", p.id);
+            query.getFirstInBackground(new GetCallback<ParseObject>() {
+                public void done(ParseObject Projet, ParseException e) {
+                    if (e == null) {
+                        // Now let's update it with some new data. In this case, only cheatMode and score
+                        // will get sent to the Parse Cloud. playerName hasn't changed.
+                        Projet.put("nom", pr.nom);
+                        Projet.put("description", pr.description);
+                        Projet.put("dateDebut", sdf.format(pr.dateDebut));
+                        Projet.put("dateFin", sdf.format(pr.dateFin));
+                        Projet.put("prixSejour", pr.prixSejour);
+                        Projet.put("statut", pr.statut);
+                        Projet.put("participantsToString", pr.participantsToString);
+                        Projet.put("joursToString", pr.joursToString);
+                        Projet.put("couleur", pr.couleur);
+                        Projet.saveInBackground();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
 

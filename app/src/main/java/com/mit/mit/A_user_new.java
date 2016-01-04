@@ -32,6 +32,7 @@ public class A_user_new extends MainActivity {
     private String mail;
     private String mdp;
     private String mdp2;
+    private boolean offline=false;
 
 
 
@@ -49,6 +50,32 @@ public class A_user_new extends MainActivity {
         tb_mdp2 = (EditText) findViewById(R.id.newUser_tb_mdp2);
         lb_msg = (TextView) findViewById(R.id.newUser_lb_msg);
         btn_valider = (Button) findViewById(R.id.newUser_btn_valider);
+
+
+        //-------------------------------------------------------------------------------------------
+        //LOAD ONLINE
+        try
+        {
+            System.out.println("--Verif Online");
+            Bundle extras = getIntent().getExtras();
+            if (extras != null)
+            {
+                if( extras.getString("offline").equals("True"))
+                {offline=true;
+                    System.out.println("Offline");
+                }
+                else
+                {offline=false;
+                    System.out.println("Online");
+                }
+
+
+            }
+        }
+        catch (Exception ex)
+        {
+            System.out.println(ex.getMessage());
+        }
 
         btn_valider.setOnClickListener(new View.OnClickListener()
         {
@@ -96,9 +123,17 @@ public class A_user_new extends MainActivity {
 
                 if(verifOK)
                 {
-                    daoparticipant.ajouter(newPart, true);
+                    daoparticipant.ajouter(newPart, offline);
 
                     Intent intent = new Intent(A_user_new.this, A_Connexion.class);
+                    if(offline)
+                    {
+                        intent.putExtra("offline", "True");
+                    }
+                    else
+                    {
+                        intent.putExtra("offline", "False");
+                    }
                     startActivity(intent);
                 }
                 else

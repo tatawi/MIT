@@ -57,7 +57,7 @@ public class DAO_Message extends DAO_Bdd {
      *Add an message in bdd
      *@param m			message to add
      */
-    public void ajouter(C_Message m, boolean online)
+    public void ajouter(C_Message m, boolean SaveOnline)
     {
         //LOCAL
         this.open();
@@ -73,7 +73,7 @@ public class DAO_Message extends DAO_Bdd {
         this.close();
 
         //ONLINE
-        if (online) {
+        if (SaveOnline) {
             ParseObject Message = new ParseObject("Message");
             Message.put("id", m.id);
             Message.put("heure", sdf.format(m.heure));
@@ -89,7 +89,7 @@ public class DAO_Message extends DAO_Bdd {
      *Delete an message in bdd
      *@param id			message'id to delete
      */
-    public void supprimer(String id)
+    public void supprimer(String id, boolean SaveOnline)
     {
         try
         {
@@ -104,22 +104,22 @@ public class DAO_Message extends DAO_Bdd {
 
 
             //ONLINE
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
-            query.whereEqualTo("id", id);
-            query.getFirstInBackground(new GetCallback<ParseObject>() {
-                public void done(ParseObject Message, ParseException e) {
-                    try
-                    {
-                        if (e == null)
-                        {
-                            Message.delete();
-                            Message.saveInBackground();
+            if (SaveOnline) {
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
+                query.whereEqualTo("id", id);
+                query.getFirstInBackground(new GetCallback<ParseObject>() {
+                    public void done(ParseObject Message, ParseException e) {
+                        try {
+                            if (e == null) {
+                                Message.delete();
+                                Message.saveInBackground();
+                            }
+                        } catch (ParseException ex) {
+                            System.out.println("[PARSE ERROR] : " + ex.getMessage());
                         }
                     }
-                    catch (ParseException ex)
-                    {System.out.println("[PARSE ERROR] : " +ex.getMessage());}
-                }
-            });
+                });
+            }
         }
         catch (Exception ex)
         {System.out.println("[ERROR] : " +ex.getMessage());}
@@ -130,7 +130,7 @@ public class DAO_Message extends DAO_Bdd {
      *Delete an message in bdd
      *@param m			message to edit
      */
-    public void modifier(C_Message m)
+    public void modifier(C_Message m, boolean SaveOnline)
     {
         //LOCAL
         this.open();
@@ -152,24 +152,26 @@ public class DAO_Message extends DAO_Bdd {
 
 
         //ONLINE
-        final C_Message ms = m;
-        final SimpleDateFormat sdff = new SimpleDateFormat("dd/mm/yy HH:mm:ss");
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
-        query.whereEqualTo("id", m.id);
-        query.getFirstInBackground(new GetCallback<ParseObject>() {
-            public void done(ParseObject Message, ParseException e) {
-                if (e == null) {
-                    // Now let's update it with some new data. In this case, only cheatMode and score
-                    // will get sent to the Parse Cloud. playerName hasn't changed.
-                    Message.put("id", ms.id);
-                    Message.put("heure", sdff.format(ms.heure));
-                    Message.put("message", ms.message);
-                    Message.put("id_participantEmetteur", ms.id_participantEmetteur);
-                    Message.put("personnesAyantVuesToString", ms.personnesAyantVuesToString);
-                    Message.saveInBackground();
+        if (SaveOnline) {
+            final C_Message ms = m;
+            final SimpleDateFormat sdff = new SimpleDateFormat("dd/mm/yy HH:mm:ss");
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
+            query.whereEqualTo("id", m.id);
+            query.getFirstInBackground(new GetCallback<ParseObject>() {
+                public void done(ParseObject Message, ParseException e) {
+                    if (e == null) {
+                        // Now let's update it with some new data. In this case, only cheatMode and score
+                        // will get sent to the Parse Cloud. playerName hasn't changed.
+                        Message.put("id", ms.id);
+                        Message.put("heure", sdff.format(ms.heure));
+                        Message.put("message", ms.message);
+                        Message.put("id_participantEmetteur", ms.id_participantEmetteur);
+                        Message.put("personnesAyantVuesToString", ms.personnesAyantVuesToString);
+                        Message.saveInBackground();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
 
@@ -177,10 +179,10 @@ public class DAO_Message extends DAO_Bdd {
      *Add a message or modify it if already exists
      *@param m			message to add or edit
      */
-    public void ajouterOUmodifier(C_Message m) {
+    public void ajouterOUmodifier(C_Message m, boolean SaveOnline) {
         C_Message dao_m = this.getMessageById(m.id);
         if (dao_m != null) {
-            this.modifier(m);
+            this.modifier(m, SaveOnline);
         } else {
             this.ajouter(m, false);
         }

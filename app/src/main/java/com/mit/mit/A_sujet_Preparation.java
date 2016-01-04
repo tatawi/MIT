@@ -203,7 +203,7 @@ public class A_sujet_Preparation extends MainActivity {
                 System.out.println("non présent dans la liste");
                 sujet.personnesAyantAccepte.add(part);
                 sujet.listeToString();
-                daoSujet.modifier(sujet);
+                daoSujet.modifier(sujet, options.online);
 
                 progressBar_participations.setProgress(sujet.personnesAyantAccepte.size());
                 lb_nbParticipants.setText("" + sujet.personnesAyantAccepte.size());
@@ -220,7 +220,7 @@ public class A_sujet_Preparation extends MainActivity {
                 {
                     //sauvegarde du sujet
                     sujet.valide=true;
-                    daoSujet.modifier(sujet);
+                    daoSujet.modifier(sujet, options.online);
 
                     //sauvegarde du sujet dans jour
                     jour = daoJour.getJourById(nomJour);
@@ -228,13 +228,13 @@ public class A_sujet_Preparation extends MainActivity {
 
                     //mettre a jour le jour avec le prix
                     jour.calculerPrixJournee(projet.liste_participants.size());
-                    daoJour.modifier(jour);
+                    daoJour.modifier(jour, options.online);
 
                     //mettre a jour le projet avec le prix
                     projet = daoProjet.getProjetByName(projet.nom);
                     projet.creerLesListes(daoJour, daoparticipant);
                     projet.calculerPrixSejour();
-                    daoProjet.modifier(projet);
+                    daoProjet.modifier(projet, options.online);
 
                 }
             }

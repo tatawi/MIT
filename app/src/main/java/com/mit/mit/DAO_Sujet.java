@@ -72,7 +72,7 @@ public class DAO_Sujet extends DAO_Bdd {
      *Add an subject in bdd
      *@param s			subject to add
      */
-    public void ajouter(C_Sujet s, boolean online)
+    public void ajouter(C_Sujet s, boolean SaveOnline)
     {
         //LOCAL
         this.open();
@@ -100,8 +100,7 @@ public class DAO_Sujet extends DAO_Bdd {
         this.close();
 
         //ONLINE
-        if (online)
-        {
+        if (SaveOnline) {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yy HH:mm:ss");
             ParseObject Sujet = new ParseObject("Sujet");
             Sujet.put("idSujet", s.idSujet);
@@ -125,7 +124,7 @@ public class DAO_Sujet extends DAO_Bdd {
      *Delete an subject in bdd
      *@param id			subject'id to delete
      */
-    public void supprimer(String id)
+    public void supprimer(String id, boolean SaveOnline)
     {
         try
         {
@@ -141,20 +140,22 @@ public class DAO_Sujet extends DAO_Bdd {
             this.close();
 
             //ONLINE
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("Sujet");
-            query.whereEqualTo("idSujet", id);
-            query.getFirstInBackground(new GetCallback<ParseObject>() {
-                public void done(ParseObject Sujet, ParseException e) {
-                    try {
-                        if (e == null) {
-                            Sujet.delete();
-                            Sujet.saveInBackground();
+            if (SaveOnline) {
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("Sujet");
+                query.whereEqualTo("idSujet", id);
+                query.getFirstInBackground(new GetCallback<ParseObject>() {
+                    public void done(ParseObject Sujet, ParseException e) {
+                        try {
+                            if (e == null) {
+                                Sujet.delete();
+                                Sujet.saveInBackground();
+                            }
+                        } catch (ParseException ex) {
+                            System.out.println("[PARSE ERROR] : " + ex.getMessage());
                         }
-                    } catch (ParseException ex) {
-                        System.out.println("[PARSE ERROR] : " + ex.getMessage());
                     }
-                }
-            });
+                });
+            }
         }
         catch (Exception ex)
         {System.out.println("[ERROR] : " +ex.getMessage());}
@@ -165,11 +166,11 @@ public class DAO_Sujet extends DAO_Bdd {
      *Add or modify a subject if exists
      *@param s			subject to add or modify
      */
-    public void ajouterOUmodifier(C_Sujet s)
+    public void ajouterOUmodifier(C_Sujet s, boolean SaveOnline)
     {
         C_Sujet dao_s = this.getSujetById(s.idSujet);
         if (dao_s != null) {
-            this.modifier(s);
+            this.modifier(s, SaveOnline);
         } else {
             this.ajouter(s, false);
         }
@@ -179,7 +180,7 @@ public class DAO_Sujet extends DAO_Bdd {
      *Delete an subject in bdd
      *@param s			subject to edit
      */
-    public void modifier(C_Sujet s)
+    public void modifier(C_Sujet s, boolean SaveOnline)
     {
         //LOCAL
         this.open();
@@ -211,32 +212,37 @@ public class DAO_Sujet extends DAO_Bdd {
         this.close();
 
         //ONLINE
-        final C_Sujet st = s;
-        final SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yy HH:mm:ss");
+        if (SaveOnline) {
+            final C_Sujet st = s;
+            final SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yy HH:mm:ss");
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Sujet");
-        query.whereEqualTo("idSujet", s.idSujet);
-        query.getFirstInBackground(new GetCallback<ParseObject>() {
-            public void done(ParseObject Sujet, ParseException e) {
-                if (e == null) {
-                    Sujet.put("idSujet", st.idSujet);
-                    Sujet.put("titre", st.titre);
-                    Sujet.put("description", st.description);
-                    Sujet.put("type", st.type);
-                    Sujet.put("localisation", st.localisation);
-                    Sujet.put("localisation2", st.localisation2);
-                    Sujet.put("heure", sdf.format(st.heure));
-                    Sujet.put("duree", st.duree);
-                    Sujet.put("auFeeling", st.auFeeling);
-                    Sujet.put("prix", st.prix);
-                    Sujet.put("messagesToString", st.messagesToString);
-                    Sujet.put("personnesAyantAccepteToString", st.personnesAyantAccepteToString);
-                    if(st.valide){Sujet.put("valide", "true");}
-                    else {Sujet.put("valide", "false");}
-                    Sujet.saveInBackground();
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Sujet");
+            query.whereEqualTo("idSujet", s.idSujet);
+            query.getFirstInBackground(new GetCallback<ParseObject>() {
+                public void done(ParseObject Sujet, ParseException e) {
+                    if (e == null) {
+                        Sujet.put("idSujet", st.idSujet);
+                        Sujet.put("titre", st.titre);
+                        Sujet.put("description", st.description);
+                        Sujet.put("type", st.type);
+                        Sujet.put("localisation", st.localisation);
+                        Sujet.put("localisation2", st.localisation2);
+                        Sujet.put("heure", sdf.format(st.heure));
+                        Sujet.put("duree", st.duree);
+                        Sujet.put("auFeeling", st.auFeeling);
+                        Sujet.put("prix", st.prix);
+                        Sujet.put("messagesToString", st.messagesToString);
+                        Sujet.put("personnesAyantAccepteToString", st.personnesAyantAccepteToString);
+                        if (st.valide) {
+                            Sujet.put("valide", "true");
+                        } else {
+                            Sujet.put("valide", "false");
+                        }
+                        Sujet.saveInBackground();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     /**

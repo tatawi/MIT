@@ -203,7 +203,6 @@ public class A_sujet_new extends MainActivity {
             sujet.liste_messages.add(message);
 
 
-
             //save sujet
             sujet.listeToString();
             daoSujet.ajouter(sujet, true);
@@ -211,31 +210,15 @@ public class A_sujet_new extends MainActivity {
             //maj jour
             day.liste_sujets.add(sujet);
             day.listeToString();
-            daoJour.modifier(day);
+            daoJour.modifier(day, options.online);
 
 
-
-
-
-            //retour activité
-           /*Intent intent = new Intent(A_sujet_new.this, A_jour_Preparation.class);
-            intent.putExtra("idEntry", day.nomJour);
-            intent.putExtra("userID", userID);
-
-            System.out.println(">>intent : user : " + userID);
-            System.out.println(">>intent : jour : "+day.nomJour);
-
-            startActivity(intent);*/
-
-            //activity for position
-            //Intent intent = new Intent(A_sujet_new.this, A_jour_Preparation.class);
             options.sujetid=sujet.idSujet;
             daoOptions.modifier(options);
-            //startActivity(intent);
+
 
             Intent intent = new Intent(A_sujet_new.this, A_sujet_Map_set.class);
-            //intent.putExtra("location", day.ville);
-            //intent.putExtra("type", sujet.type);
+
             startActivity(intent);
 
         }

@@ -54,7 +54,7 @@ public class DAO_Participant extends DAO_Bdd {
      *Add an user in bdd
      *@param p			User to add
      */
-    public void ajouter(C_Participant p, boolean online)
+    public void ajouter(C_Participant p, boolean SaveOnline)
     {
         //LOCAL
         this.open();
@@ -68,7 +68,7 @@ public class DAO_Participant extends DAO_Bdd {
         this.close();
 
         //ONLINE
-        if (online) {
+        if (SaveOnline) {
             //add on cloud
             ParseObject Participant = new ParseObject("Participant");
             Participant.put("nom", p.nom);
@@ -83,7 +83,7 @@ public class DAO_Participant extends DAO_Bdd {
      *Delete an user in bdd
      *@param id			User'id to delete
      */
-    public void supprimer(String id)
+    public void supprimer(String id, boolean SaveOnline)
     {
         try
         {
@@ -99,20 +99,22 @@ public class DAO_Participant extends DAO_Bdd {
             this.close();
 
             //ONLINE
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("Participant");
-            query.whereEqualTo("mail", id);
-            query.getFirstInBackground(new GetCallback<ParseObject>() {
-                public void done(ParseObject Participant, ParseException e) {
-                    try {
-                        if (e == null) {
-                            Participant.delete();
-                            Participant.saveInBackground();
+            if (SaveOnline) {
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("Participant");
+                query.whereEqualTo("mail", id);
+                query.getFirstInBackground(new GetCallback<ParseObject>() {
+                    public void done(ParseObject Participant, ParseException e) {
+                        try {
+                            if (e == null) {
+                                Participant.delete();
+                                Participant.saveInBackground();
+                            }
+                        } catch (ParseException ex) {
+                            System.out.println("[PARSE ERROR] : " + ex.getMessage());
                         }
-                    } catch (ParseException ex) {
-                        System.out.println("[PARSE ERROR] : " + ex.getMessage());
                     }
-                }
-            });
+                });
+            }
         }
         catch (Exception ex)
         {System.out.println("[ERROR] : " +ex.getMessage());}
@@ -123,7 +125,7 @@ public class DAO_Participant extends DAO_Bdd {
      *Delete an user in bdd
      *@param p			User to edit
      */
-    public void modifier(C_Participant p)
+    public void modifier(C_Participant p, boolean SaveOnline)
     {
         //LOCAL
         this.open();
@@ -143,22 +145,24 @@ public class DAO_Participant extends DAO_Bdd {
         this.close();
 
         //ONLINE
-        final C_Participant pt = p;
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Participant");
-        query.whereEqualTo("mail", p.mail);
-        query.getFirstInBackground(new GetCallback<ParseObject>() {
-            public void done(ParseObject Participant, ParseException e) {
-                if (e == null) {
-                    // Now let's update it with some new data. In this case, only cheatMode and score
-                    // will get sent to the Parse Cloud. playerName hasn't changed.
-                    Participant.put("nom", pt.nom);
-                    Participant.put("prenom", pt.prenom);
-                    Participant.put("mail", pt.mail);
-                    Participant.put("mdp", pt.mdp);
-                    Participant.saveInBackground();
+        if (SaveOnline) {
+            final C_Participant pt = p;
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Participant");
+            query.whereEqualTo("mail", p.mail);
+            query.getFirstInBackground(new GetCallback<ParseObject>() {
+                public void done(ParseObject Participant, ParseException e) {
+                    if (e == null) {
+                        // Now let's update it with some new data. In this case, only cheatMode and score
+                        // will get sent to the Parse Cloud. playerName hasn't changed.
+                        Participant.put("nom", pt.nom);
+                        Participant.put("prenom", pt.prenom);
+                        Participant.put("mail", pt.mail);
+                        Participant.put("mdp", pt.mdp);
+                        Participant.saveInBackground();
+                    }
                 }
-            }
-        });
+            });
+        }
 
     }
 
@@ -167,11 +171,11 @@ public class DAO_Participant extends DAO_Bdd {
      *Add a user or modify if not exists
      *@param p			User to add or modify
      */
-    public void ajouterOUmodifier(C_Participant p){
+    public void ajouterOUmodifier(C_Participant p, boolean SaveOnline){
         C_Participant dao_p = this.getParticipantById(p.mail);
         if(dao_p!=null)
         {
-            this.modifier(p);
+            this.modifier(p,SaveOnline);
         }
         else
         {

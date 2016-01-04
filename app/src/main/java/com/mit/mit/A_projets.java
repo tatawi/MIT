@@ -378,13 +378,13 @@ public class A_projets extends MainActivity {
 
                                             for(C_Message messageToDel:sujetToDel.liste_messages)
                                             {
-                                                daoMessage.supprimer(messageToDel.id);
+                                                daoMessage.supprimer(messageToDel.id, options.online);
                                             }
-                                            daoSujet.supprimer(sujetToDel.idSujet);
+                                            daoSujet.supprimer(sujetToDel.idSujet, options.online);
                                         }
-                                        daoJour.supprimer(jourTodel.nomJour);
+                                        daoJour.supprimer(jourTodel.nomJour, options.online);
                                     }
-                                    daoProjet.supprimer(projetToDel.nom);
+                                    daoProjet.supprimer(projetToDel.nom, options.online);
 
 
                                     majAffichage();
@@ -474,7 +474,7 @@ public class A_projets extends MainActivity {
         if(id==R.id.menu_projet_deconnexion)
         {
             //daoOptions.supprimer(options);
-            daoOptions.supprimerALL();
+            daoOptions.supprimer();
             Intent intent = new Intent(A_projets.this, MainActivity.class);
             startActivity(intent);
         }
