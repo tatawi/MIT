@@ -42,7 +42,6 @@
             android:name=".A_gestionParticipants"
             android:label="@string/title_activity_a_gestion_participants"
             android:parentActivityName=".A_Connexion" >
-
         </activity>
         <activity
             android:name=".A_project_new"

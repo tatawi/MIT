@@ -21,6 +21,8 @@ import android.widget.TextView;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -28,14 +30,17 @@ import java.util.List;
 public class A_jour_Preparation extends MainActivity {
 
     //objets de la page
-    private TextView lb_montant;
+    //private TextView lb_montant;
     private LinearLayout container_globalLayout;
     private EditText tb_ville;
     private ImageButton btn_save;
+    private ImageButton btn_sort_date;
+    private ImageButton btn_sort_finished;
+    private ImageButton btn_sort_name;
+    private ImageButton btn_sort_cat;
 
 
     //variables
-
     private String jourID;
     private SimpleDateFormat sdf;
 
@@ -43,20 +48,33 @@ public class A_jour_Preparation extends MainActivity {
     private C_Options options;
     private C_Jour day;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_a_jour__preparation);
 
-        tb_ville = (EditText) findViewById(R.id.jourPrep_tb_ville);
-        btn_save = (ImageButton) findViewById(R.id.jourPrep_btn_save);
-        lb_montant = (TextView) findViewById(R.id.jourPrep_lb_cout);
-
-        btn_save.setOnClickListener(onSave);
-        container_globalLayout = (LinearLayout) findViewById(R.id.jourPrep_layoutContent);
-
         System.out.println("**************************************************************");
         System.out.println("**A_Jour_preparation : liste des sujets d'un jour");
+
+        //Initialisations objets page
+        tb_ville = (EditText) findViewById(R.id.jourPrep_tb_ville);
+        btn_save = (ImageButton) findViewById(R.id.jourPrep_btn_save);
+        //lb_montant = (TextView) findViewById(R.id.jourPrep_lb_cout);
+        btn_sort_date = (ImageButton) findViewById(R.id.jourPrep_sortDate);
+        btn_sort_finished = (ImageButton) findViewById(R.id.jourPrep_sortFinished);
+        btn_sort_name = (ImageButton) findViewById(R.id.jourPrep_sortName);
+        btn_sort_cat = (ImageButton) findViewById(R.id.jourPrep_sortCat);
+
+        //listeners
+        btn_save.setOnClickListener(onSave);
+        container_globalLayout = (LinearLayout) findViewById(R.id.jourPrep_layoutContent);
+        btn_sort_date.setOnClickListener(onSortDate);
+        btn_sort_finished.setOnClickListener(onSortFinished);
+        btn_sort_name.setOnClickListener(onSortName);
+        btn_sort_cat.setOnClickListener(onSortCat);
+
 
         //initialisations
         this.options=daoOptions.getOptionByUserId();
@@ -66,12 +84,10 @@ public class A_jour_Preparation extends MainActivity {
         this.day.creerLesListes(daoSujet);
         jourID=day.nomJour;
 
-
-
         sdf = new SimpleDateFormat("EEE d MMM");
-
         setTitle(sdf.format(this.day.jour));
-        lb_montant.setText("" + this.day.prixJournee + " €");
+        //lb_montant.setText("" + this.day.prixJournee + " €");
+
 
         //GESTION VILLE
         tb_ville.setText(day.ville);
@@ -92,14 +108,14 @@ public class A_jour_Preparation extends MainActivity {
 
 
 
-
         System.out.println("--utilisateur courant: " + options.userid);
         System.out.println("--jourEnparamétres: " + options.jourid);
         System.out.println("--jourCalculé : " + sdf.format(this.day.jour));
         System.out.println("--jourID : " + this.day.nomJour);
         System.out.println("--nb sujets : " + this.day.liste_sujets.size());
 
-        //récupérations
+        /*
+        //Gestion map = save loc
         try {
             Bundle extras = getIntent().getExtras();
             //Cas ou on vient de creer un sujet
@@ -107,136 +123,41 @@ public class A_jour_Preparation extends MainActivity {
                 C_Sujet sujetToModify = daoSujet.getSujetById(extras.getString("sujetID"));
                 sujetToModify.localisation = extras.getString("adresse");
 
-                /*
-                 intent.putExtra("isTransport", isTransport);
-                intent.putExtra("adresse2", adresse2);
-                 */
+
                 daoSujet.modifier(sujetToModify, options.online);
             }
         }
         catch (Exception e)
         {
-        }
-
-
-        //this.day.liste_sujets=creerDesSujets();
+        }*/
 
 
         affichage();
 
     }
 
-    //Selection d'un sujet
-    View.OnClickListener onClickLayout = new View.OnClickListener() {
-        public void onClick(View v) {
-            LinearLayout selectedLL = (LinearLayout) v;
-
-            for (C_Sujet s:day.liste_sujets)
-            {
-                if(s.id==selectedLL.getId())
-                {
-                    Intent intent = new Intent(A_jour_Preparation.this, A_sujet_Preparation.class);
-                    options.sujetid=s.idSujet;
-                    daoOptions.modifier(options);
-                    //intent.putExtra("idEntry", s.idSujet);
-                    //intent.putExtra("userID", userID);
-                    startActivity(intent);
-                }
-            }
-
-            //DialogFragment newFragment = new D_DatePickerFragment("newproject_debut");
-            //newFragment.show(getFragmentManager(), "datePicker");
-            //tb_dateDebut.setText(lb_date.getText());
-        }
-    };
-
-    //ON LONG CLICK = REMOVE
-    View.OnLongClickListener onLongClickLayout = new View.OnLongClickListener() {
-        public boolean onLongClick(View v) {
-            LinearLayout selectedLL = (LinearLayout) v;
-
-            for (C_Sujet s:day.liste_sujets)
-            {
-                if(s.id==selectedLL.getId())
-                {
-                    s.creerLesListes(daoMessage, daoparticipant);
-                    final C_Sujet sujetToDel = s;
-
-                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            switch (which){
-                                case DialogInterface.BUTTON_POSITIVE:
-                                    //REMOVE OK
-
-                                    //delete messages
-                                    for (C_Message msgToDel:sujetToDel.liste_messages)
-                                    {
-                                        daoMessage.supprimer(msgToDel.id, options.online);
-                                    }
-
-                                    //delete subject
-                                    daoSujet.supprimer(sujetToDel.idSujet, options.online);
-
-                                    //maj jour
-                                    for (Iterator<C_Sujet> iter = day.liste_sujets.listIterator(); iter.hasNext(); )
-                                    {
-                                        C_Sujet subj = iter.next();
-                                        if (subj.idSujet.equals(sujetToDel.idSujet))
-                                        { iter.remove();}
-                                    }
-                                    //TODO prix
-                                    day.listeToString();
-                                    daoJour.modifier(day, options.online);
-
-                                    affichage();
 
 
-                                    break;
-
-                                case DialogInterface.BUTTON_NEGATIVE:
-                                    //No button clicked
-                                    break;
-                            }
-                        }
-                    };
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(pContext);
-                    builder.setMessage("Delete "+s.titre+" ?").setPositiveButton("Yes", dialogClickListener)
-                            .setNegativeButton("No", dialogClickListener).show();
-
-                }
-            }
-            return true;
-        }
-    };
 
 
-    //BOUTTON save
-    View.OnClickListener onSave = new View.OnClickListener() {
-        public void onClick(View v) {
-            day.ville=tb_ville.getText().toString();
-            daoJour.modifier(day, options.online);
-            tb_ville.setTextColor(Color.parseColor("#ac035d"));
-
-        }
-    };
-
+//---------------------------------------------------------------------------------------
+//	FONCTIONS
+//---------------------------------------------------------------------------------------
 
 
     private void affichage()
-{
-    day=daoJour.getJourById(jourID);
-    day.creerLesListes(daoSujet);
+    {
+
     if(!this.day.liste_sujets.isEmpty())
     {
+        container_globalLayout.removeAllViews();
         container_globalLayout.setOrientation(LinearLayout.VERTICAL);
         sdf = new SimpleDateFormat("HH:mm");
         String titreDescription = "";
         for (C_Sujet s : this.day.liste_sujets)
         {
             s.creerLesListes(daoMessage, daoparticipant);
-
+            System.out.println("timeAff : " + s.heure.toString());
             //panel global
             LinearLayout LLglobal = new LinearLayout(this);
             LLglobal.setOrientation(LinearLayout.HORIZONTAL);
@@ -381,25 +302,226 @@ public class A_jour_Preparation extends MainActivity {
             LLglobal.setOnLongClickListener(onLongClickLayout);
 
 
-
             container_globalLayout.addView(LLglobal);
         }
     }
 }
 
 
+    private void trierList(String sort)
+    {
+
+
+        switch (sort) {
+            case "Date":
+                //Sorting
+                Collections.sort(this.day.liste_sujets, new Comparator<C_Sujet>() {
+                    @Override
+                    public int compare(C_Sujet s1, C_Sujet s2) {
+
+                        return s1.heure.compareTo(s2.heure);
+                    }
+                });
+
+                break;
+
+            case "Finished":
+                //Sorting
+                Collections.sort(this.day.liste_sujets, new Comparator<C_Sujet>() {
+                    @Override
+                    public int compare(C_Sujet s1, C_Sujet s2) {
+
+                        return s1.personnesAyantAccepteToString.compareTo(s2.personnesAyantAccepteToString);
+                    }
+                });
+
+                break;
+
+            case "Name":
+                //Sorting
+                Collections.sort(this.day.liste_sujets, new Comparator<C_Sujet>() {
+                    @Override
+                    public int compare(C_Sujet s1, C_Sujet s2) {
+
+                        return s1.idSujet.compareTo(s2.idSujet);
+                    }
+                });
+                break;
+
+            case "Cat":
+                //Sorting
+                Collections.sort(this.day.liste_sujets, new Comparator<C_Sujet>() {
+                    @Override
+                    public int compare(C_Sujet s1, C_Sujet s2) {
+
+                        return s1.type.compareTo(s2.type);
+                    }
+                });
+
+                break;
+        }
+
+        affichage();
+
+    }
 
 
 
 
 
+//---------------------------------------------------------------------------------------
+//	LISTENERS
+//---------------------------------------------------------------------------------------
+
+//Selection d'un sujet
+View.OnClickListener onClickLayout = new View.OnClickListener() {
+    public void onClick(View v) {
+        LinearLayout selectedLL = (LinearLayout) v;
+
+        for (C_Sujet s:day.liste_sujets)
+        {
+            if(s.id==selectedLL.getId())
+            {
+                Intent intent = new Intent(A_jour_Preparation.this, A_sujet_Preparation.class);
+                options.sujetid=s.idSujet;
+                daoOptions.modifier(options);
+                //intent.putExtra("idEntry", s.idSujet);
+                //intent.putExtra("userID", userID);
+                startActivity(intent);
+            }
+        }
+
+        //DialogFragment newFragment = new D_DatePickerFragment("newproject_debut");
+        //newFragment.show(getFragmentManager(), "datePicker");
+        //tb_dateDebut.setText(lb_date.getText());
+    }
+};
+
+    //ON LONG CLICK = REMOVE
+    View.OnLongClickListener onLongClickLayout = new View.OnLongClickListener() {
+        public boolean onLongClick(View v) {
+            LinearLayout selectedLL = (LinearLayout) v;
+
+            for (C_Sujet s:day.liste_sujets)
+            {
+                if(s.id==selectedLL.getId())
+                {
+                    s.creerLesListes(daoMessage, daoparticipant);
+                    final C_Sujet sujetToDel = s;
+
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    //REMOVE OK
+
+                                    //delete messages
+                                    for (C_Message msgToDel:sujetToDel.liste_messages)
+                                    {
+                                        daoMessage.supprimer(msgToDel.id, options.online);
+                                    }
+
+                                    //delete subject
+                                    daoSujet.supprimer(sujetToDel.idSujet, options.online);
+
+                                    //maj jour
+                                    for (Iterator<C_Sujet> iter = day.liste_sujets.listIterator(); iter.hasNext(); )
+                                    {
+                                        C_Sujet subj = iter.next();
+                                        if (subj.idSujet.equals(sujetToDel.idSujet))
+                                        { iter.remove();}
+                                    }
+                                    //TODO prix
+                                    day.listeToString();
+                                    daoJour.modifier(day, options.online);
+
+                                    affichage();
+
+
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //No button clicked
+                                    break;
+                            }
+                        }
+                    };
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(pContext);
+                    builder.setMessage("Delete "+s.titre+" ?").setPositiveButton("Yes", dialogClickListener)
+                            .setNegativeButton("No", dialogClickListener).show();
+
+                }
+            }
+            affichage();
+            return true;
+        }
+    };
+
+
+    //BOUTTON save ville
+    View.OnClickListener onSave = new View.OnClickListener() {
+        public void onClick(View v) {
+            day.ville=tb_ville.getText().toString();
+            daoJour.modifier(day, options.online);
+            tb_ville.setTextColor(Color.parseColor("#ac035d"));
+
+        }
+    };
+
+
+    //SORT - Date
+    View.OnClickListener onSortDate = new View.OnClickListener() {
+        public void onClick(View v) {
+            btn_sort_date.setImageResource(R.drawable.ic_jour_sort_date_fill);
+            btn_sort_finished.setImageResource(R.drawable.ic_jour_sort_finished);
+            btn_sort_name.setImageResource(R.drawable.ic_jour_sort_name);
+            btn_sort_cat.setImageResource(R.drawable.ic_jour_sort_cat);
+            trierList("Date");
+        }
+    };
+
+    //SORT - Finished
+    View.OnClickListener onSortFinished = new View.OnClickListener() {
+        public void onClick(View v) {
+            btn_sort_date.setImageResource(R.drawable.ic_jour_sort_date);
+            btn_sort_finished.setImageResource(R.drawable.ic_jour_sort_finished_fill);
+            btn_sort_name.setImageResource(R.drawable.ic_jour_sort_name);
+            btn_sort_cat.setImageResource(R.drawable.ic_jour_sort_cat);
+            trierList("Finished");
+        }
+    };
+
+    //SORT - Name
+    View.OnClickListener onSortName = new View.OnClickListener() {
+        public void onClick(View v) {
+            btn_sort_date.setImageResource(R.drawable.ic_jour_sort_date);
+            btn_sort_finished.setImageResource(R.drawable.ic_jour_sort_finished);
+            btn_sort_name.setImageResource(R.drawable.ic_jour_sort_name_fill);
+            btn_sort_cat.setImageResource(R.drawable.ic_jour_sort_cat);
+            trierList("Name");
+        }
+    };
+
+    //SORT - CAT
+    View.OnClickListener onSortCat = new View.OnClickListener() {
+        public void onClick(View v) {
+            btn_sort_date.setImageResource(R.drawable.ic_jour_sort_date);
+            btn_sort_finished.setImageResource(R.drawable.ic_jour_sort_finished);
+            btn_sort_name.setImageResource(R.drawable.ic_jour_sort_name);
+            btn_sort_cat.setImageResource(R.drawable.ic_jour_sort_cat_fill);
+            trierList("Cat");
+        }
+    };
 
 
 
 
 
-
-
+//---------------------------------------------------------------------------------------
+//	MENU
+//---------------------------------------------------------------------------------------
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

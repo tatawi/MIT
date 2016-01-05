@@ -18,7 +18,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class A_sujet_new extends MainActivity {
 
@@ -187,13 +189,22 @@ public class A_sujet_new extends MainActivity {
             sujet.description=tb_description.getText().toString();
             sujet.type=lb_type.getText().toString();
             sujet.localisation="loc";
-            sujet.heure=day.jour;
-            sujet.heure.setHours(sb_hour.getProgress());
-            sujet.heure.setMinutes(sb_min.getProgress());
             sujet.duree=sb_duree.getProgress();
             sujet.auFeeling=false;
             sujet.valide=false;
             sujet.personnesAyantAccepte.add(partAcutel);
+
+            //set heure
+            try {
+                sdf = new SimpleDateFormat("dd/mm/yy");
+                String myTime = sdf.format(day.jour);
+                myTime = myTime + " " + sb_hour.getProgress() + ":" + sb_min.getProgress();
+
+                sdf = new SimpleDateFormat("dd/mm/yy HH:mm");
+                sujet.heure = sdf.parse(myTime);
+            }
+            catch (Exception ex)
+            {System.out.println("[ERROR] "+ex.getMessage());}
 
             //création du premier message auto
             C_Message message = new C_Message(sujet.idSujet, new Date(), "Création du sujet", partAcutel);
@@ -202,6 +213,8 @@ public class A_sujet_new extends MainActivity {
             daoMessage.ajouter(message, options.online);
             sujet.liste_messages.add(message);
 
+
+            System.out.println("time : " + sujet.heure.toString());
 
             //save sujet
             sujet.listeToString();

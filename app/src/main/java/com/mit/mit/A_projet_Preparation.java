@@ -3,6 +3,7 @@ package com.mit.mit;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -134,14 +135,16 @@ public class A_projet_Preparation extends MainActivity {
                 LinearLayout LLtexte = new LinearLayout(this);
                 LLtexte.setOrientation(LinearLayout.VERTICAL);
                 LLtexte.setLayoutParams(LLParams);
-                LLtexte.setPadding(20,0,40,0);
+                LLtexte.setPadding(20, 0, 40, 0);
 
+                //jour
                 TextView lb_jour = new TextView(this);
                 sdf = new SimpleDateFormat("EEEE", Locale.FRANCE);
                 lb_jour.setText(sdf.format(j.jour));
                 lb_jour.setTextSize(18);
                 LLtexte.addView(lb_jour);
 
+                //date
                 TextView lb_date = new TextView(this);
                 sdf = new SimpleDateFormat("dd MMM yyyy");
                 lb_date.setText(sdf.format(j.jour));
@@ -150,14 +153,26 @@ public class A_projet_Preparation extends MainActivity {
                 LL.addView(LLtexte);
 
 
-                //IMAGE MESSAGES
-                ImageButton btnConv=new ImageButton(this);
-                btnConv.setImageResource(R.drawable.ic_projet_prep_conv);
-                btnConv.setBackgroundColor(Color.TRANSPARENT);
-                btnConv.setId(nbParcours);
-               // btnConv.setOnClickListener(onClickConv);
-                LL.addView(btnConv);
+                //VILLE
+                LinearLayout LLville = new LinearLayout(this);
+                LLville.setOrientation(LinearLayout.HORIZONTAL);
+                LLville.setLayoutParams(LLParams);
+                LLville.setPadding(20, 20, 20, 0);
 
+                //line
+                ImageButton btnLine=new ImageButton(this);
+                btnLine.setImageResource(R.drawable.ic_project_conv_line);
+                btnLine.setBackgroundColor(Color.TRANSPARENT);
+                btnLine.setId(nbParcours);
+                LLville.addView(btnLine);
+
+                //ville
+                TextView lb_ville = new TextView(this);
+                lb_ville.setText(j.ville);
+                lb_ville.setTextColor(Color.parseColor("#ac035d"));
+                LLville.addView(lb_ville);
+
+                LL.addView(LLville);
 
 
                 //INCREMENT DAY

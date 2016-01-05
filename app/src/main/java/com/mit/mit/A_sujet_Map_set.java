@@ -50,10 +50,11 @@ public class A_sujet_Map_set extends FragmentActivity {
     private C_Sujet sujet;
     private C_Jour jour;
 
-    //private String adresse;
+    private String adresse;
     private String destination;
 
     private LatLng coord;
+    private LatLng coordMap;
 
 
 
@@ -77,6 +78,19 @@ public class A_sujet_Map_set extends FragmentActivity {
 
         btn_marker.setOnClickListener(onSearchAdress);
         btn_ok.setOnClickListener(onClickbtnOk);
+        // Setting a click event handler for the map
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(latLng);
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                        markerOptions.title("Selected point");
+                mMap.clear();
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                point1=mMap.addMarker(markerOptions);
+            }
+        });
 
         //récupérations
         this.options=daoOptions.getOptionByUserId();
@@ -84,8 +98,8 @@ public class A_sujet_Map_set extends FragmentActivity {
         this.jour=daoJour.getJourById(options.jourid);
         this.jour.creerLesListes(daoSujet);
 
-        System.out.println("****"+sujet.idSujet);
-
+        System.out.println("****" + sujet.idSujet);
+        System.out.println("timeMap : "+sujet.heure.toString());
 
         //ajout champs if transport
         if(sujet.type.equals("Transport"))
@@ -105,128 +119,23 @@ public class A_sujet_Map_set extends FragmentActivity {
             ll_adresses.addView(llAdd);
         }
 
-        initialiserMap();
-
-
-
-    }
-
-    private void initialiserMap()
-    {
-        double lati=0;
-        double longi=0;
-
-        try
+        if(options.online)
         {
-            //if internet access
-            if(options.online)
+            if(this.jour.ville.length()>2)
             {
-                Geocoder geocoder = new Geocoder(context);
-                List<Address> addresses;
-                addresses = geocoder.getFromLocationName(this.jour.ville, 1);
-                if (addresses.size() > 0) {
-                    lati = addresses.get(0).getLatitude();
-                    longi = addresses.get(0).getLongitude();
-                }
-                this.coord=new LatLng(lati, longi);
+                initialiserMap(this.jour.ville);
             }
-
-            //offline
             else
-            {
-                //get approximate coord
-                this.coord=getApproximateCoord();
-            }
-
-
-
-
-            moveToCurrentLocation(coord);
-
+            {initialiserMap();}
         }
-        catch (IOException ex)
-        {
-            System.out.println("Error : "+ ex.getMessage());
-        }
+        else
+        {initialiserMap();}
+
+
+
+
     }
 
-
-    //position marker on the map from an adress
-    private void setMarkerToAdress(String adresse)
-    {
-        double lati=0;
-        double longi=0;
-
-        try
-        {
-            Geocoder geocoder = new Geocoder(context);
-            List<Address> addresses;
-            addresses = geocoder.getFromLocationName(adresse, 1);
-            if (addresses.size() > 0) {
-                lati = addresses.get(0).getLatitude();
-                longi = addresses.get(0).getLongitude();
-            }
-            this.coord=new LatLng(lati, longi);
-
-            point1=mMap.addMarker(new MarkerOptions()
-                    .position(coord)
-                    .title(adresse)
-                    .draggable(true)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-            moveToCurrentLocation(coord);
-
-            if(sujet.type.equals("Transport"))
-            {
-                addresses = geocoder.getFromLocationName(this.destination, 1);
-                if (addresses.size() > 0) {
-                    lati = addresses.get(0).getLatitude();
-                    longi = addresses.get(0).getLongitude();
-                }
-                this.coord=new LatLng(lati, longi);
-
-                point2=mMap.addMarker(new MarkerOptions()
-                        .position(coord)
-                        .title(adresse)
-                        .draggable(true)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-            }
-
-        }
-        catch (IOException ex)
-        {
-            System.out.println("Error : "+ ex.getMessage());
-        }
-    }
-
-
-    //move camera to position
-    private void moveToCurrentLocation(LatLng currentLocation)
-    {
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,15));
-        // Zoom in, animating the camera.
-        mMap.animateCamera(CameraUpdateFactory.zoomIn());
-        // Zoom out to zoom level 10, animating with a duration of 2 seconds.
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
-    }
-
-
-    //calculate an approximative position from all other subjets in the current day
-    private LatLng getApproximateCoord()
-    {
-        LatLng theCoord;
-        double longi=0;
-        double lati=0;
-
-        //TODO get aproxi coord for offline map
-        /*for(C_Sujet s: jour.liste_sujets)
-        {
-
-        }*/
-
-
-
-        return new LatLng(lati, longi);
-    }
 
 
 
@@ -276,6 +185,10 @@ public class A_sujet_Map_set extends FragmentActivity {
 
 
 
+//---------------------------------------------------------------------------------------
+//	LISTENERS
+//---------------------------------------------------------------------------------------
+
     //bouton ajouter adresse
     View.OnClickListener onSearchAdress = new View.OnClickListener() {
         public void onClick(View v)
@@ -295,34 +208,203 @@ public class A_sujet_Map_set extends FragmentActivity {
             if(sujet.type.equals("Transport"))
             {
                 destination=tb_addr.getText().toString();
+                setMarkersToAdress(tb_adresse.getText().toString(), destination);
             }
-            setMarkerToAdress(tb_adresse.getText().toString());
+            else
+            {
+                setMarkerToAdress(tb_adresse.getText().toString());
+            }
+
         }
 
 
         }
     };
 
+
     //btn valider
     View.OnClickListener onClickbtnOk = new View.OnClickListener() {
         public void onClick(View v)
         {
+            LatLng position;
             if(sujet.type.equals("Transport"))
             {
                 LatLng position2 = point2.getPosition();
                 sujet.localisation2=position2.latitude+";"+position2.longitude;
             }
 
-            LatLng position = point1.getPosition();
+            try
+            {
+                position = point1.getPosition();
+            }
+            catch (Exception ex)
+            {
+                position=coordMap;
+            }
+
             sujet.localisation=position.latitude+";"+position.longitude;
             daoSujet.modifier(sujet, options.online);
 
+            System.out.println("timeMapEnd : " + sujet.heure.toString());
             Intent intent = new Intent(A_sujet_Map_set.this, A_jour_Preparation.class);
             startActivity(intent);
 
-
         }
     };
+
+
+
+
+
+//---------------------------------------------------------------------------------------
+//	FONCTIONS
+//---------------------------------------------------------------------------------------
+
+
+
+    protected void initialiserMap()
+    {
+        try
+        {
+            this.coordMap=getApproximateCoord();
+            moveToCurrentLocation(coordMap);
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Error : "+ ex.getMessage());
+        }
+    }
+
+
+    protected void initialiserMap(String addr)
+    {
+        double lati=0;
+        double longi=0;
+
+        try
+        {
+            Geocoder geocoder = new Geocoder(context);
+            List<Address> addresses;
+            addresses = geocoder.getFromLocationName(addr, 1);
+
+            if (addresses.size() > 0)
+            {
+                lati = addresses.get(0).getLatitude();
+                longi = addresses.get(0).getLongitude();
+            }
+            this.coordMap=new LatLng(lati, longi);
+            moveToCurrentLocation(coordMap);
+        }
+        catch (IOException ex)
+        {System.out.println("Error : "+ ex.getMessage());}
+    }
+
+    protected void moveToCurrentLocation(LatLng currentLocation)
+    {
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
+        // Zoom in, animating the camera.
+        mMap.animateCamera(CameraUpdateFactory.zoomIn());
+        // Zoom out to zoom level 10, animating with a duration of 2 seconds.
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+    }
+
+
+    //calculate an approximative position from all other subjets in the current day
+    protected LatLng getApproximateCoord()
+    {
+        LatLng theCoord;
+        double longi=0;
+        double lati=0;
+
+        //TODO get aproxi coord for offline map
+        /*for(C_Sujet s: jour.liste_sujets)
+        {
+
+        }*/
+
+        return new LatLng(lati, longi);
+    }
+
+
+    protected void setMarkerToAdress(String adresse )
+    {
+        double lati=0;
+        double longi=0;
+
+        try
+        {
+            Geocoder geocoder = new Geocoder(context);
+            List<Address> addresses;
+            addresses = geocoder.getFromLocationName(adresse, 1);
+            if (addresses.size() > 0) {
+                lati = addresses.get(0).getLatitude();
+                longi = addresses.get(0).getLongitude();
+            }
+            this.coord=new LatLng(lati, longi);
+
+            point1=mMap.addMarker(new MarkerOptions()
+                    .position(coord)
+                    .title(adresse)
+                    .draggable(true)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+            moveToCurrentLocation(coord);
+
+
+        }
+        catch (IOException ex)
+        {
+            System.out.println("Error : "+ ex.getMessage());
+        }
+    }
+
+    protected  void setMarkersToAdress(String adresse, String destination)
+    {
+        double lati=0;
+        double longi=0;
+
+        try
+        {
+            Geocoder geocoder = new Geocoder(context);
+            List<Address> addresses;
+            addresses = geocoder.getFromLocationName(adresse, 1);
+            if (addresses.size() > 0) {
+                lati = addresses.get(0).getLatitude();
+                longi = addresses.get(0).getLongitude();
+            }
+            this.coord=new LatLng(lati, longi);
+
+            point1=mMap.addMarker(new MarkerOptions()
+                    .position(coord)
+                    .title(adresse)
+                    .draggable(true)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+            moveToCurrentLocation(coord);
+
+            if(sujet.type.equals("Transport"))
+            {
+                addresses = geocoder.getFromLocationName(destination, 1);
+                if (addresses.size() > 0) {
+                    lati = addresses.get(0).getLatitude();
+                    longi = addresses.get(0).getLongitude();
+                }
+                this.coord=new LatLng(lati, longi);
+
+                point2=mMap.addMarker(new MarkerOptions()
+                        .position(coord)
+                        .title(adresse)
+                        .draggable(true)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+            }
+
+        }
+        catch (IOException ex)
+        {
+            System.out.println("Error : "+ ex.getMessage());
+        }
+    }
+
+
+
 }
 
 

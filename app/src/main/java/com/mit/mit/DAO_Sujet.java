@@ -77,6 +77,7 @@ public class DAO_Sujet extends DAO_Bdd {
         //LOCAL
         this.open();
         String valide ="false";
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yy HH:mm");
         if(s.valide)
         {
             valide="true";
@@ -88,7 +89,7 @@ public class DAO_Sujet extends DAO_Bdd {
         value.put(ATTR_TYPE, s.type);
         value.put(ATTR_LOC, s.localisation);
         value.put(ATTR_LOC2, s.localisation2);
-        value.put(ATTR_HEURE, s.heure.toString());
+        value.put(ATTR_HEURE, sdf.format(s.heure));
         value.put(ATTR_DUREE, s.duree);
         value.put(ATTR_FEELLING, s.auFeeling);
         value.put(ATTR_PRIX, s.prix);
@@ -101,7 +102,7 @@ public class DAO_Sujet extends DAO_Bdd {
 
         //ONLINE
         if (SaveOnline) {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yy HH:mm:ss");
+
             ParseObject Sujet = new ParseObject("Sujet");
             Sujet.put("idSujet", s.idSujet);
             Sujet.put("titre", s.titre);
@@ -307,7 +308,7 @@ public class DAO_Sujet extends DAO_Bdd {
     public C_Sujet getSujetById(String id) {
         this.open();
         C_Sujet p = null;
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yy HH:mm");
         Date lheure=new Date();
         Cursor cursor = bdd.query(
                 TABLE,
@@ -324,10 +325,11 @@ public class DAO_Sujet extends DAO_Bdd {
         {
             try {
                 lheure = formatter.parse(cursor.getString(cursor.getColumnIndex(ATTR_HEURE)));
+                System.out.println("DAO_SUJET time : "+lheure);
             }
             catch(Exception e)
             {
-
+                System.out.println("[ERROR DAO_SUJET] : "+e.getMessage());
             }
 
             p=new C_Sujet(
