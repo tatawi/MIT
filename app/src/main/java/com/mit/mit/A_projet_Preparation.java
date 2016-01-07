@@ -111,9 +111,10 @@ public class A_projet_Preparation extends MainActivity {
                 LinearLayout LL = new LinearLayout(this);
                 LL.setOrientation(LinearLayout.HORIZONTAL);
                 LL.setLayoutParams(LLParams);
-                LL.setPadding(0,10,0,10);
+                LL.setPadding(0, 10, 0, 10);
 
-
+                //LL.setId(nbParcours);
+                //LL.setOnClickListener(onClickDay);
 
 
                 //IMAGE CALENDRIER

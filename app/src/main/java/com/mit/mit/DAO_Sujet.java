@@ -185,6 +185,7 @@ public class DAO_Sujet extends DAO_Bdd {
     {
         //LOCAL
         this.open();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yy HH:mm");
         String valide ="false";
         if(s.valide)
         {
@@ -196,7 +197,7 @@ public class DAO_Sujet extends DAO_Bdd {
         value.put(ATTR_TYPE, s.type);
         value.put(ATTR_LOC, s.localisation);
         value.put(ATTR_LOC2, s.localisation2);
-        value.put(ATTR_HEURE, s.heure.toString());
+        value.put(ATTR_HEURE, sdf.format(s.heure));
         value.put(ATTR_DUREE, s.duree);
         value.put(ATTR_FEELLING, s.auFeeling);
         value.put(ATTR_PRIX, s.prix);
@@ -215,7 +216,7 @@ public class DAO_Sujet extends DAO_Bdd {
         //ONLINE
         if (SaveOnline) {
             final C_Sujet st = s;
-            final SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yy HH:mm:ss");
+            final SimpleDateFormat sdff = new SimpleDateFormat("dd/mm/yy HH:mm:ss");
 
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Sujet");
             query.whereEqualTo("idSujet", s.idSujet);
@@ -228,7 +229,7 @@ public class DAO_Sujet extends DAO_Bdd {
                         Sujet.put("type", st.type);
                         Sujet.put("localisation", st.localisation);
                         Sujet.put("localisation2", st.localisation2);
-                        Sujet.put("heure", sdf.format(st.heure));
+                        Sujet.put("heure", sdff.format(st.heure));
                         Sujet.put("duree", st.duree);
                         Sujet.put("auFeeling", st.auFeeling);
                         Sujet.put("prix", st.prix);
@@ -253,7 +254,7 @@ public class DAO_Sujet extends DAO_Bdd {
     public List<C_Sujet> getSujets() {
         this.open();
         List<C_Sujet>list_sujets=new ArrayList<C_Sujet>();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yy HH:mm");
         Date lheure=new Date();
         Cursor cursor = bdd.query(
                 TABLE,

@@ -106,6 +106,20 @@
             android:name=".A_Connexion"
             android:label="@string/title_activity_a__connexion" >
         </activity>
+        <activity
+            android:name=".A_sujet_Map_view"
+            android:label="@string/title_activity_a_sujet__map_view" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mit.mit.A_sujet_Preparation" />
+        </activity>
+        <activity
+            android:name=".A_jour_Map_view"
+            android:label="@string/title_activity_a_jour__map_view" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mit.mit.A_jour_Preparation" />
+        </activity>
     </application>
 
 </manifest>

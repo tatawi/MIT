@@ -12,139 +12,26 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/scrollView3">
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
 
-
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Description"
-                android:id="@+id/sujetPreparation_lb_description" />
-        </LinearLayout>
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="2px"
-                android:background="#ac035d"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp" />
-
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageButton
-                android:id="@+id/sujetPreparation_btn_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_jour_logement"
-                android:background="@null"
-                android:paddingLeft="20dp"
-                android:layout_marginBottom="2dp"/>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="40dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="10/05/2015"
-                    android:id="@+id/sujetPreparation_lb_date" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="02h50"
-                    android:id="@+id/sujetPreparation_lb_duree" />
-
-                </LinearLayout>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="40dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="120 €"
-                android:id="@+id/sujetPreparation_lb_cout" />
-
-        </LinearLayout>
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="2px"
-                android:background="#ac035d"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp" />
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Localisation" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="2px"
-                android:background="#ac035d"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp" />
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-            <ImageButton
-                android:id="@+id/sujetPreparation_btn_conv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_sujetconv"
-                android:background="@null"
-                android:layout_marginBottom="2dp"/>
-
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp">
-
-            <TextView
-                android:id="@+id/sujetPreparation_lb_nbMessages"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Pas de messages" />
+                android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/sujetPreparation_lb_nbNonLus"
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Pas de nouveaux messages" />
+                    android:text="Description"
+                    android:id="@+id/sujetPreparation_lb_description" />
+             </LinearLayout>
 
-                </LinearLayout>
 
-            </LinearLayout>
 
             <View
                 android:layout_width="fill_parent"
@@ -155,75 +42,252 @@
 
 
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Personnes participantes :" />
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
             <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="20dp">
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
                 <ImageButton
-                    android:id="@+id/sujetPreparation_btn_participer"
+                    android:id="@+id/sujetPreparation_btn_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_sujetprep_participate"
+                    android:src="@drawable/ic_jour_logement"
                     android:background="@null"
-                    android:paddingLeft="20dp"/>
+                    android:paddingLeft="20dp"
+                    android:layout_marginBottom="2dp"/>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="40dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="heure :"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Durée :"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="12h30"
+                        android:id="@+id/sujetPreparation_lb_date" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="02h50"
+                        android:id="@+id/sujetPreparation_lb_duree" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:paddingTop="14dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="40dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="120 €"
+                    android:id="@+id/sujetPreparation_lb_cout" />
+
+            </LinearLayout>
+
+
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2px"
+                android:background="#ac035d"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp" />
+
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/sujetPreparation_btn_map"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_map"
+                    android:background="@null"
+                    android:layout_marginBottom="2dp"/>
+
+                <TextView
+                    android:paddingTop="15dp"
+                    android:paddingLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Afficher la position" />
+
+            </LinearLayout>
+
+
+
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2px"
+                android:background="#ac035d"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp" />
+
+
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/sujetPreparation_btn_conv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_sujetconv"
+                    android:background="@null"
+                    android:layout_marginBottom="2dp"/>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="20dp">
+
+                    <TextView
+                        android:id="@+id/sujetPreparation_lb_nbMessages"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Pas de messages" />
+
+                    <TextView
+                        android:id="@+id/sujetPreparation_lb_nbNonLus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Pas de nouveaux messages" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2px"
+                android:background="#ac035d"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp" />
+
+
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Participer"
-                    android:textColor="#ac035d"
-                    android:textSize="18dp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content">
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:paddingRight="10dp"
+                    android:text="Participants :" />
 
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content">
-                        <TextView
-                            android:id="@+id/sujetPreparation_lb_nbParticipants"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0"
-                            android:textSize="18dp"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=" / "
-                            android:textColor="#ac035d"
-                            android:textSize="18dp"/>
-                        <TextView
-                            android:id="@+id/sujetPreparation_lb_nbParticipantsTotal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="10"
-                            android:textSize="18dp"/>
 
-                    </LinearLayout>
-                <SeekBar
-                    android:id="@+id/sujetPreparation_progressBar"
-                    android:layout_width="fill_parent"
+                    <TextView
+                        android:id="@+id/sujetPreparation_lb_nbParticipants"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="18dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" / "
+                        android:textColor="#ac035d"
+                        android:textSize="18dp"/>
+
+                    <TextView
+                        android:id="@+id/sujetPreparation_lb_nbParticipantsTotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="10"
+                        android:textSize="18dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:max="10"
-                    android:layout_marginTop="20dp"/>
+                    android:paddingRight="20dp">
+
+                    <ImageButton
+                        android:id="@+id/sujetPreparation_btn_participer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_sujetprep_participate"
+                        android:background="@null"
+                        android:paddingLeft="20dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Participer"
+                        android:textColor="#ac035d"
+                        android:textSize="18dp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content">
+
+                    <SeekBar
+                        android:paddingTop="8dp"
+                        android:id="@+id/sujetPreparation_progressBar"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:max="10"
+                        android:layout_marginTop="20dp"/>
 
                 </LinearLayout>
 
@@ -235,17 +299,7 @@
                 android:textColor="#ac035d"
                 android:paddingLeft="100dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
-
-
-
-
-
-
-
-
-
+                android:layout_height="wrap_content" />
 
 
 

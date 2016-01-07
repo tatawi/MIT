@@ -249,6 +249,7 @@ public class MainActivity extends AppCompatActivity {
                         sujet.description = parse.getString("description");
                         sujet.type = parse.getString("type");
                         sujet.localisation = parse.getString("localisation");
+                        sujet.localisation2 = parse.getString("localisation2");
                         sujet.duree = parse.getInt("duree");
                         sujet.prix = parse.getDouble("prix");
                         sujet.messagesToString = parse.getString("messagesToString");

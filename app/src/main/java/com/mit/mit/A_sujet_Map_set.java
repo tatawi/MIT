@@ -2,6 +2,7 @@ package com.mit.mit;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.support.v4.app.FragmentActivity;
@@ -23,6 +24,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 
 import java.io.IOException;
@@ -375,7 +378,7 @@ public class A_sujet_Map_set extends FragmentActivity {
 
             point1=mMap.addMarker(new MarkerOptions()
                     .position(coord)
-                    .title(adresse)
+                    .title("From : "+adresse)
                     .draggable(true)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
             moveToCurrentLocation(coord);
@@ -387,13 +390,19 @@ public class A_sujet_Map_set extends FragmentActivity {
                     lati = addresses.get(0).getLatitude();
                     longi = addresses.get(0).getLongitude();
                 }
+                LatLng oriCoord=this.coord;
                 this.coord=new LatLng(lati, longi);
 
                 point2=mMap.addMarker(new MarkerOptions()
                         .position(coord)
-                        .title(adresse)
+                        .title("To : "+adresse)
                         .draggable(true)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+
+                Polyline line = mMap.addPolyline(new PolylineOptions()
+                        .add(oriCoord, this.coord)
+                        .width(5)
+                        .color(Color.BLUE));
             }
 
         }

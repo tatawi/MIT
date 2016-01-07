@@ -550,10 +550,23 @@ View.OnClickListener onClickLayout = new View.OnClickListener() {
             startActivity(intent);
         }
 
+
+        //DISPLAY MAP
+        if(id==R.id.menu_jour_map)
+        {
+            Intent intent = new Intent(A_jour_Preparation.this, A_jour_Map_view.class);
+            startActivity(intent);
+        }
+
+
+        //REFRESH
         if(id==R.id.menu_jour_refresh)
         {
             MajDAO();
         }
+
+
+        //DECO
         if(id==R.id.menu_jour_deconnexion)
         {
             //daoOptions.supprimerUser();

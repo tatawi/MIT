@@ -11,9 +11,15 @@
         android:title="Se déconnecter"/>
 
     <item
+        android:id="@+id/menu_jour_map"
+        android:icon="@drawable/ic_action_map"
+        app:showAsAction="always"
+        android:title="Afficher carte"/>
+
+    <item
         android:id="@+id/menu_jour_refresh"
         android:icon="@drawable/ic_action_download"
-        app:showAsAction="always"
+        app:showAsAction="never"
         android:title="Rafraichir"/>
 
     <item

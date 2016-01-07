@@ -35,6 +35,7 @@ public class A_sujet_Preparation extends MainActivity {
     private TextView lb_nbParticipants;
     private TextView lb_nbParticipantsTotal;
     private TextView lb_erreurAdd;
+    private ImageButton btn_map;
 
     //android:id="@+id/sujetPreparation_lb_description"
     //sujetPreparation_btn_type
@@ -81,11 +82,12 @@ public class A_sujet_Preparation extends MainActivity {
         lb_nbParticipants = (TextView) findViewById(R.id.sujetPreparation_lb_nbParticipants);
         lb_nbParticipantsTotal= (TextView) findViewById(R.id.sujetPreparation_lb_nbParticipantsTotal);
         lb_erreurAdd= (TextView) findViewById(R.id.sujetPreparation_lb_texteAjoutPart);
+        btn_map = (ImageButton) findViewById(R.id.sujetPreparation_btn_map);
 
         //listeners
         btn_conv.setOnClickListener(onOpenConv);
         btn_participer.setOnClickListener(onParticiper);
-
+        btn_map.setOnClickListener(onMapClick);
 
 
 
@@ -180,6 +182,17 @@ public class A_sujet_Preparation extends MainActivity {
         }
     };
 
+    //bouton creer
+    View.OnClickListener onMapClick = new View.OnClickListener() {
+        public void onClick(View v) {
+
+
+            Intent intent = new Intent(A_sujet_Preparation.this, A_sujet_Map_view.class);
+            startActivity(intent);
+
+        }
+    };
+
 
     //bouton participer
     View.OnClickListener onParticiper = new View.OnClickListener() {
@@ -208,11 +221,7 @@ public class A_sujet_Preparation extends MainActivity {
                 progressBar_participations.setProgress(sujet.personnesAyantAccepte.size());
                 lb_nbParticipants.setText("" + sujet.personnesAyantAccepte.size());
 
-
-
-
                 //vérifier si on passe le sujet en valide
-
                 int nbTotal=projet.liste_participants.size();
                 int nbParticipants=sujet.personnesAyantAccepte.size();
 
@@ -243,12 +252,6 @@ public class A_sujet_Preparation extends MainActivity {
                 lb_erreurAdd.setVisibility(View.VISIBLE);
                 lb_erreurAdd.setText("Vote déjà enregistré");
             }
-
-
-
-
-
-
 
         }
     };
@@ -333,7 +336,7 @@ public void majInterface()
     //participants
     progressBar_participations.setMax(projet.liste_participants.size());
     progressBar_participations.setProgress(sujet.personnesAyantAccepte.size());
-    progressBar_participations.setEnabled(false);
+    //progressBar_participations.setEnabled(false);
 
     lb_nbParticipants.setText(""+sujet.personnesAyantAccepte.size());
     lb_nbParticipantsTotal.setText(""+projet.liste_participants.size());
