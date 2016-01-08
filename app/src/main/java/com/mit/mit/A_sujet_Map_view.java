@@ -106,7 +106,7 @@ public class A_sujet_Map_view extends FragmentActivity {
                             .position(coord)
                             .title("[From] "+sujet.titre)
                             .draggable(false)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
                     lati = this.sujet.localisation2.split(";")[0];
                     longi = this.sujet.localisation2.split(";")[1];
@@ -118,14 +118,14 @@ public class A_sujet_Map_view extends FragmentActivity {
                             .position(coord)
                             .title("[To] " + this.sujet.titre)
                             .draggable(false)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
 
                     //specify latitude and longitude of both source and destination
                     Polyline line = mMap.addPolyline(new PolylineOptions()
                             .add(oriCoord, this.coord)
                             .width(5)
-                            .color(Color.BLUE));
+                            .color(Color.RED));
 
 
                     break;

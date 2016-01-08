@@ -20,6 +20,7 @@
     <string name="title_activity_c__map">Map</string>
     <string name="title_activity_a_sujet__map_view">Map</string>
     <string name="title_activity_a_jour__map_view">Map</string>
+    <string name="title_activity_a_projet__map_view">Map</string>
 
 
 </resources>

@@ -120,6 +120,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mit.mit.A_jour_Preparation" />
         </activity>
+        <activity
+            android:name=".A_projet_Map_view"
+            android:label="@string/title_activity_a_projet__map_view" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mit.mit.A_projet_Preparation" />
+        </activity>
     </application>
 
 </manifest>

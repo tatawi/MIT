@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.concurrent.ExecutionException;
 
 public class A_sujet_new extends MainActivity {
 
@@ -63,6 +64,7 @@ public class A_sujet_new extends MainActivity {
 
     private SimpleDateFormat sdf;
     private String userID;
+    private boolean edit=false;
 
 
 
@@ -142,22 +144,100 @@ public class A_sujet_new extends MainActivity {
         System.out.println("--user : " + userID);
         System.out.println("--jour : " + this.day.nomJour);
 
-       /* Bundle extras = getIntent().getExtras();
+
+
+        //IF EDIT
+        Bundle extras = getIntent().getExtras();
         if (extras != null)
         {
-            //récupération utilisateur
+            if(extras.getString("edit").equals("true"))
+            {
+                try
+                {
+                    this.edit = true;
+                    sujet = daoSujet.getSujetById(options.sujetid);
+                    sujet.creerLesListes(daoMessage, daoparticipant);
+                    tb_titre.setText(sujet.titre);
+                    tb_description.setText(sujet.description);
+                    lb_prix.setText(""+sujet.prix);
 
 
-            //récupération jour
-            this.day = daoJour.getJourById(extras.getString("idEntry"));
-            this.day.creerLesListes(daoSujet);
+                    //set time
+                    sdf = new SimpleDateFormat("HH");
+                    sb_hour.setProgress(Integer.parseInt(sdf.format(sujet.heure)));
+
+                    sdf = new SimpleDateFormat("mm");
+                    sb_min.setProgress(Integer.parseInt(sdf.format(sujet.heure)));
+
+                    lb_time.setText(sb_hour.getProgress() + "h" + sb_min.getProgress());
 
 
-            System.out.println("--user : " + userID);
-            System.out.println("--jour : "+this.day.nomJour);
+                    //set durée
+                    sb_duree.setProgress(sujet.duree);
+                    int hour=sb_duree.getProgress()/60;
+                    int min=sb_duree.getProgress()-hour*60;
+                    lb_duree.setText(hour+"h"+min);
 
 
-        }*/
+                    //set type
+                    switch (sujet.type)
+                    {
+                        case "Repas":
+                            btn_repas.setImageResource(R.drawable.ic_jour_repas_fill);
+                            lb_type.setText("Repas");
+                            lb_type.setTextColor(Color.parseColor("#2980b9"));
+                            break;
+
+                        case "Visite":
+                            btn_visite.setImageResource(R.drawable.ic_jour_visite_fill);
+                            lb_type.setText("Visite");
+                            lb_type.setTextColor(Color.parseColor("#16a085"));
+                            break;
+
+                        case "Logement":
+                            btn_logement.setImageResource(R.drawable.ic_jour_logement_fill);
+                            lb_type.setText("Logement");
+                            lb_type.setTextColor(Color.parseColor("#f39c12"));
+                            break;
+
+                        case "Loisir":
+                            btn_loisir.setImageResource(R.drawable.ic_jour_loisir_fill);
+                            lb_type.setText("Loisir");
+                            lb_type.setTextColor(Color.parseColor("#9b59b6"));
+                            break;
+
+                        case "Libre":
+                            btn_libre.setImageResource(R.drawable.ic_jour_libre_fill);
+                            lb_type.setText("Libre");
+                            lb_type.setTextColor(Color.parseColor("#5b5b5b"));
+                            break;
+
+                        case "Transport":
+                            btn_transport.setImageResource(R.drawable.ic_jour_transports_fill);
+                            lb_type.setText("Transport");
+                            lb_type.setTextColor(Color.parseColor("#e74c3c"));
+
+                            break;
+                    }
+
+
+                    sujet.personnesAyantAccepte.clear();
+
+
+
+
+                }
+                catch (Exception ex)
+                {
+                    System.out.println("[ERROR]A_sujet_new : while editing : "+ex.getMessage());
+                }
+
+
+
+            }
+
+
+        }
 
 
 
@@ -207,24 +287,28 @@ public class A_sujet_new extends MainActivity {
             {System.out.println("[ERROR] "+ex.getMessage());}
 
             //création du premier message auto
-            C_Message message = new C_Message(sujet.idSujet, new Date(), "Création du sujet", partAcutel);
+            if(!edit)
+            {
+                C_Message message = new C_Message(sujet.idSujet, new Date(), "Création du sujet", partAcutel);
 
-            System.out.println("sujet new : add msg : " + message.personnesAyantVuesToString);
-            daoMessage.ajouter(message, options.online);
-            sujet.liste_messages.add(message);
+                System.out.println("sujet new : add msg : " + message.personnesAyantVuesToString);
+                daoMessage.ajouter(message, options.online);
+                sujet.liste_messages.add(message);
+            }
 
 
-            System.out.println("time : " + sujet.heure.toString());
 
             //save sujet
             sujet.listeToString();
-            daoSujet.ajouter(sujet, true);
+            daoSujet.ajouterOUmodifier(sujet, options.online);
 
             //maj jour
-            day.liste_sujets.add(sujet);
-            day.listeToString();
-            daoJour.modifier(day, options.online);
-
+            if(!edit)
+            {
+                day.liste_sujets.add(sujet);
+                day.listeToString();
+                daoJour.modifier(day, options.online);
+            }
 
             options.sujetid=sujet.idSujet;
             daoOptions.modifier(options);

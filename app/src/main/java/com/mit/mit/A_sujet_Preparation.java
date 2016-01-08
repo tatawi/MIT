@@ -394,7 +394,7 @@ public void majInterface()
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        //CONVERSATION
         if (id == R.id.sujet_conv) {
 
             Intent intent = new Intent(A_sujet_Preparation.this, A_conversation.class);
@@ -405,11 +405,20 @@ public void majInterface()
             return true;
         }
 
+        //RETOUR HOME
         if(id==R.id.sujet_home){
             Intent intent = new Intent(A_sujet_Preparation.this, A_projets.class);
-            intent.putExtra("userID", part.mail);
+            //intent.putExtra("userID", part.mail);
             startActivity(intent);
         }
+
+        //EDIT
+        if(id==R.id.menu_sujet_edit){
+            Intent intent = new Intent(A_sujet_Preparation.this, A_sujet_new.class);
+            intent.putExtra("edit", "true");
+            startActivity(intent);
+        }
+
 
         return super.onOptionsItemSelected(item);
     }

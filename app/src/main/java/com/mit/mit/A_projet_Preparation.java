@@ -151,6 +151,27 @@ public class A_projet_Preparation extends MainActivity {
                 lb_date.setText(sdf.format(j.jour));
                 LLtexte.addView(lb_date);
 
+                //nb sujets
+                String txt_nbSujets;
+                switch (j.liste_sujets.size())
+                {
+                    case 0:
+                        txt_nbSujets="Pas de sujet";
+                        break;
+
+                    case 1:
+                        txt_nbSujets="1 sujet";
+                        break;
+
+                    default:
+                        txt_nbSujets=""+j.liste_sujets.size()+" sujets";
+                        break;
+                }
+                TextView lb_nbSujets = new TextView(this);
+                lb_nbSujets.setText(txt_nbSujets);
+                lb_nbSujets.setTextSize(10);
+                LLtexte.addView(lb_nbSujets);
+
                 LL.addView(LLtexte);
 
 
@@ -171,6 +192,7 @@ public class A_projet_Preparation extends MainActivity {
                 TextView lb_ville = new TextView(this);
                 lb_ville.setText(j.ville);
                 lb_ville.setTextColor(Color.parseColor("#ac035d"));
+                lb_ville.setPadding(0, 40, 0, 0);
                 LLville.addView(lb_ville);
 
                 LL.addView(LLville);
@@ -328,7 +350,7 @@ public class A_projet_Preparation extends MainActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_a_affichage_projet, menu);
+        getMenuInflater().inflate(R.menu.menu_a_projet__preparation, menu);
         return true;
     }
 
@@ -343,6 +365,14 @@ public class A_projet_Preparation extends MainActivity {
         {
             MajDAO();
         }
+
+        if(id==R.id.menu_projetPrep_map)
+        {
+            Intent intent = new Intent(A_projet_Preparation.this, A_projet_Map_view.class);
+            startActivity(intent);
+        }
+
+
 
         if(id==R.id.menu_projetPrep_deconnexion)
         {

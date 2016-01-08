@@ -14,16 +14,19 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class A_jour_Map_view extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
-    private List<Marker> list_pts;
 
     private Context context;
     private DAO_Jour daoJour;
@@ -41,7 +44,7 @@ public class A_jour_Map_view extends FragmentActivity {
         setContentView(R.layout.activity_a_jour__map_view);
         setUpMapIfNeeded();
 
-        list_pts= new ArrayList<Marker>();
+
 
         context=this.getApplicationContext();
         daoJour = new DAO_Jour(context);
@@ -68,27 +71,35 @@ public class A_jour_Map_view extends FragmentActivity {
 
     private void afficherPositions()
     {
+        LatLng prevCoord= new LatLng(0,0);
+        int parcours=0;
+
+
+        //trier la liste selon les dates
+        Collections.sort(this.jour.liste_sujets, new Comparator<C_Sujet>() {
+            @Override
+            public int compare(C_Sujet s1, C_Sujet s2) {
+
+                return s1.heure.compareTo(s2.heure);
+            }
+        });
+
+
+
         for (C_Sujet s: this.jour.liste_sujets)
         {
             String lati = s.localisation.split(";")[0];
             String longi = s.localisation.split(";")[1];
             LatLng coord = new LatLng(Double.parseDouble(lati), Double.parseDouble(longi));
+            LatLng destiCoord= new LatLng(0,0);
             Marker point;
-
+            Marker point2;
 
             switch (s.type) {
-                case "Transport":
-                    point=mMap.addMarker(new MarkerOptions()
-                            .position(coord)
-                            .title("["+s.type+"] "+s.titre)
-                            .draggable(false)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-                    break;
-
                 case "Repas":
                     point=mMap.addMarker(new MarkerOptions()
                             .position(coord)
-                            .title("["+s.type+"] "+s.titre)
+                            .title(parcours+1+"-["+s.type+"] "+s.titre)
                             .draggable(false)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
                     break;
@@ -96,7 +107,7 @@ public class A_jour_Map_view extends FragmentActivity {
                 case "Visite":
                     point=mMap.addMarker(new MarkerOptions()
                             .position(coord)
-                            .title("["+s.type+"] "+s.titre)
+                            .title(parcours+1+"-["+s.type+"] "+s.titre)
                             .draggable(false)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
                     break;
@@ -104,7 +115,7 @@ public class A_jour_Map_view extends FragmentActivity {
                 case "Logement":
                     point=mMap.addMarker(new MarkerOptions()
                             .position(coord)
-                            .title("["+s.type+"] "+s.titre)
+                            .title(parcours+1+"-["+s.type+"] "+s.titre)
                             .draggable(false)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
                     break;
@@ -112,7 +123,7 @@ public class A_jour_Map_view extends FragmentActivity {
                 case "Loisir":
                     point=mMap.addMarker(new MarkerOptions()
                             .position(coord)
-                            .title("["+s.type+"] "+s.titre)
+                            .title(parcours+1+"-["+s.type+"] "+s.titre)
                             .draggable(false)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
                     break;
@@ -120,19 +131,57 @@ public class A_jour_Map_view extends FragmentActivity {
                 case "Libre":
                     point=mMap.addMarker(new MarkerOptions()
                             .position(coord)
-                            .title("["+s.type+"] "+s.titre)
+                            .title(parcours+1+"-["+s.type+"] "+s.titre)
                             .draggable(false)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+                    break;
+
+                case "Transport":
+                    point=mMap.addMarker(new MarkerOptions()
+                            .position(coord)
+                            .title(parcours+1+"-["+s.type+"]From: "+s.titre)
+                            .draggable(false)
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+
+
+                    lati = s.localisation2.split(";")[0];
+                    longi = s.localisation2.split(";")[1];
+                    destiCoord = new LatLng(Double.parseDouble(lati), Double.parseDouble(longi));
+
+                    point2=mMap.addMarker(new MarkerOptions()
+                            .position(destiCoord)
+                            .title(parcours+1+"-["+s.type+"]To: "+s.titre)
+                            .draggable(true)
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+
+                    Polyline line = mMap.addPolyline(new PolylineOptions()
+                            .add(coord, destiCoord)
+                            .width(5)
+                            .color(Color.RED));
+
                     break;
             }
 
 
+            if(parcours!=0)
+            {
+                Polyline line = mMap.addPolyline(new PolylineOptions()
+                        .add(prevCoord, coord)
+                        .width(2)
+                        .color(Color.BLACK));
+            }
+
+            if(s.type.equals("Transport"))
+            {prevCoord=destiCoord;}
+            else
+            {prevCoord=coord;}
 
 
-
-
+            parcours++;
         }
     }
+
+
 
     protected void initialiserMap(String addr)
     {

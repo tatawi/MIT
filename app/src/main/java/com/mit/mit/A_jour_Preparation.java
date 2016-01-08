@@ -131,8 +131,7 @@ public class A_jour_Preparation extends MainActivity {
         {
         }*/
 
-
-        affichage();
+        trierList("Date");
 
     }
 

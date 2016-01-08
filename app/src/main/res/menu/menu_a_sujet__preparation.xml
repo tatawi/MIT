@@ -15,6 +15,12 @@
         android:title="Rafraichir"/>
 
     <item
+        android:id="@+id/menu_sujet_edit"
+        android:icon="@drawable/ic_action_edit"
+        app:showAsAction="never"
+        android:title="Editer"/>
+
+    <item
         android:id="@+id/sujet_home"
         android:icon="@drawable/ic_action_home"
         app:showAsAction="always"
