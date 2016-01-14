@@ -32,9 +32,15 @@ public class C_Sujet {
 
     public String messagesToString;
     public String personnesAyantAccepteToString;
+    public String neParticipentPasToString;
+    public String quiApayeToString;
+    public String combienApayeToString;
 
     public transient List<C_Participant> personnesAyantAccepte;
     public transient List<C_Message> liste_messages;
+    public transient List<C_Participant> liste_neParticipentPas;
+    public transient List<C_Participant> liste_quiApaye;
+    public transient List<Double> liste_combienApaye;
 
 
 //---------------------------------------------------------------------------------------
@@ -67,8 +73,14 @@ public class C_Sujet {
         this.valide=false;
         this.messagesToString="";
         this.personnesAyantAccepteToString="";
+        this.neParticipentPasToString="";
+        this.quiApayeToString="";
+        this.combienApayeToString="";
         this.personnesAyantAccepte = new ArrayList<C_Participant>();
         this.liste_messages= new ArrayList<C_Message>();
+        this.liste_neParticipentPas= new ArrayList<C_Participant>();
+        this.liste_quiApaye= new ArrayList<C_Participant>();
+        this.liste_combienApaye= new ArrayList<Double>();
     }
 
     /**
@@ -86,7 +98,7 @@ public class C_Sujet {
      *@param messagesToString				List of all C_message's id in string format (separated with ";")
      *@param personnesAyantAccepteToString	List of all accepted member's id in string format (separated with ";")
      */
-    public C_Sujet( int id, String idSujet, String titre, String description, String type, String localisation, String localisation2, Date heure, int duree, String auFeeling, double prix, String messagesToString, String personnesAyantAccepteToString, String valide)
+    public C_Sujet( int id, String idSujet, String titre, String description, String type, String localisation, String localisation2, Date heure, int duree, String auFeeling, double prix, String messagesToString, String personnesAyantAccepteToString, String valide, String neParticipentPasToString, String quiApayeToString, String combienApayeToString)
     {
         super();
         boolean v_feel=false;
@@ -111,6 +123,9 @@ public class C_Sujet {
         this.prix=prix;
         this.messagesToString=messagesToString;
         this.personnesAyantAccepteToString=personnesAyantAccepteToString;
+        this.neParticipentPasToString=neParticipentPasToString;
+        this.quiApayeToString=quiApayeToString;
+        this.combienApayeToString=combienApayeToString;
 
         //gestion bool valide
         if (valide.equals("true"))
@@ -140,9 +155,15 @@ public class C_Sujet {
 
         this.messagesToString="";
         this.personnesAyantAccepteToString="";
+        this.neParticipentPasToString="";
+        this.quiApayeToString="";
+        this.combienApayeToString="";
 
         this.personnesAyantAccepte = new ArrayList<C_Participant>();
         this.liste_messages= new ArrayList<C_Message>();
+        this.liste_neParticipentPas= new ArrayList<C_Participant>();
+        this.liste_quiApaye= new ArrayList<C_Participant>();
+        this.liste_combienApaye= new ArrayList<Double>();
     }
 
 //---------------------------------------------------------------------------------------
@@ -221,8 +242,11 @@ public class C_Sujet {
 
     public void creerLesListes(DAO_Message daoMessage, DAO_Participant daoParticipant)
     {
-        liste_messages=new ArrayList<C_Message>();
-        personnesAyantAccepte=new ArrayList<C_Participant>();
+        this.liste_messages=new ArrayList<C_Message>();
+        this.personnesAyantAccepte=new ArrayList<C_Participant>();
+        this.liste_neParticipentPas= new ArrayList<C_Participant>();
+        this.liste_quiApaye= new ArrayList<C_Participant>();
+        this.liste_combienApaye= new ArrayList<Double>();
         String[] parts;
 
         try{
@@ -241,6 +265,32 @@ public class C_Sujet {
                     personnesAyantAccepte.add(daoParticipant.getParticipantById(parts[i]));
                 }
             }
+
+            //ne participent pas
+            if(neParticipentPasToString.length()>1) {
+                parts = this.neParticipentPasToString.split(";");
+                for (int i = 0; i < parts.length; i++) {
+                    liste_neParticipentPas.add(daoParticipant.getParticipantById(parts[i]));
+                }
+            }
+
+            //qui a payé
+            if(quiApayeToString.length()>1) {
+                parts = this.quiApayeToString.split(";");
+                for (int i = 0; i < parts.length; i++) {
+                    liste_quiApaye.add(daoParticipant.getParticipantById(parts[i]));
+                }
+            }
+
+            //combien a payé
+            if(combienApayeToString.length()>1) {
+                parts = this.combienApayeToString.split(";");
+                for (int i = 0; i < parts.length; i++) {
+                    liste_combienApaye.add(Double.parseDouble(parts[i]));
+                }
+            }
+
+
         }
         catch(Exception ex)
         {

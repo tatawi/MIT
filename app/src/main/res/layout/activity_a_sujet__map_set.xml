@@ -8,18 +8,37 @@
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true">
 
+
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/sujet_map_ll_adreses">
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/sujet_map_set_btn_change"
+                android:src="@drawable/ic_map_change"
+                android:background="@null"
+                android:text="Change"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="10dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Choisir un lieu"
             android:textColor="#ac035d"/>
+
+
+
+            </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -57,39 +76,86 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="10dp" />
 
+        <Button
+            android:paddingTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Valider"
+            android:id="@+id/sujet_map_set_btn_OK"
+            android:layout_gravity="center_horizontal" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2px"
+            android:background="#ac035d"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp" />
+
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/scrollView2"
+    <ViewSwitcher
+        android:id="@+id/sujet_map_viewSwitcher1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/newsujet_linearlayout_up"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" >
+        android:layout_alignParentTop="true"
+        android:inAnimation="@android:anim/slide_in_left" >
 
         <LinearLayout
-            android:id="@+id/newsujet_linearlayout_global"
+            android:id="@+id/sujet_map_ll_viewMap"
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="300dp"
             android:paddingRight="10dp">
 
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="350dp" android:id="@+id/map"
-    tools:context="com.mit.mit.A_sujet_Map_set"
-    android:name="com.google.android.gms.maps.SupportMapFragment" />
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+            android:layout_height="400dp" android:id="@+id/map"
+            tools:context="com.mit.mit.A_sujet_Map_set"
+            android:name="com.google.android.gms.maps.SupportMapFragment" />
 
-    <Button
-        android:paddingTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Valider"
-        android:id="@+id/sujet_map_set_btn_OK"
-        android:layout_gravity="center_horizontal" />
+
+
+
+
+    </LinearLayout>
+
+
+     <LinearLayout
+         android:id="@+id/sujet_map_ll_viewSujets"
+         android:orientation="vertical"
+         android:layout_width="fill_parent"
+         android:layout_height="300dp"
+         android:paddingRight="10dp">
+
+        <ScrollView
+            android:id="@+id/scrollView2"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/newsujet_linearlayout_up"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" >
+
+            <LinearLayout
+                android:id="@+id/newsujet_linearlayout_global"
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="300dp"
+                android:paddingRight="10dp">
+
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="2px"
+                    android:background="#ac035d"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp" />
 
             </LinearLayout>
 
-    </ScrollView>
+        </ScrollView>
+     </LinearLayout>
+
+    </ViewSwitcher>
 
 </LinearLayout>

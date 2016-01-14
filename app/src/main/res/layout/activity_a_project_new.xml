@@ -85,7 +85,7 @@
                     <EditText
                         android:id="@+id/newProject_tb_debut"
                         android:hint="select date ->"
-                        android:layout_width="200dp"
+                        android:layout_width="195dp"
                         android:layout_height="wrap_content"
                         android:ems="10"
 
@@ -127,7 +127,7 @@
                         android:id="@+id/newProject_tb_fin"
                         android:hint="select date ->"
                         android:inputType="text"
-                        android:layout_width="200dp"
+                        android:layout_width="195dp"
                         android:layout_height="wrap_content"
                         android:ems="10"
 
@@ -233,6 +233,7 @@
                     android:layout_column="0"
                     android:paddingTop="10dp"
                     />
+
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
@@ -243,7 +244,7 @@
                     <EditText
                         android:id="@+id/newProject_tb_participants"
                         android:hint="adresse mail"
-                        android:layout_width="200dp"
+                        android:layout_width="195dp"
                         android:layout_height="wrap_content"
                         android:ems="10"
 

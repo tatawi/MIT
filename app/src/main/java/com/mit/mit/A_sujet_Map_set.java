@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -35,11 +36,17 @@ import java.util.List;
 public class A_sujet_Map_set extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private ViewSwitcher viewSwitcher;
+    private View mySecondView;
+    private View myFirstView;
+
     private ImageButton btn_marker;
+    private ImageButton btn_change;
     private EditText tb_adresse;
     private Button btn_ok;
     private LinearLayout ll_adresses;
-    EditText tb_addr;
+    private LinearLayout ll_global;
+    private EditText tb_addr;
 
     private Marker point1;
     private Marker point2;
@@ -60,7 +67,7 @@ public class A_sujet_Map_set extends FragmentActivity {
     private LatLng coordMap;
 
 
-
+//sujet_map_ll_viewSujetss
 
 
     @Override
@@ -76,8 +83,11 @@ public class A_sujet_Map_set extends FragmentActivity {
 
         tb_adresse = (EditText) findViewById(R.id.sujet_map_set_tb_adress);
         btn_marker = (ImageButton) findViewById(R.id.sujet_map_set_btn_search);
+        btn_change=(ImageButton) findViewById(R.id.sujet_map_set_btn_change);
         btn_ok = (Button) findViewById(R.id.sujet_map_set_btn_OK);
         ll_adresses= (LinearLayout) findViewById(R.id.sujet_map_ll_adreses);
+        ll_global=(LinearLayout) findViewById(R.id.newsujet_linearlayout_global);
+
 
         btn_marker.setOnClickListener(onSearchAdress);
         btn_ok.setOnClickListener(onClickbtnOk);
@@ -94,6 +104,12 @@ public class A_sujet_Map_set extends FragmentActivity {
                 point1=mMap.addMarker(markerOptions);
             }
         });
+
+        viewSwitcher =   (ViewSwitcher)findViewById(R.id.sujet_map_viewSwitcher1);
+        myFirstView= findViewById(R.id.sujet_map_ll_viewMap);
+        mySecondView = findViewById(R.id.sujet_map_ll_viewSujets);
+        btn_change.setOnClickListener(onBtnChange);
+
 
         //récupérations
         this.options=daoOptions.getOptionByUserId();
@@ -121,6 +137,111 @@ public class A_sujet_Map_set extends FragmentActivity {
 
             ll_adresses.addView(llAdd);
         }
+
+
+        //ajout layout autres sujets
+        for(C_Sujet s: this.jour.liste_sujets)
+        {
+            if(s.localisation.length()>2) {
+                //panel button
+                LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                //layout global du sujet
+                LinearLayout LLsujet = new LinearLayout(this);
+                LLsujet.setOrientation(LinearLayout.HORIZONTAL);
+                LLsujet.setLayoutParams(LLParams);
+                LLsujet.setId(s.id);
+                LLsujet.setOnClickListener(onClickLayout);
+
+                //layout sujet du haut
+                LinearLayout LLsujetUP = new LinearLayout(this);
+                LLsujetUP.setOrientation(LinearLayout.VERTICAL);
+                LLsujetUP.setLayoutParams(LLParams);
+                LLsujetUP.setId(s.id);
+                LLsujetUP.setOnClickListener(onClickLayout);
+
+
+                //type (haut)
+                TextView titreDescription = new TextView(this);
+                titreDescription.setText("[" + s.type + "]");
+
+                //titre sujet (bas)
+                TextView titreSujet = new TextView(this);
+                titreSujet.setText(s.titre);
+
+                //image
+                ImageButton img = new ImageButton(this);
+                img.setId(s.id);
+                img.setOnClickListener(onClickSubjectImg);
+                img.setBackgroundColor(Color.TRANSPARENT);
+
+
+                switch (s.type) {
+                    case "Transport":
+                        if (s.valide)
+                            img.setImageResource(R.drawable.ic_jour_transports_fill);
+                        else
+                            img.setImageResource(R.drawable.ic_jour_transports);
+                        titreSujet.setTextColor(Color.parseColor("#e74c3c"));
+                        titreDescription.setTextColor(Color.parseColor("#e74c3c"));
+                        break;
+
+                    case "Repas":
+                        if (s.valide)
+                            img.setImageResource(R.drawable.ic_jour_repas_fill);
+                        else
+                            img.setImageResource(R.drawable.ic_jour_repas);
+                        titreSujet.setTextColor(Color.parseColor("#2980b9"));
+                        titreDescription.setTextColor(Color.parseColor("#2980b9"));
+                        break;
+
+                    case "Visite":
+                        if (s.valide)
+                            img.setImageResource(R.drawable.ic_jour_visite_fill);
+                        else
+                            img.setImageResource(R.drawable.ic_jour_visite);
+                        titreSujet.setTextColor(Color.parseColor("#16a085"));
+                        titreDescription.setTextColor(Color.parseColor("#16a085"));
+                        break;
+
+                    case "Logement":
+                        if (s.valide)
+                            img.setImageResource(R.drawable.ic_jour_logement_fill);
+                        else
+                            img.setImageResource(R.drawable.ic_jour_logement);
+                        titreSujet.setTextColor(Color.parseColor("#f39c12"));
+                        titreDescription.setTextColor(Color.parseColor("#f39c12"));
+                        break;
+
+                    case "Loisir":
+                        if (s.valide)
+                            img.setImageResource(R.drawable.ic_jour_loisir_fill);
+                        else
+                            img.setImageResource(R.drawable.ic_jour_loisir);
+                        titreSujet.setTextColor(Color.parseColor("#9b59b6"));
+                        titreDescription.setTextColor(Color.parseColor("#9b59b6"));
+                        break;
+
+                    case "Libre":
+                        if (s.valide)
+                            img.setImageResource(R.drawable.ic_jour_libre_fill);
+                        else
+                            img.setImageResource(R.drawable.ic_jour_libre);
+                        titreSujet.setTextColor(Color.parseColor("#5b5b5b"));
+                        titreDescription.setTextColor(Color.parseColor("#5b5b5b"));
+                        break;
+                }
+
+                LLsujetUP.addView(titreDescription);
+                LLsujetUP.addView(titreSujet);
+
+                LLsujet.addView(img);
+                LLsujet.addView(LLsujetUP);
+
+                ll_global.addView(LLsujet);
+            }
+        }
+
 
         if(options.online)
         {
@@ -219,8 +340,55 @@ public class A_sujet_Map_set extends FragmentActivity {
             }
 
         }
+        }
+    };
 
 
+    //On change view
+    View.OnClickListener onBtnChange = new View.OnClickListener() {
+        public void onClick(View v)
+        {
+
+            if (viewSwitcher.getCurrentView() != myFirstView) {
+
+                viewSwitcher.showPrevious();
+            } else if (viewSwitcher.getCurrentView() != mySecondView) {
+
+                viewSwitcher.showNext();
+            }
+        }
+    };
+
+
+
+
+    //layout sujet - layout
+    View.OnClickListener onClickLayout = new View.OnClickListener() {
+        public void onClick(View v) {
+            LinearLayout selectedLL = (LinearLayout) v;
+
+            for (C_Sujet s:jour.liste_sujets)
+            {
+                if(s.id==selectedLL.getId())
+                {
+                    setpointFromSubject(s);
+                }
+            }
+        }
+    };
+
+    //layout sujet - img
+    View.OnClickListener onClickSubjectImg = new View.OnClickListener() {
+        public void onClick(View v) {
+            ImageButton selectedLL = (ImageButton) v;
+
+            for (C_Sujet s:jour.liste_sujets)
+            {
+                if(s.id==selectedLL.getId())
+                {
+                    setpointFromSubject(s);
+                }
+            }
         }
     };
 
@@ -302,6 +470,8 @@ public class A_sujet_Map_set extends FragmentActivity {
         {System.out.println("Error : "+ ex.getMessage());}
     }
 
+
+    //déplace la caméra sur la position en param
     protected void moveToCurrentLocation(LatLng currentLocation)
     {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
@@ -328,7 +498,7 @@ public class A_sujet_Map_set extends FragmentActivity {
         return new LatLng(lati, longi);
     }
 
-
+    //positionne le marqueur de l'adresse sur la carte
     protected void setMarkerToAdress(String adresse )
     {
         double lati=0;
@@ -360,6 +530,8 @@ public class A_sujet_Map_set extends FragmentActivity {
         }
     }
 
+
+    //positionne les marqueurs des adresses sur la carte
     protected  void setMarkersToAdress(String adresse, String destination)
     {
         double lati=0;
@@ -409,6 +581,32 @@ public class A_sujet_Map_set extends FragmentActivity {
         catch (IOException ex)
         {
             System.out.println("Error : "+ ex.getMessage());
+        }
+    }
+
+    //met le marker du sujet sur la carte
+    private void setpointFromSubject(C_Sujet s)
+    {
+        mMap.clear();
+        String lati = s.localisation.split(";")[0];
+        String longi = s.localisation.split(";")[1];
+        coord = new LatLng(Double.parseDouble(lati), Double.parseDouble(longi));
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(coord));
+        point1=mMap.addMarker(new MarkerOptions()
+                .position(coord)
+                .title(s.titre)
+                .draggable(true)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        moveToCurrentLocation(coord);
+
+        if (s.type.equals("Transport"))
+        {
+            point1=mMap.addMarker(new MarkerOptions()
+                    .position(coord)
+                    .title(s.titre)
+                    .draggable(true)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
         }
     }
 
