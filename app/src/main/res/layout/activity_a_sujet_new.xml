@@ -513,6 +513,22 @@
                 android:background="#ac035d" />
 
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:id="@+id/newsujet_ll_participants">
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2px"
+                android:background="#ac035d" />
+
+
 
             <ImageButton
                 android:id="@+id/newsujet_btn_addSujet"

@@ -223,7 +223,6 @@ public class A_project_new extends MainActivity {
     View.OnClickListener onAddUser = new View.OnClickListener() {
         public void onClick(View v)
         {
-
             try
             {   C_Participant partToAdd = daoparticipant.getParticipantById(tb_participant.getText().toString());
                 v_liste_participantsProjet.add(partToAdd);

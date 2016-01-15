@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -18,15 +19,19 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class A_sujet_new extends MainActivity {
 
 
     //objets de la page
+    private LinearLayout ll_participants;
     private EditText tb_titre;
     private EditText tb_description;
     private TextView lb_type;
@@ -58,9 +63,11 @@ public class A_sujet_new extends MainActivity {
 
     //variables
     private C_Options options;
+    private C_Projet projet;
     private C_Jour day;
     private C_Sujet sujet;
     private C_Participant partAcutel;
+    private List<C_Participant>list_participants;
 
     private SimpleDateFormat sdf;
     private String userID;
@@ -77,6 +84,7 @@ public class A_sujet_new extends MainActivity {
         System.out.println("**A_sujet_New : Création d'un nouveau sujet");
 
         //initialisation objet page
+        ll_participants = (LinearLayout) findViewById(R.id.newsujet_ll_participants);
         tb_titre = (EditText) findViewById(R.id.newsujet_tb_sujet);
         tb_description = (EditText) findViewById(R.id.newsujet_tb_description);
         lb_type = (TextView) findViewById(R.id.newsujet_lb_type);
@@ -111,8 +119,6 @@ public class A_sujet_new extends MainActivity {
 
 
 
-
-
         //listeners
         btn_logement.setOnClickListener(onClickButtonLogement);
         btn_repas.setOnClickListener(onClickButtonRepas);
@@ -134,13 +140,22 @@ public class A_sujet_new extends MainActivity {
         //variables
         sujet =new C_Sujet();
         sujet.prix=0;
+        list_participants=new ArrayList<C_Participant>();
 
         //récupération du jour
         this.options=daoOptions.getOptionByUserId();
+        System.out.println("IS ONLINE1 ="+options.online);
         this.partAcutel=daoparticipant.getParticipantById(options.userid);
         this.day=daoJour.getJourById(options.jourid);
-
         this.day.creerLesListes(daoSujet);
+
+        this.projet=daoProjet.getProjetByName(options.projetid);
+        this.projet.creerLesListes(daoJour, daoparticipant);
+
+        //copie list
+        for (C_Participant p : this.projet.liste_participants)
+        {list_participants.add(p);}
+
         System.out.println("--user : " + userID);
         System.out.println("--jour : " + this.day.nomJour);
 
@@ -219,25 +234,53 @@ public class A_sujet_new extends MainActivity {
 
                             break;
                     }
-
-
                     sujet.personnesAyantAccepte.clear();
-
-
-
-
                 }
                 catch (Exception ex)
                 {
                     System.out.println("[ERROR]A_sujet_new : while editing : "+ex.getMessage());
                 }
-
-
-
             }
+        } //END EDIT
+        System.out.println("IS ONLINE2 ="+options.online);
 
+
+        //gestion participants
+        LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        for (C_Participant p : projet.liste_participants) {
+
+            LinearLayout LL = new LinearLayout(this);
+            LL.setOrientation(LinearLayout.HORIZONTAL);
+            LL.setLayoutParams(LLParams);
+
+            LinearLayout LLtxt = new LinearLayout(this);
+            LLtxt.setOrientation(LinearLayout.VERTICAL);
+            LLtxt.setLayoutParams(LLParams);
+
+            ImageButton img_participate = new ImageButton(this);
+            img_participate.setImageResource(R.drawable.ic_participate_fill);
+            img_participate.setBackgroundColor(Color.TRANSPARENT);
+            img_participate.setId(p.id);
+            img_participate.setOnClickListener(onClickbtnParticipate);
+
+            TextView txt_nom = new TextView(this);
+            txt_nom.setText(p.prenom + " " + p.nom);
+            txt_nom.setTextColor(Color.parseColor("#ac035d"));
+
+            TextView txt_mail = new TextView(this);
+            txt_mail.setText("@: "+p.mail);
+
+            LLtxt.addView(txt_nom);
+            LLtxt.addView(txt_mail);
+
+            LL.addView(img_participate);
+            LL.addView(LLtxt);
+
+            ll_participants.addView(LL);
 
         }
+        System.out.println("IS ONLINE3 ="+options.online);
 
 
 
@@ -259,7 +302,7 @@ public class A_sujet_new extends MainActivity {
         public void onClick(View v) {
             int hour;
             int min;
-
+            System.out.println("IS ONLINE4 ="+options.online);
             //ini valeurs base
             sujet.titre="pas de titre";
 
@@ -273,6 +316,8 @@ public class A_sujet_new extends MainActivity {
             sujet.auFeeling=false;
             sujet.valide=false;
             sujet.personnesAyantAccepte.add(partAcutel);
+            sujet.liste_participent=list_participants;
+
 
             //set heure
             try {
@@ -297,9 +342,10 @@ public class A_sujet_new extends MainActivity {
             }
 
 
-
+            System.out.println("IS ONLINE5 ="+options.online);
             //save sujet
             sujet.listeToString();
+            System.out.println("IS ONLINE6 =" + options.online);
             daoSujet.ajouterOUmodifier(sujet, options.online);
 
             //maj jour
@@ -518,6 +564,43 @@ public class A_sujet_new extends MainActivity {
                 }
             }
             lb_prix.setText(""+sujet.prix+" €");
+        }
+    };
+
+
+    //select btn participants
+    View.OnClickListener onClickbtnParticipate = new View.OnClickListener() {
+        public void onClick(View v) {
+            ImageButton selectedBtn = (ImageButton) v;
+            System.out.println("in : " + projet.liste_participants.size());
+            try {
+                for (C_Participant p : projet.liste_participants) {
+                    if (p.id == selectedBtn.getId()) {
+                        System.out.println(p.id + " vs " + selectedBtn.getId());
+                        System.out.println("found");
+                        if (list_participants.contains(p)) {
+                            System.out.println("contains=remove");
+                            selectedBtn.setImageResource(R.drawable.ic_participate);
+                            list_participants.remove(p);
+                            System.out.println("Removed : " + p.mail);
+                        } else {
+                            System.out.println("not contains=add");
+                            selectedBtn.setImageResource(R.drawable.ic_participate_fill);
+                            list_participants.add(p);
+                            System.out.println("add : " + p.mail);
+                        }
+
+                        for (C_Participant part : list_participants) {
+                            System.out.println("list : " + part.mail);
+                        }
+
+
+                    }
+                }
+
+            } catch (Exception ex) {
+                System.out.println("ERROR "+ex.getMessage());
+            }
         }
     };
 

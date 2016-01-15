@@ -32,13 +32,13 @@ public class C_Sujet {
 
     public String messagesToString;
     public String personnesAyantAccepteToString;
-    public String neParticipentPasToString;
+    public String participentToString;
     public String quiApayeToString;
     public String combienApayeToString;
 
     public transient List<C_Participant> personnesAyantAccepte;
     public transient List<C_Message> liste_messages;
-    public transient List<C_Participant> liste_neParticipentPas;
+    public transient List<C_Participant> liste_participent;
     public transient List<C_Participant> liste_quiApaye;
     public transient List<Double> liste_combienApaye;
 
@@ -73,12 +73,12 @@ public class C_Sujet {
         this.valide=false;
         this.messagesToString="";
         this.personnesAyantAccepteToString="";
-        this.neParticipentPasToString="";
+        this.participentToString="";
         this.quiApayeToString="";
         this.combienApayeToString="";
         this.personnesAyantAccepte = new ArrayList<C_Participant>();
         this.liste_messages= new ArrayList<C_Message>();
-        this.liste_neParticipentPas= new ArrayList<C_Participant>();
+        this.liste_participent= new ArrayList<C_Participant>();
         this.liste_quiApaye= new ArrayList<C_Participant>();
         this.liste_combienApaye= new ArrayList<Double>();
     }
@@ -123,7 +123,7 @@ public class C_Sujet {
         this.prix=prix;
         this.messagesToString=messagesToString;
         this.personnesAyantAccepteToString=personnesAyantAccepteToString;
-        this.neParticipentPasToString=neParticipentPasToString;
+        this.participentToString=neParticipentPasToString;
         this.quiApayeToString=quiApayeToString;
         this.combienApayeToString=combienApayeToString;
 
@@ -155,13 +155,13 @@ public class C_Sujet {
 
         this.messagesToString="";
         this.personnesAyantAccepteToString="";
-        this.neParticipentPasToString="";
+        this.participentToString="";
         this.quiApayeToString="";
         this.combienApayeToString="";
 
         this.personnesAyantAccepte = new ArrayList<C_Participant>();
         this.liste_messages= new ArrayList<C_Message>();
-        this.liste_neParticipentPas= new ArrayList<C_Participant>();
+        this.liste_participent= new ArrayList<C_Participant>();
         this.liste_quiApaye= new ArrayList<C_Participant>();
         this.liste_combienApaye= new ArrayList<Double>();
     }
@@ -244,7 +244,7 @@ public class C_Sujet {
     {
         this.liste_messages=new ArrayList<C_Message>();
         this.personnesAyantAccepte=new ArrayList<C_Participant>();
-        this.liste_neParticipentPas= new ArrayList<C_Participant>();
+        this.liste_participent= new ArrayList<C_Participant>();
         this.liste_quiApaye= new ArrayList<C_Participant>();
         this.liste_combienApaye= new ArrayList<Double>();
         String[] parts;
@@ -267,10 +267,10 @@ public class C_Sujet {
             }
 
             //ne participent pas
-            if(neParticipentPasToString.length()>1) {
-                parts = this.neParticipentPasToString.split(";");
+            if(participentToString.length()>1) {
+                parts = this.participentToString.split(";");
                 for (int i = 0; i < parts.length; i++) {
-                    liste_neParticipentPas.add(daoParticipant.getParticipantById(parts[i]));
+                    liste_participent.add(daoParticipant.getParticipantById(parts[i]));
                 }
             }
 
@@ -334,6 +334,39 @@ public class C_Sujet {
                 }
             }
         }
+
+        if(!liste_participent.isEmpty()) {
+            for (C_Participant p : this.liste_participent) {
+                if (participentToString == "") {
+                    participentToString = p.mail;
+                } else {
+                    participentToString = participentToString + ";" + p.mail;
+                }
+            }
+        }
+
+        if(!liste_quiApaye.isEmpty()) {
+            for (C_Participant p : this.liste_quiApaye) {
+                if (quiApayeToString == "") {
+                    quiApayeToString = p.mail;
+                } else {
+                    quiApayeToString = quiApayeToString + ";" + p.mail;
+                }
+            }
+        }
+
+        if(!liste_combienApaye.isEmpty()) {
+            for (Double p : this.liste_combienApaye) {
+                if (combienApayeToString == "") {
+                    combienApayeToString = p.toString();
+                } else {
+                    combienApayeToString = combienApayeToString + ";" + p.toString();
+                }
+            }
+        }
+
+
+
     }
 
 

@@ -242,7 +242,7 @@ public class A_sujet_Map_set extends FragmentActivity {
             }
         }
 
-
+        System.out.println("online map : "+options.online);
         if(options.online)
         {
             if(this.jour.ville.length()>2)

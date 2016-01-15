@@ -78,6 +78,7 @@ public class A_jour_Preparation extends MainActivity {
 
         //initialisations
         this.options=daoOptions.getOptionByUserId();
+        System.out.println("IS ONLINE ="+options.online);
         this.part=daoparticipant.getParticipantById(options.userid);
         this.day=daoJour.getJourById(options.jourid);
 

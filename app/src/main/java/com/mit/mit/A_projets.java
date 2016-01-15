@@ -52,6 +52,7 @@ public class A_projets extends MainActivity {
 
         //récupération de l'utilisateur
         options=daoOptions.getOptionByUserId();
+        System.out.println("IS ONLINE ="+options.online);
 
         System.out.println("----user : " + options.userid);
         System.out.println("----online : "+options.online);

@@ -60,6 +60,7 @@ public class A_projet_Preparation extends MainActivity {
 
         //récupération du projet
         this.options=daoOptions.getOptionByUserId();
+        System.out.println("IS ONLINE ="+options.online);
         this.part=daoparticipant.getParticipantById(options.userid);
         this.projet=daoProjet.getProjetByName(options.projetid);
 

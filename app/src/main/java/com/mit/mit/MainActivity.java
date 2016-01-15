@@ -255,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
                         sujet.messagesToString = parse.getString("messagesToString");
                         sujet.personnesAyantAccepteToString = parse.getString("personnesAyantAccepteToString");
                         sujet.auFeeling = parse.getBoolean("auFeeling");
-                        sujet.neParticipentPasToString= parse.getString("personnesNeParticipantPas");
+                        sujet.participentToString= parse.getString("personnesParticipant");
                         sujet.quiApayeToString= parse.getString("personnesAyantPaye");
                         sujet.combienApayeToString= parse.getString("montantPaye");
 

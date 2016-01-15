@@ -39,7 +39,7 @@ public class DAO_Sujet extends DAO_Bdd {
     public static final String ATTR_VALIDE = "valide";
     public static final String ATTR_MESSAGES = "messages";
     public static final String ATTR_PERSONNESOK = "personnesAyantAccepte";
-    public static final String ATTR_PARTICIPENTPAS = "personnesNeParticipantPas";
+    public static final String ATTR_PARTICIPENT = "personnesParticipant";
     public static final String ATTR_QUIAPAYE = "personnesAyantPaye";
     public static final String ATTR_COMBIENAPAYE = "montantPaye";
 
@@ -62,7 +62,7 @@ public class DAO_Sujet extends DAO_Bdd {
                     + ATTR_VALIDE + " TEXT, "
                     + ATTR_MESSAGES + " TEXT, "
                     + ATTR_PERSONNESOK + " TEXT, "
-                    + ATTR_PARTICIPENTPAS + " TEXT, "
+                    + ATTR_PARTICIPENT + " TEXT, "
                     + ATTR_QUIAPAYE + " TEXT, "
                     + ATTR_COMBIENAPAYE + " TEXT);";
     public static final String TABLE_DROP = "DROP TABLE IF EXISTS " + TABLE + ";";
@@ -84,6 +84,8 @@ public class DAO_Sujet extends DAO_Bdd {
      */
     public void ajouter(C_Sujet s, boolean SaveOnline)
     {
+        System.out.println("SAVE online = "+SaveOnline);
+
         //LOCAL
         this.open();
         String valide ="false";
@@ -106,7 +108,7 @@ public class DAO_Sujet extends DAO_Bdd {
         value.put(ATTR_MESSAGES, s.messagesToString);
         value.put(ATTR_PERSONNESOK, s.personnesAyantAccepteToString);
         value.put(ATTR_VALIDE, valide);
-        value.put(ATTR_PARTICIPENTPAS, s.neParticipentPasToString);
+        value.put(ATTR_PARTICIPENT, s.participentToString);
         value.put(ATTR_QUIAPAYE, s.quiApayeToString);
         value.put(ATTR_COMBIENAPAYE, s.combienApayeToString);
 
@@ -130,7 +132,7 @@ public class DAO_Sujet extends DAO_Bdd {
             Sujet.put("messagesToString", s.messagesToString);
             Sujet.put("personnesAyantAccepteToString", s.personnesAyantAccepteToString);
             Sujet.put("valide", valide);
-            Sujet.put("personnesNeParticipantPas", s.neParticipentPasToString);
+            Sujet.put("personnesParticipant", s.participentToString);
             Sujet.put("personnesAyantPaye", s.quiApayeToString);
             Sujet.put("montantPaye", s.combienApayeToString);
             Sujet.saveInBackground();
@@ -189,7 +191,7 @@ public class DAO_Sujet extends DAO_Bdd {
         if (dao_s != null) {
             this.modifier(s, SaveOnline);
         } else {
-            this.ajouter(s, false);
+            this.ajouter(s, SaveOnline);
         }
     }
 
@@ -220,7 +222,7 @@ public class DAO_Sujet extends DAO_Bdd {
         value.put(ATTR_MESSAGES, s.messagesToString);
         value.put(ATTR_PERSONNESOK, s.personnesAyantAccepteToString);
         value.put(ATTR_VALIDE, valide);
-        value.put(ATTR_PARTICIPENTPAS, s.neParticipentPasToString);
+        value.put(ATTR_PARTICIPENT, s.participentToString);
         value.put(ATTR_QUIAPAYE, s.quiApayeToString);
         value.put(ATTR_COMBIENAPAYE, s.combienApayeToString);
 
@@ -254,7 +256,7 @@ public class DAO_Sujet extends DAO_Bdd {
                         Sujet.put("prix", st.prix);
                         Sujet.put("messagesToString", st.messagesToString);
                         Sujet.put("personnesAyantAccepteToString", st.personnesAyantAccepteToString);
-                        Sujet.put("personnesNeParticipantPas", st.neParticipentPasToString);
+                        Sujet.put("personnesParticipant", st.participentToString);
                         Sujet.put("personnesAyantPaye", st.quiApayeToString);
                         Sujet.put("montantPaye", st.combienApayeToString);
                         if (st.valide) {
@@ -284,7 +286,7 @@ public class DAO_Sujet extends DAO_Bdd {
         Cursor cursor = bdd.query(
                 TABLE,
                 new String[] { ATTR_ID, ATTR_IDSUJET, ATTR_TITRE, ATTR_DESCRIPTION, ATTR_TYPE, ATTR_LOC, ATTR_LOC2, ATTR_HEURE, ATTR_DUREE,
-                        ATTR_FEELLING, ATTR_PRIX, ATTR_MESSAGES, ATTR_PERSONNESOK, ATTR_VALIDE, ATTR_PARTICIPENTPAS, ATTR_QUIAPAYE, ATTR_COMBIENAPAYE},
+                        ATTR_FEELLING, ATTR_PRIX, ATTR_MESSAGES, ATTR_PERSONNESOK, ATTR_VALIDE, ATTR_PARTICIPENT, ATTR_QUIAPAYE, ATTR_COMBIENAPAYE},
                 null,
                 null,
                 null,
@@ -318,7 +320,7 @@ public class DAO_Sujet extends DAO_Bdd {
                             cursor.getString(cursor.getColumnIndex(ATTR_MESSAGES)),
                             cursor.getString(cursor.getColumnIndex(ATTR_PERSONNESOK)),
                             cursor.getString(cursor.getColumnIndex(ATTR_VALIDE)),
-                            cursor.getString(cursor.getColumnIndex(ATTR_PARTICIPENTPAS)),
+                            cursor.getString(cursor.getColumnIndex(ATTR_PARTICIPENT)),
                             cursor.getString(cursor.getColumnIndex(ATTR_QUIAPAYE)),
                             cursor.getString(cursor.getColumnIndex(ATTR_COMBIENAPAYE))
                     )
@@ -343,7 +345,7 @@ public class DAO_Sujet extends DAO_Bdd {
         Cursor cursor = bdd.query(
                 TABLE,
                 new String[] { ATTR_ID, ATTR_IDSUJET, ATTR_TITRE, ATTR_DESCRIPTION, ATTR_TYPE, ATTR_LOC, ATTR_LOC2, ATTR_HEURE, ATTR_DUREE,
-                        ATTR_FEELLING, ATTR_PRIX, ATTR_MESSAGES, ATTR_PERSONNESOK, ATTR_VALIDE, ATTR_PARTICIPENTPAS, ATTR_QUIAPAYE, ATTR_COMBIENAPAYE},
+                        ATTR_FEELLING, ATTR_PRIX, ATTR_MESSAGES, ATTR_PERSONNESOK, ATTR_VALIDE, ATTR_PARTICIPENT, ATTR_QUIAPAYE, ATTR_COMBIENAPAYE},
                 ATTR_IDSUJET + " = ?",
                 new String[] { id },
                 null,
@@ -378,7 +380,7 @@ public class DAO_Sujet extends DAO_Bdd {
                     cursor.getString(cursor.getColumnIndex(ATTR_MESSAGES)),
                     cursor.getString(cursor.getColumnIndex(ATTR_PERSONNESOK)),
                     cursor.getString(cursor.getColumnIndex(ATTR_VALIDE)),
-                    cursor.getString(cursor.getColumnIndex(ATTR_PARTICIPENTPAS)),
+                    cursor.getString(cursor.getColumnIndex(ATTR_PARTICIPENT)),
                     cursor.getString(cursor.getColumnIndex(ATTR_QUIAPAYE)),
                     cursor.getString(cursor.getColumnIndex(ATTR_COMBIENAPAYE))
             );
