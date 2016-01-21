@@ -50,6 +50,8 @@ public class A_sujet_Map_set extends FragmentActivity {
 
     private Marker point1;
     private Marker point2;
+    private MarkerOptions markerPoint1;
+    private MarkerOptions markerPoint2;
 
     private Context context;
     private DAO_Sujet daoSujet;
@@ -76,23 +78,35 @@ public class A_sujet_Map_set extends FragmentActivity {
         setContentView(R.layout.activity_a_sujet__map_set);
         setUpMapIfNeeded();
 
+        //récupérations
         context=this.getApplicationContext();
         daoSujet = new DAO_Sujet(context);
         daoOptions = new DAO_Options(context);
         daoJour = new DAO_Jour(context);
 
+        this.options=daoOptions.getOptionByUserId();
+        this.sujet=daoSujet.getSujetById(options.sujetid);
+        this.jour=daoJour.getJourById(options.jourid);
+        this.jour.creerLesListes(daoSujet);
+
+        //objets page
         tb_adresse = (EditText) findViewById(R.id.sujet_map_set_tb_adress);
         btn_marker = (ImageButton) findViewById(R.id.sujet_map_set_btn_search);
         btn_change=(ImageButton) findViewById(R.id.sujet_map_set_btn_change);
         btn_ok = (Button) findViewById(R.id.sujet_map_set_btn_OK);
         ll_adresses= (LinearLayout) findViewById(R.id.sujet_map_ll_adreses);
         ll_global=(LinearLayout) findViewById(R.id.newsujet_linearlayout_global);
+        viewSwitcher =   (ViewSwitcher)findViewById(R.id.sujet_map_viewSwitcher1);
+        myFirstView= findViewById(R.id.sujet_map_ll_viewMap);
+        mySecondView = findViewById(R.id.sujet_map_ll_viewSujets);
 
-
+        //listeners
         btn_marker.setOnClickListener(onSearchAdress);
         btn_ok.setOnClickListener(onClickbtnOk);
-        // Setting a click event handler for the map
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+        mMap.setOnMapClickListener(onClickMap);
+        mMap.setOnMapLongClickListener(onLongClickMap);
+
+        /*mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
                 MarkerOptions markerOptions = new MarkerOptions();
@@ -103,26 +117,20 @@ public class A_sujet_Map_set extends FragmentActivity {
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                 point1=mMap.addMarker(markerOptions);
             }
-        });
-
-        viewSwitcher =   (ViewSwitcher)findViewById(R.id.sujet_map_viewSwitcher1);
-        myFirstView= findViewById(R.id.sujet_map_ll_viewMap);
-        mySecondView = findViewById(R.id.sujet_map_ll_viewSujets);
-        btn_change.setOnClickListener(onBtnChange);
+        });*/
 
 
-        //récupérations
-        this.options=daoOptions.getOptionByUserId();
-        this.sujet=daoSujet.getSujetById(options.sujetid);
-        this.jour=daoJour.getJourById(options.jourid);
-        this.jour.creerLesListes(daoSujet);
 
         System.out.println("****" + sujet.idSujet);
         System.out.println("timeMap : "+sujet.heure.toString());
 
-        //ajout champs if transport
+        //-----------------------------------------------------------------------
+        //TRANSPORT
         if(sujet.type.equals("Transport"))
         {
+            //on long click
+            btn_change.setOnClickListener(onBtnChange);
+
             LinearLayout llAdd= new LinearLayout(this);
             llAdd.setOrientation(LinearLayout.HORIZONTAL);
             LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -138,11 +146,12 @@ public class A_sujet_Map_set extends FragmentActivity {
             ll_adresses.addView(llAdd);
         }
 
-
-        //ajout layout autres sujets
+        //---------------------------------------------------------------------
+        //ADD SUBJECTS ON VIEW
         for(C_Sujet s: this.jour.liste_sujets)
         {
-            if(s.localisation.length()>2) {
+            //if subject had a location
+            if(!s.localisation.equals("loc")) {
                 //panel button
                 LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -160,7 +169,6 @@ public class A_sujet_Map_set extends FragmentActivity {
                 LLsujetUP.setId(s.id);
                 LLsujetUP.setOnClickListener(onClickLayout);
 
-
                 //type (haut)
                 TextView titreDescription = new TextView(this);
                 titreDescription.setText("[" + s.type + "]");
@@ -174,7 +182,6 @@ public class A_sujet_Map_set extends FragmentActivity {
                 img.setId(s.id);
                 img.setOnClickListener(onClickSubjectImg);
                 img.setBackgroundColor(Color.TRANSPARENT);
-
 
                 switch (s.type) {
                     case "Transport":
@@ -242,6 +249,11 @@ public class A_sujet_Map_set extends FragmentActivity {
             }
         }
 
+
+
+
+        //--------------------------------------------------------------------------------------------
+        //INIT MAP
         System.out.println("online map : "+options.online);
         if(options.online)
         {
@@ -393,6 +405,57 @@ public class A_sujet_Map_set extends FragmentActivity {
     };
 
 
+
+
+    //On clic map
+    GoogleMap.OnMapClickListener onClickMap = new GoogleMap.OnMapClickListener(){
+        public void onMapClick(LatLng latLng)
+        {
+            try {
+                mMap.clear();
+                markerPoint1 = new MarkerOptions();
+                markerPoint1.position(latLng);
+                markerPoint1.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                markerPoint1.title("Selected point");
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                point1 = mMap.addMarker(markerPoint1);
+
+                if (sujet.type.equals("Transport")) {
+                    point2 = mMap.addMarker(markerPoint2);
+                }
+            }
+            catch(Exception ex)
+            {
+                System.out.println("ERROR - A_sujet_map_set : "+ex.getMessage());
+            }
+        }
+    };
+
+
+    //On long clic map
+    GoogleMap.OnMapLongClickListener onLongClickMap = new GoogleMap.OnMapLongClickListener(){
+        public void onMapLongClick(LatLng latLng)
+        {
+            try {
+                mMap.clear();
+                markerPoint2 = new MarkerOptions();
+                markerPoint2.position(latLng);
+                markerPoint2.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                markerPoint2.title("Destination");
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                point2=mMap.addMarker(markerPoint2);
+
+                if(sujet.type.equals("Transport")) {
+                    point1=mMap.addMarker(markerPoint1);
+                }
+            }
+            catch(Exception ex)
+            {
+                System.out.println("ERROR - A_sujet_map_set : "+ex.getMessage());
+            }
+        }
+    };
+
     //btn valider
     View.OnClickListener onClickbtnOk = new View.OnClickListener() {
         public void onClick(View v)
@@ -515,11 +578,17 @@ public class A_sujet_Map_set extends FragmentActivity {
             }
             this.coord=new LatLng(lati, longi);
 
-            point1=mMap.addMarker(new MarkerOptions()
+            /*point1=mMap.addMarker(new MarkerOptions()
                     .position(coord)
                     .title(adresse)
                     .draggable(true)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));*/
+            markerPoint1 = new MarkerOptions();
+            markerPoint1.position(this.coord);
+            markerPoint1.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            markerPoint1.draggable(true);
+            markerPoint1.title("From : " + adresse);
+            point1=mMap.addMarker(markerPoint1);
             moveToCurrentLocation(coord);
 
 
@@ -548,11 +617,19 @@ public class A_sujet_Map_set extends FragmentActivity {
             }
             this.coord=new LatLng(lati, longi);
 
-            point1=mMap.addMarker(new MarkerOptions()
+
+            markerPoint1 = new MarkerOptions();
+            markerPoint1.position(this.coord);
+            markerPoint1.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            markerPoint1.draggable(true);
+            markerPoint1.title("From : " + adresse);
+            point1=mMap.addMarker(markerPoint1);
+
+            /*point1=mMap.addMarker(new MarkerOptions()
                     .position(coord)
                     .title("From : "+adresse)
                     .draggable(true)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));*/
             moveToCurrentLocation(coord);
 
             if(sujet.type.equals("Transport"))
@@ -565,11 +642,18 @@ public class A_sujet_Map_set extends FragmentActivity {
                 LatLng oriCoord=this.coord;
                 this.coord=new LatLng(lati, longi);
 
-                point2=mMap.addMarker(new MarkerOptions()
+                markerPoint2 = new MarkerOptions();
+                markerPoint2.position(this.coord);
+                markerPoint2.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                markerPoint2.draggable(true);
+                markerPoint2.title("To : " + adresse);
+                point2=mMap.addMarker(markerPoint2);
+
+                /*point2=mMap.addMarker(new MarkerOptions()
                         .position(coord)
                         .title("To : "+adresse)
                         .draggable(true)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));*/
 
                 Polyline line = mMap.addPolyline(new PolylineOptions()
                         .add(oriCoord, this.coord)
@@ -593,20 +677,39 @@ public class A_sujet_Map_set extends FragmentActivity {
         coord = new LatLng(Double.parseDouble(lati), Double.parseDouble(longi));
 
         mMap.animateCamera(CameraUpdateFactory.newLatLng(coord));
-        point1=mMap.addMarker(new MarkerOptions()
+        /*point1=mMap.addMarker(new MarkerOptions()
                 .position(coord)
                 .title(s.titre)
                 .draggable(true)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));*/
+
+        markerPoint1 = new MarkerOptions();
+        markerPoint1.position(this.coord);
+        markerPoint1.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        markerPoint1.draggable(true);
+        markerPoint1.title(s.titre);
+        point1=mMap.addMarker(markerPoint1);
         moveToCurrentLocation(coord);
 
         if (s.type.equals("Transport"))
         {
+            String lati2 = s.localisation2.split(";")[0];
+            String longi2 = s.localisation2.split(";")[1];
+            coord = new LatLng(Double.parseDouble(lati2), Double.parseDouble(longi2));
+
+            markerPoint2 = new MarkerOptions();
+            markerPoint2.position(this.coord);
+            markerPoint2.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+            markerPoint2.draggable(true);
+            markerPoint2.title("To : " + s.titre);
+            point2=mMap.addMarker(markerPoint2);
+
+            /*
             point1=mMap.addMarker(new MarkerOptions()
                     .position(coord)
                     .title(s.titre)
                     .draggable(true)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));*/
         }
     }
 

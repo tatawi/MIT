@@ -302,9 +302,27 @@
                 android:layout_height="wrap_content" />
 
 
+            <HorizontalScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
 
+                <LinearLayout
+                    android:id="@+id/sujetPreparation_ll_particiants"
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
 
         </LinearLayout>
+
+
+
+
     </ScrollView>
 
 

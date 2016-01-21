@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -36,6 +37,7 @@ public class A_sujet_Preparation extends MainActivity {
     private TextView lb_nbParticipantsTotal;
     private TextView lb_erreurAdd;
     private ImageButton btn_map;
+    private LinearLayout ll_parts;
 
     //android:id="@+id/sujetPreparation_lb_description"
     //sujetPreparation_btn_type
@@ -83,6 +85,7 @@ public class A_sujet_Preparation extends MainActivity {
         lb_nbParticipantsTotal= (TextView) findViewById(R.id.sujetPreparation_lb_nbParticipantsTotal);
         lb_erreurAdd= (TextView) findViewById(R.id.sujetPreparation_lb_texteAjoutPart);
         btn_map = (ImageButton) findViewById(R.id.sujetPreparation_btn_map);
+        ll_parts=(LinearLayout) findViewById(R.id.sujetPreparation_ll_particiants);
 
         //listeners
         btn_conv.setOnClickListener(onOpenConv);
@@ -115,43 +118,7 @@ public class A_sujet_Preparation extends MainActivity {
         //affichage
         majInterface();
 
-        //récupération du sujet
-       /* Bundle extras = getIntent().getExtras();
-        if (extras != null)
-        {
 
-            System.out.println("SUJET PREPARATION");
-
-            //chargement user
-            this.userID=extras.getString("userID");
-            part=daoparticipant.getParticipantById(userID);
-            System.out.println(">get user : ");
-            System.out.println(part.mail);
-
-            //chargement des données du sujet
-            this.sujet = daoSujet.getSujetById(extras.getString("idEntry"));
-            this.sujet.creerLesListes(daoMessage, daoparticipant);
-            System.out.println(">Sujet chargé : " + sujet.titre);
-            System.out.println(">id : "+ sujet.idSujet);
-
-            //recupération projet courant
-            nomProjet =this.sujet.idSujet.split("_")[0];
-            System.out.println(">get projet from " +nomProjet+" : ");
-            projet = daoProjet.getProjetByName(nomProjet);
-            projet.creerLesListes(daoJour, daoparticipant);
-
-            System.out.println(projet.nom);
-
-            //récupération du jour courant
-            nomJour =nomProjet+"_"+this.sujet.idSujet.split("_")[1];
-            System.out.println(">get jour from " +nomJour+" : ");
-            jour = daoJour.getJourById(nomJour);
-            jour.creerLesListes(daoSujet);
-            System.out.println(jour.id);
-
-            //affichage
-            majInterface();
-        }*/
 
     }
 
@@ -340,6 +307,43 @@ public void majInterface()
 
     lb_nbParticipants.setText(""+sujet.personnesAyantAccepte.size());
     lb_nbParticipantsTotal.setText(""+projet.liste_participants.size());
+
+
+    //afficher layout participants
+    ll_parts.removeAllViews();
+    LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+    for (C_Participant p : sujet.liste_participent)
+    {
+        //layout
+        LinearLayout LLpart = new LinearLayout(this);
+        LLpart.setOrientation(LinearLayout.VERTICAL);
+        LLpart.setLayoutParams(LLParams);
+
+        //titre sujet (bas)
+        TextView nomPart = new TextView(this);
+        nomPart.setText(p.prenom);
+        nomPart.setTextColor(Color.parseColor("#ac035d"));
+        nomPart.setPadding(0,0,10,0);
+
+        //image
+        ImageButton img = new ImageButton(this);
+        img.setImageResource(R.drawable.ic_sujet_part);
+        img.setBackgroundColor(Color.TRANSPARENT);
+        for (C_Participant pOK:sujet.personnesAyantAccepte)
+        {
+            if (p.mail.equals(pOK.mail))
+            {
+                img.setImageResource(R.drawable.ic_sujet_part_fill);
+            }
+        }
+        LLpart.addView(img);
+        LLpart.addView(nomPart);
+
+        ll_parts.addView(LLpart);
+    }
+
+
 }
 
 
