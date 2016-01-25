@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             Intent intent = new Intent(MainActivity.this, A_Connexion.class);
 
+
             if(cb_offline.isChecked())
             {
                 intent.putExtra("offline", "True");
@@ -90,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
     View.OnClickListener onClickLayout = new View.OnClickListener() {
         public void onClick(View v) {
             Intent intent = new Intent(MainActivity.this, A_Connexion.class);
+
             if(cb_offline.isChecked())
             {
                 intent.putExtra("offline", "True");

@@ -364,7 +364,10 @@ public class A_projet_Preparation extends MainActivity {
 
         if(id==R.id.menu_lprojet_refresh)
         {
-            MajDAO();
+            if(options.online)
+            {
+                MajDAO();
+            }
         }
 
         if(id==R.id.menu_projetPrep_map)

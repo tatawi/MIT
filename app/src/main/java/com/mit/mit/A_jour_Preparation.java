@@ -562,7 +562,10 @@ View.OnClickListener onClickLayout = new View.OnClickListener() {
         //REFRESH
         if(id==R.id.menu_jour_refresh)
         {
-            MajDAO();
+            if(options.online)
+            {
+                MajDAO();
+            }
         }
 
 

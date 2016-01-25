@@ -141,9 +141,9 @@ public class A_Connexion extends MainActivity {
 
 
 
-
-
-
+        //co rapide - TESTS
+        //btn_co1.setVisibility(View.INVISIBLE);
+        //btn_co2.setVisibility(View.INVISIBLE);
 
     }
 

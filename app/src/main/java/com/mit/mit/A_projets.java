@@ -469,7 +469,11 @@ public class A_projets extends MainActivity {
 
         if(id==R.id.menu_projet_refresh)
         {
-            MajDAO();
+            if(options.online)
+            {
+                MajDAO();
+            }
+
         }
 
         if(id==R.id.menu_projet_deconnexion)

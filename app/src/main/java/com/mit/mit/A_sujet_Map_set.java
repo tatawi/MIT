@@ -255,17 +255,15 @@ public class A_sujet_Map_set extends FragmentActivity {
         //--------------------------------------------------------------------------------------------
         //INIT MAP
         System.out.println("online map : "+options.online);
-        if(options.online)
-        {
+
             if(this.jour.ville.length()>2)
             {
                 initialiserMap(this.jour.ville);
             }
             else
             {initialiserMap();}
-        }
-        else
-        {initialiserMap();}
+
+
 
 
 
