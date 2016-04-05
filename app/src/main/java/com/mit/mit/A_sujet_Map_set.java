@@ -10,9 +10,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
@@ -22,6 +25,8 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -47,6 +52,9 @@ public class A_sujet_Map_set extends FragmentActivity {
     private LinearLayout ll_adresses;
     private LinearLayout ll_global;
     private EditText tb_addr;
+    private CheckBox cb_area;
+    private SeekBar sb_area;
+    private TextView tb_area;
 
     private Marker point1;
     private Marker point2;
@@ -99,12 +107,17 @@ public class A_sujet_Map_set extends FragmentActivity {
         viewSwitcher =   (ViewSwitcher)findViewById(R.id.sujet_map_viewSwitcher1);
         myFirstView= findViewById(R.id.sujet_map_ll_viewMap);
         mySecondView = findViewById(R.id.sujet_map_ll_viewSujets);
+        cb_area = (CheckBox) findViewById(R.id.sujet_map_set_cb_area);
+        sb_area = (SeekBar) findViewById(R.id.sujet_map_set_sb_area);
+        sb_area.setEnabled(false);
+        tb_area = (TextView) findViewById(R.id.sujet_map_set_tb_area);
 
         //listeners
         btn_marker.setOnClickListener(onSearchAdress);
         btn_ok.setOnClickListener(onClickbtnOk);
         mMap.setOnMapClickListener(onClickMap);
         mMap.setOnMapLongClickListener(onLongClickMap);
+        sb_area.setOnSeekBarChangeListener(new seekBarListener());
 
         /*mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
@@ -118,6 +131,22 @@ public class A_sujet_Map_set extends FragmentActivity {
                 point1=mMap.addMarker(markerOptions);
             }
         });*/
+
+        cb_area.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+             @Override
+             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked)
+             {
+                if (cb_area.isChecked())
+                {
+                    sb_area.setEnabled(true);
+                }
+                 else
+                {
+                    sb_area.setEnabled(false);
+                }
+             }
+        });
 
 
 
@@ -410,6 +439,7 @@ public class A_sujet_Map_set extends FragmentActivity {
         public void onMapClick(LatLng latLng)
         {
             try {
+                System.out.println("ONE ");
                 mMap.clear();
                 markerPoint1 = new MarkerOptions();
                 markerPoint1.position(latLng);
@@ -419,7 +449,22 @@ public class A_sujet_Map_set extends FragmentActivity {
                 point1 = mMap.addMarker(markerPoint1);
 
                 if (sujet.type.equals("Transport")) {
+                    System.out.println("IF ");
                     point2 = mMap.addMarker(markerPoint2);
+                }
+                else
+                {System.out.println("ELSE ");
+                    if(cb_area.isChecked())
+                    {
+                        System.out.println("Checked ");
+                        int circleSize=sb_area.getProgress()*1000;
+                        System.out.println("size : "+ circleSize);
+                        CircleOptions circleOptions = new CircleOptions()
+                                .center(latLng)
+                                .radius(circleSize); // In meters
+
+                        Circle circle = mMap.addCircle(circleOptions);
+                    }
                 }
             }
             catch(Exception ex)
@@ -474,6 +519,11 @@ public class A_sujet_Map_set extends FragmentActivity {
                 position=coordMap;
             }
 
+            if(cb_area.isChecked())
+            {
+                sujet.auFeeling=true;
+            }
+
             sujet.localisation=position.latitude+";"+position.longitude;
             daoSujet.modifier(sujet, options.online);
 
@@ -483,6 +533,25 @@ public class A_sujet_Map_set extends FragmentActivity {
 
         }
     };
+
+
+
+    //SEEKBAR
+    private class seekBarListener implements SeekBar.OnSeekBarChangeListener {
+
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+        {
+            int km = sb_area.getProgress();
+            tb_area.setText(""+km);
+
+
+        }
+
+        public void onStartTrackingTouch(SeekBar seekBar) {}
+
+        public void onStopTrackingTouch(SeekBar seekBar) {}
+
+    }
 
 
 

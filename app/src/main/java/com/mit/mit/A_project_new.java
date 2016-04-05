@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.games.multiplayer.Participant;
 import com.parse.ParseObject;
 
 import java.text.ParseException;
@@ -53,6 +56,7 @@ public class A_project_new extends MainActivity {
     private ImageButton btn_couleur_vert;
     private ImageButton btn_couleur_violet;
     private LinearLayout ll_parts;
+    private TextView tb_findPart;
 
     //variables
     private C_Options options;
@@ -64,9 +68,9 @@ public class A_project_new extends MainActivity {
     private Date v_dateFin;
     private float v_prixSejour=0;
     private String v_couleur="noir";
-    private transient List<C_Jour> v_liste_jours;
-    private transient List<C_Participant> v_liste_participantsProjet;
-    private transient List<C_Participant> v_liste_allParticipants;
+    private List<C_Jour> v_liste_jours;
+    private List<C_Participant> v_liste_participantsProjet;
+    private List<C_Participant> v_liste_allParticipants;
 
 
 
@@ -94,6 +98,7 @@ public class A_project_new extends MainActivity {
         btn_couleur_violet= (ImageButton) findViewById(R.id.newProject_btn_color_violet);
         lb_erreurAdd = (TextView) findViewById(R.id.newProject_lb_texteAjoutPart);
         ll_parts = (LinearLayout) findViewById(R.id.newProject_ll_parts);
+        tb_findPart = (TextView)findViewById(R.id.newProject_lb_findPart);
 
         //listeners
         btn_dateDebut.setOnClickListener(onClickDebutDate);
@@ -106,6 +111,8 @@ public class A_project_new extends MainActivity {
         btn_couleur_jaune.setOnClickListener(onColorClick);
         btn_couleur_vert.setOnClickListener(onColorClick);
         btn_couleur_violet.setOnClickListener(onColorClick);
+        tb_participant.addTextChangedListener(ontextChangeListener);
+        tb_findPart.setOnClickListener(onFindPartClick);
 
 
 
@@ -145,6 +152,38 @@ public class A_project_new extends MainActivity {
 //---------------------------------------------------------------------------------------
 //	LISTENERS
 //---------------------------------------------------------------------------------------
+
+    //on change text while adding part
+    TextWatcher ontextChangeListener = new TextWatcher(){
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start,
+                                      int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start,int before, int count)
+        {
+            String myText = tb_participant.getText().toString();
+
+            for (C_Participant p : v_liste_allParticipants)
+            {
+                if(p.mail.contains(myText))
+                {
+                    tb_findPart.setText(p.mail);
+                }
+            }
+
+
+
+            /*
+            if (s.length() != 0)
+                tb_findPart.setText("");*/
+        }
+    };
 
     //BOUTTON creer
     View.OnClickListener onCreateProjet = new View.OnClickListener() {
@@ -218,6 +257,12 @@ public class A_project_new extends MainActivity {
     };
 
 
+    //On click find part btn
+    View.OnClickListener onFindPartClick = new View.OnClickListener() {
+        public void onClick(View v) {
+           tb_participant.setText(tb_findPart.getText().toString());
+        }
+    };
 
     //bouton ajouter participant
     View.OnClickListener onAddUser = new View.OnClickListener() {

@@ -142,8 +142,8 @@ public class A_Connexion extends MainActivity {
 
 
         //co rapide - TESTS
-        //btn_co1.setVisibility(View.INVISIBLE);
-        //btn_co2.setVisibility(View.INVISIBLE);
+        btn_co1.setVisibility(View.INVISIBLE);
+        btn_co2.setVisibility(View.INVISIBLE);
 
     }
 
@@ -261,7 +261,7 @@ public class A_Connexion extends MainActivity {
     View.OnClickListener onco1 = new View.OnClickListener() {
         public void onClick(View v) {
             tb_userID.setText("cnero@hotmail.fr");
-            tb_mdp.setText("azerty");
+            tb_mdp.setText("aaaaaa");
         }
     };
 

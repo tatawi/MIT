@@ -88,13 +88,64 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="10dp" />
 
-        <Button
-            android:paddingTop="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Valider"
-            android:id="@+id/sujet_map_set_btn_OK"
-            android:layout_gravity="center_horizontal" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="50dp">
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Afficher une zone"
+                    android:id="@+id/sujet_map_set_cb_area"/>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:id="@+id/sujet_map_set_tb_area" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="km"/>
+
+                    <SeekBar
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/sujet_map_set_sb_area"
+                        android:max="10"
+                        android:layout_marginTop="2dp"/>
+
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <Button
+                android:paddingTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Valider"
+                android:id="@+id/sujet_map_set_btn_OK"
+                android:layout_gravity="center_horizontal" />
+
+
+
+        </LinearLayout>
 
         <View
             android:layout_width="fill_parent"

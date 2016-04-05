@@ -247,7 +247,6 @@
                         android:layout_width="195dp"
                         android:layout_height="wrap_content"
                         android:ems="10"
-
                         android:inputType="textEmailAddress" />
 
                     <ImageButton
@@ -259,6 +258,18 @@
                         android:layout_height="wrap_content"
                         />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/newProject_lb_findPart"
+                    android:text=""
+                    android:textColor="#ac035d"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_row="6"
+                    android:layout_column="1"
+                    android:paddingTop="2dp"
+                    />
             </GridLayout>
 
 
