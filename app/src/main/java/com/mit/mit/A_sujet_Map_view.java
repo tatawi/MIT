@@ -13,6 +13,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -68,6 +70,16 @@ public class A_sujet_Map_view extends FragmentActivity {
                             .title("["+sujet.type+"] "+sujet.titre)
                             .draggable(false)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+
+                    if (sujet.areaSize>0)
+                    {
+                        CircleOptions circleOptions = new CircleOptions()
+                                .center(coord)
+                                .radius(sujet.areaSize)
+                                .strokeColor(Color.BLUE)
+                                .fillColor(0x552196F3);
+                        Circle circle = mMap.addCircle(circleOptions);
+                    }
                     break;
 
                 case "Visite":
@@ -76,6 +88,16 @@ public class A_sujet_Map_view extends FragmentActivity {
                             .title("["+sujet.type+"] "+sujet.titre)
                             .draggable(false)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+
+                    if (sujet.areaSize>0)
+                    {
+                        CircleOptions circleOptions = new CircleOptions()
+                                .center(coord)
+                                .radius(sujet.areaSize)
+                                .strokeColor(Color.GREEN)
+                                .fillColor(0x554CAF50);
+                        Circle circle = mMap.addCircle(circleOptions);
+                    }
                     break;
 
                 case "Logement":
@@ -84,6 +106,16 @@ public class A_sujet_Map_view extends FragmentActivity {
                             .title("["+sujet.type+"] "+sujet.titre)
                             .draggable(false)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+
+                    if (sujet.areaSize>0)
+                    {
+                        CircleOptions circleOptions = new CircleOptions()
+                                .center(coord)
+                                .radius(sujet.areaSize)
+                                .strokeColor(Color.YELLOW)
+                                .fillColor(0x55FFEB3B);
+                        Circle circle = mMap.addCircle(circleOptions);
+                    }
                     break;
 
                 case "Loisir":
@@ -92,6 +124,16 @@ public class A_sujet_Map_view extends FragmentActivity {
                             .title("["+sujet.type+"] "+sujet.titre)
                             .draggable(false)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+
+                    if (sujet.areaSize>0)
+                    {
+                        CircleOptions circleOptions = new CircleOptions()
+                                .center(coord)
+                                .radius(sujet.areaSize)
+                                .strokeColor(Color.MAGENTA)
+                                .fillColor(0x559C27B0);
+                        Circle circle = mMap.addCircle(circleOptions);
+                    }
                     break;
 
                 case "Libre":
@@ -100,6 +142,16 @@ public class A_sujet_Map_view extends FragmentActivity {
                             .title("["+sujet.type+"] "+sujet.titre)
                             .draggable(false)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+
+                    if (sujet.areaSize>0)
+                    {
+                        CircleOptions circleOptions = new CircleOptions()
+                                .center(coord)
+                                .radius(sujet.areaSize)
+                                .strokeColor(Color.BLACK)
+                                .fillColor(0x55000000);
+                        Circle circle = mMap.addCircle(circleOptions);
+                    }
                     break;
                 case "Transport":
                     point1=mMap.addMarker(new MarkerOptions()

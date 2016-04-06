@@ -27,6 +27,7 @@ public class C_Sujet {
     public Date heure;
     public int duree;
     public boolean auFeeling;
+    public int areaSize;
     public double prix;
     public boolean valide;
 
@@ -69,6 +70,7 @@ public class C_Sujet {
         this.heure = heure;
         this.duree = duree;
         this.auFeeling=auFeeling;
+        this.areaSize=0;
         this.prix=prix;
         this.valide=false;
         this.messagesToString="";
@@ -98,7 +100,7 @@ public class C_Sujet {
      *@param messagesToString				List of all C_message's id in string format (separated with ";")
      *@param personnesAyantAccepteToString	List of all accepted member's id in string format (separated with ";")
      */
-    public C_Sujet( int id, String idSujet, String titre, String description, String type, String localisation, String localisation2, Date heure, int duree, String auFeeling, double prix, String messagesToString, String personnesAyantAccepteToString, String valide, String neParticipentPasToString, String quiApayeToString, String combienApayeToString)
+    public C_Sujet( int id, String idSujet, String titre, String description, String type, String localisation, String localisation2, Date heure, int duree, String auFeeling, int v_area, double prix, String messagesToString, String personnesAyantAccepteToString, String valide, String neParticipentPasToString, String quiApayeToString, String combienApayeToString)
     {
         super();
         boolean v_feel=false;
@@ -120,6 +122,7 @@ public class C_Sujet {
         this.heure = heure;
         this.duree = duree;
         this.auFeeling=v_feel;
+        this.areaSize=v_area;
         this.prix=prix;
         this.messagesToString=messagesToString;
         this.personnesAyantAccepteToString=personnesAyantAccepteToString;
@@ -150,6 +153,7 @@ public class C_Sujet {
         this.heure=new Date();
         this.duree=0;
         this.auFeeling=false;
+        this.areaSize=0;
         this.prix=0;
         this.valide=false;
 

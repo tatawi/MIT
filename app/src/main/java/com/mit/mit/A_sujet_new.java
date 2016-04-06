@@ -158,6 +158,7 @@ public class A_sujet_new extends MainActivity {
 
         System.out.println("--user : " + userID);
         System.out.println("--jour : " + this.day.nomJour);
+        System.out.println("--jour date : " + this.day.jour.toString());
 
 
 
@@ -321,12 +322,21 @@ public class A_sujet_new extends MainActivity {
 
             //set heure
             try {
-                sdf = new SimpleDateFormat("dd/mm/yy");
+                sdf = new SimpleDateFormat("dd/MM/yy");
+                System.out.println("//////////////////////////////////////");
+                System.out.println("--jour date : " + day.jour.toString());
                 String myTime = sdf.format(day.jour);
+                System.out.println("day.jour = "+myTime);
                 myTime = myTime + " " + sb_hour.getProgress() + ":" + sb_min.getProgress();
 
-                sdf = new SimpleDateFormat("dd/mm/yy HH:mm");
+                sdf = new SimpleDateFormat("dd/MM/yy HH:mm");
                 sujet.heure = sdf.parse(myTime);
+                System.out.println("date to add = "+sdf.parse(myTime));
+                System.out.println("lecture : " + sujet.heure);
+                System.out.println("lecture2 : " + sdf.format(sujet.heure));
+                sdf = new SimpleDateFormat("dd/MM/yy");
+                System.out.println("lecture3 : " + sdf.format(sujet.heure));
+
             }
             catch (Exception ex)
             {System.out.println("[ERROR] "+ex.getMessage());}

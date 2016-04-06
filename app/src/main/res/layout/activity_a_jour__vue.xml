@@ -1,0 +1,113 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context="com.mit.mit.A_jour_Vue">
+
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:id="@+id/newsujet_linearlayout_type"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignTop="@+id/horizontalScrollView"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true">
+
+                <TableRow>
+                    <LinearLayout
+                        android:id="@+id/jour_vue_hour"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp">
+                    </LinearLayout>
+                </TableRow>
+
+                <View
+                    android:layout_height="2dip"
+                    android:background="#ac035d"
+                   />
+
+                <TableRow>
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp">
+                    </LinearLayout>
+                </TableRow>
+
+                <TableRow>
+                    <LinearLayout
+                        android:id="@+id/jour_vue_line3"
+                        android:orientation="horizontal"
+                        android:layout_width="1440dp"
+                        android:layout_height="40dp">
+
+                        </LinearLayout>
+                </TableRow>
+
+                <TableRow>
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="100dp"
+                        android:layout_height="10dp">
+                    </LinearLayout>
+                </TableRow>
+
+                <TableRow>
+                    <LinearLayout
+                        android:id="@+id/jour_vue_line2"
+                        android:orientation="horizontal"
+                        android:layout_width="1440dp"
+                        android:layout_height="40dp">
+
+                    </LinearLayout>
+                </TableRow>
+
+                <TableRow>
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="100dp"
+                        android:layout_height="10dp">
+                    </LinearLayout>
+                </TableRow>
+
+                <TableRow>
+                    <LinearLayout
+                        android:id="@+id/jour_vue_line1"
+                        android:orientation="horizontal"
+                        android:layout_width="1440dp"
+                        android:layout_height="40dp">
+
+                    </LinearLayout>
+                </TableRow>
+
+
+
+
+            </TableLayout>
+
+
+
+
+
+
+
+
+        </LinearLayout>
+
+
+</HorizontalScrollView>
+
+</RelativeLayout>

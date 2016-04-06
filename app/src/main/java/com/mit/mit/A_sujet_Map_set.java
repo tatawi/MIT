@@ -72,6 +72,7 @@ public class A_sujet_Map_set extends FragmentActivity {
 
     private String adresse;
     private String destination;
+    private int circleSize;
 
     private LatLng coord;
     private LatLng coordMap;
@@ -148,7 +149,8 @@ public class A_sujet_Map_set extends FragmentActivity {
              }
         });
 
-
+        //ini
+        sb_area.setProgress(1);
 
         System.out.println("****" + sujet.idSujet);
         System.out.println("timeMap : "+sujet.heure.toString());
@@ -439,7 +441,6 @@ public class A_sujet_Map_set extends FragmentActivity {
         public void onMapClick(LatLng latLng)
         {
             try {
-                System.out.println("ONE ");
                 mMap.clear();
                 markerPoint1 = new MarkerOptions();
                 markerPoint1.position(latLng);
@@ -449,19 +450,19 @@ public class A_sujet_Map_set extends FragmentActivity {
                 point1 = mMap.addMarker(markerPoint1);
 
                 if (sujet.type.equals("Transport")) {
-                    System.out.println("IF ");
                     point2 = mMap.addMarker(markerPoint2);
                 }
                 else
-                {System.out.println("ELSE ");
+                {
                     if(cb_area.isChecked())
                     {
-                        System.out.println("Checked ");
-                        int circleSize=sb_area.getProgress()*1000;
-                        System.out.println("size : "+ circleSize);
+                        circleSize=sb_area.getProgress()*1000;
+                        if (circleSize==0){circleSize=400;}
                         CircleOptions circleOptions = new CircleOptions()
                                 .center(latLng)
-                                .radius(circleSize); // In meters
+                                .radius(circleSize)
+                                .strokeColor(Color.GREEN)
+                                .fillColor(0x554CAF50);
 
                         Circle circle = mMap.addCircle(circleOptions);
                     }
@@ -522,6 +523,7 @@ public class A_sujet_Map_set extends FragmentActivity {
             if(cb_area.isChecked())
             {
                 sujet.auFeeling=true;
+                sujet.areaSize=circleSize;
             }
 
             sujet.localisation=position.latitude+";"+position.longitude;
@@ -726,6 +728,21 @@ public class A_sujet_Map_set extends FragmentActivity {
                         .add(oriCoord, this.coord)
                         .width(5)
                         .color(Color.BLUE));
+            }
+            else
+            {
+                if(cb_area.isChecked())
+                {
+                    circleSize=sb_area.getProgress()*1000;
+                    if (circleSize==0){circleSize=400;}
+                    CircleOptions circleOptions = new CircleOptions()
+                            .center(this.coord)
+                            .radius(circleSize)
+                            .strokeColor(Color.GREEN)
+                            .fillColor(0x554CAF50);
+
+                    Circle circle = mMap.addCircle(circleOptions);
+                }
             }
 
         }

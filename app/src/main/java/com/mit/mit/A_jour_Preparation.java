@@ -558,6 +558,13 @@ View.OnClickListener onClickLayout = new View.OnClickListener() {
             startActivity(intent);
         }
 
+        //DISPLAY VIEW
+        if(id==R.id.menu_jour_view)
+        {
+            Intent intent = new Intent(A_jour_Preparation.this, A_jour_Vue.class);
+            startActivity(intent);
+        }
+
 
         //REFRESH
         if(id==R.id.menu_jour_refresh)

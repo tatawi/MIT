@@ -35,6 +35,7 @@ public class DAO_Sujet extends DAO_Bdd {
     public static final String ATTR_HEURE = "heure";
     public static final String ATTR_DUREE = "duree";
     public static final String ATTR_FEELLING = "auFelling";
+    public static final String ATTR_AREA = "area";
     public static final String ATTR_PRIX = "prix";
     public static final String ATTR_VALIDE = "valide";
     public static final String ATTR_MESSAGES = "messages";
@@ -58,6 +59,7 @@ public class DAO_Sujet extends DAO_Bdd {
                     + ATTR_HEURE + " TEXT, "
                     + ATTR_DUREE + " INTEGER, "
                     + ATTR_FEELLING + " TEXT, "
+                    + ATTR_AREA + " INTEGER, "
                     + ATTR_PRIX + " FLOAT, "
                     + ATTR_VALIDE + " TEXT, "
                     + ATTR_MESSAGES + " TEXT, "
@@ -89,7 +91,12 @@ public class DAO_Sujet extends DAO_Bdd {
         //LOCAL
         this.open();
         String valide ="false";
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yy HH:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy HH:mm");
+
+        System.out.println("lecture : " + sdf.format(s.heure));
+        sdf = new SimpleDateFormat("dd/MM/yy");
+        System.out.println("lecture3 : " + sdf.format(s.heure));
+        sdf = new SimpleDateFormat("dd/MM/yy HH:mm");
         if(s.valide)
         {
             valide="true";
@@ -104,6 +111,7 @@ public class DAO_Sujet extends DAO_Bdd {
         value.put(ATTR_HEURE, sdf.format(s.heure));
         value.put(ATTR_DUREE, s.duree);
         value.put(ATTR_FEELLING, s.auFeeling);
+        value.put(ATTR_AREA, s.areaSize);
         value.put(ATTR_PRIX, s.prix);
         value.put(ATTR_MESSAGES, s.messagesToString);
         value.put(ATTR_PERSONNESOK, s.personnesAyantAccepteToString);
@@ -125,9 +133,13 @@ public class DAO_Sujet extends DAO_Bdd {
             Sujet.put("type", s.type);
             Sujet.put("localisation", s.localisation);
             Sujet.put("localisation2", s.localisation2);
-            Sujet.put("heure", sdf.format(s.heure));
+            String hh = sdf.format(s.heure);
+            System.out.println("ecrit : " + hh);
+            Sujet.put("heure", hh);
+
             Sujet.put("duree", s.duree);
             Sujet.put("auFeeling", s.auFeeling);
+            Sujet.put("area", s.areaSize);
             Sujet.put("prix", s.prix);
             Sujet.put("messagesToString", s.messagesToString);
             Sujet.put("personnesAyantAccepteToString", s.personnesAyantAccepteToString);
@@ -203,12 +215,13 @@ public class DAO_Sujet extends DAO_Bdd {
     {
         //LOCAL
         this.open();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yy HH:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy HH:mm");
         String valide ="false";
         if(s.valide)
         {
             valide="true";
         }
+        System.out.println("lireMODIF : " + s.heure.toString());
         ContentValues value = new ContentValues();
         value.put(ATTR_TITRE, s.titre);
         value.put(ATTR_DESCRIPTION, s.description);
@@ -218,6 +231,7 @@ public class DAO_Sujet extends DAO_Bdd {
         value.put(ATTR_HEURE, sdf.format(s.heure));
         value.put(ATTR_DUREE, s.duree);
         value.put(ATTR_FEELLING, s.auFeeling);
+        value.put(ATTR_AREA, s.areaSize);
         value.put(ATTR_PRIX, s.prix);
         value.put(ATTR_MESSAGES, s.messagesToString);
         value.put(ATTR_PERSONNESOK, s.personnesAyantAccepteToString);
@@ -237,7 +251,7 @@ public class DAO_Sujet extends DAO_Bdd {
         //ONLINE
         if (SaveOnline) {
             final C_Sujet st = s;
-            final SimpleDateFormat sdff = new SimpleDateFormat("dd/mm/yy HH:mm:ss");
+            final SimpleDateFormat sdff = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
 
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Sujet");
             query.whereEqualTo("idSujet", s.idSujet);
@@ -250,9 +264,12 @@ public class DAO_Sujet extends DAO_Bdd {
                         Sujet.put("type", st.type);
                         Sujet.put("localisation", st.localisation);
                         Sujet.put("localisation2", st.localisation2);
+                        String hh = sdff.format(st.heure);
+                        System.out.println("ecritMODIF : " + hh);
                         Sujet.put("heure", sdff.format(st.heure));
                         Sujet.put("duree", st.duree);
                         Sujet.put("auFeeling", st.auFeeling);
+                        Sujet.put("area", st.areaSize);
                         Sujet.put("prix", st.prix);
                         Sujet.put("messagesToString", st.messagesToString);
                         Sujet.put("personnesAyantAccepteToString", st.personnesAyantAccepteToString);
@@ -281,12 +298,12 @@ public class DAO_Sujet extends DAO_Bdd {
     public List<C_Sujet> getSujets() {
         this.open();
         List<C_Sujet>list_sujets=new ArrayList<C_Sujet>();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yy HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy HH:mm");
         Date lheure=new Date();
         Cursor cursor = bdd.query(
                 TABLE,
                 new String[] { ATTR_ID, ATTR_IDSUJET, ATTR_TITRE, ATTR_DESCRIPTION, ATTR_TYPE, ATTR_LOC, ATTR_LOC2, ATTR_HEURE, ATTR_DUREE,
-                        ATTR_FEELLING, ATTR_PRIX, ATTR_MESSAGES, ATTR_PERSONNESOK, ATTR_VALIDE, ATTR_PARTICIPENT, ATTR_QUIAPAYE, ATTR_COMBIENAPAYE},
+                        ATTR_FEELLING, ATTR_AREA, ATTR_PRIX, ATTR_MESSAGES, ATTR_PERSONNESOK, ATTR_VALIDE, ATTR_PARTICIPENT, ATTR_QUIAPAYE, ATTR_COMBIENAPAYE},
                 null,
                 null,
                 null,
@@ -316,6 +333,7 @@ public class DAO_Sujet extends DAO_Bdd {
                             lheure,
                             cursor.getInt(cursor.getColumnIndex(ATTR_DUREE)),
                             cursor.getString(cursor.getColumnIndex(ATTR_FEELLING)),
+                            cursor.getInt(cursor.getColumnIndex(ATTR_AREA)),
                             cursor.getDouble(cursor.getColumnIndex(ATTR_PRIX)),
                             cursor.getString(cursor.getColumnIndex(ATTR_MESSAGES)),
                             cursor.getString(cursor.getColumnIndex(ATTR_PERSONNESOK)),
@@ -340,12 +358,12 @@ public class DAO_Sujet extends DAO_Bdd {
     public C_Sujet getSujetById(String id) {
         this.open();
         C_Sujet p = null;
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yy HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy HH:mm");
         Date lheure=new Date();
         Cursor cursor = bdd.query(
                 TABLE,
                 new String[] { ATTR_ID, ATTR_IDSUJET, ATTR_TITRE, ATTR_DESCRIPTION, ATTR_TYPE, ATTR_LOC, ATTR_LOC2, ATTR_HEURE, ATTR_DUREE,
-                        ATTR_FEELLING, ATTR_PRIX, ATTR_MESSAGES, ATTR_PERSONNESOK, ATTR_VALIDE, ATTR_PARTICIPENT, ATTR_QUIAPAYE, ATTR_COMBIENAPAYE},
+                        ATTR_FEELLING, ATTR_AREA, ATTR_PRIX, ATTR_MESSAGES, ATTR_PERSONNESOK, ATTR_VALIDE, ATTR_PARTICIPENT, ATTR_QUIAPAYE, ATTR_COMBIENAPAYE},
                 ATTR_IDSUJET + " = ?",
                 new String[] { id },
                 null,
@@ -376,6 +394,7 @@ public class DAO_Sujet extends DAO_Bdd {
                     lheure,
                     cursor.getInt(cursor.getColumnIndex(ATTR_DUREE)),
                     cursor.getString(cursor.getColumnIndex(ATTR_FEELLING)),
+                    cursor.getInt(cursor.getColumnIndex(ATTR_AREA)),
                     cursor.getDouble(cursor.getColumnIndex(ATTR_PRIX)),
                     cursor.getString(cursor.getColumnIndex(ATTR_MESSAGES)),
                     cursor.getString(cursor.getColumnIndex(ATTR_PERSONNESOK)),
