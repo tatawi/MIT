@@ -137,6 +137,18 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mit.mit.A_jour_Preparation" />
         </activity>
+        <activity
+            android:name=".A_sujet_Work"
+            android:label="@string/title_activity_a_sujet__work"
+            android:parentActivityName=".A_jour_Preparation" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mit.mit.A_jour_Preparation" />
+        </activity>
+        <activity
+            android:name=".A_sujet_AddDepense"
+            android:label="@string/title_activity_a_sujet__add_depense" >
+        </activity>
     </application>
 
 </manifest>

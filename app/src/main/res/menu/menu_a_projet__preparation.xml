@@ -3,11 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools" tools:context="com.mit.mit.A_projet_Preparation">
 
 
-    <item
-        android:id="@+id/menu_parts"
-        android:icon="@drawable/ic_action_edituser"
-        app:showAsAction="always"
-        android:title="Participants"/>
 
     <item
         android:id="@+id/menu_projetPrep_map"
@@ -26,6 +21,11 @@
         android:icon="@drawable/ic_action_download"
         app:showAsAction="always"
         android:title="Rafraichir"/>
+
+    <item
+        android:id="@+id/menu_projetPrep_finaliser"
+        app:showAsAction="never"
+        android:title="Finaliser"/>
 
 
 </menu>

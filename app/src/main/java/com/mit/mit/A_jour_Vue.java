@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class A_jour_Vue extends MainActivity {
 
@@ -86,43 +88,51 @@ public class A_jour_Vue extends MainActivity {
 
         //create TextBox tabs
 
-        tb_hour = new TextView[24];
-        for(int i = 0; i < 24; i++) {
+        tb_hour = new TextView[48];
+        for(int i = 0; i < 48; i++) {
             TextView tb = new TextView(this);
             tb.setLayoutParams(LLParams);
             tb.setTextSize(20);
 
-            if(i<10)  {tb.setText("0"+i+"h00");}
-            else      {tb.setText(i+"h00");}
+            if(i%2==0)
+            {
+                if(i/2<10)  {tb.setText("0"+i/2+"h00");}
+                else      {tb.setText(i/2+"h00");}
+            }
+            else
+            {
+                tb.setText("");
+            }
+
 
             tb_hour[i] = tb;
             ll_hour.addView(tb_hour[i]);
         }
 
 
-        tb_tv1 = new TextView[24];
-        for(int i = 0; i < 24; i++) {
+        tb_tv1 = new TextView[48];
+        for(int i = 0; i < 48; i++) {
             TextView tb = new TextView(this);
             tb.setLayoutParams(LLParams);
-            tb.setTextSize(20);
+            tb.setTextSize(10);
             tb_tv1[i] = tb;
             ll_1.addView(tb_tv1[i]);
         }
 
-        tb_tv2 = new TextView[24];
-        for(int i = 0; i < 24; i++) {
+        tb_tv2 = new TextView[48];
+        for(int i = 0; i < 48; i++) {
             TextView tb = new TextView(this);
             tb.setLayoutParams(LLParams);
-            tb.setTextSize(20);
+            tb.setTextSize(10);
             tb_tv2[i] = tb;
             ll_2.addView(tb_tv2[i]);
         }
 
-        tb_tv3 = new TextView[24];
-        for(int i = 0; i < 24; i++) {
+        tb_tv3 = new TextView[48];
+        for(int i = 0; i < 48; i++) {
             TextView tb = new TextView(this);
             tb.setLayoutParams(LLParams);
-            tb.setTextSize(20);
+            tb.setTextSize(10);
             tb_tv3[i] = tb;
             ll_3.addView(tb_tv3[i]);
         }
@@ -175,6 +185,14 @@ private void affichage()
     tb_tv3[16].setBackgroundColor(0xffCDDC39);
     tb_tv3[16].setText("16");*/
 
+    //trier la liste
+    Collections.sort(this.day.liste_sujets, new Comparator<C_Sujet>() {
+        @Override
+        public int compare(C_Sujet s1, C_Sujet s2) {
+
+            return s1.heure.compareTo(s2.heure);
+        }
+    });
 
 
     for (C_Sujet s : this.day.liste_sujets)
@@ -189,10 +207,10 @@ private void affichage()
         //get min
         sdff = new SimpleDateFormat("mm");
         int min = Integer.parseInt(sdff.format(s.heure));
-        if(min>30&&heure<24){heure++;} //adjust hour
+
 
         //get durée
-        int duree = s.duree/60;
+        int duree = s.duree;
 
 
         System.out.println("*********************************");
@@ -201,27 +219,153 @@ private void affichage()
         System.out.println("inscrit dans tab "+heure);
 
 
-
-        tb_tv1[heure].setBackgroundColor(0xffF44336);
-        tb_tv1[heure].setText(s.titre);
-        for(int i=1; i<duree; i++)
+        heure=heure*2;
+        if(min>=30)
         {
-            System.out.println("dure +1");
-            tb_tv1[heure+i].setBackgroundColor(0xffF44336);
+            System.out.println("**commence aprés 30m");
+            heure++;
         }
 
+        if(s.type.equals("Transport"))
+        {
+            System.out.println("Transport : ligne 3");
+            writeTab(tb_tv1, heure, min, duree, s.titre, s.type);
+        }
+        else
+        {
+            if(heure>1)
+            {
+                System.out.println("size txt avant : " + tb_tv2[heure - 1].getText().length());
+                if(tb_tv2[heure-1].getText().length()<1)
+                {
+                    System.out.println("ligne 2");
+                    writeTab(tb_tv2, heure, min, duree, s.titre, s.type);
+                }
+                else
+                {
+                    System.out.println("ligne 1");
+                    writeTab(tb_tv3, heure, min, duree, s.titre, s.type);
 
-        /*
-        F44336
+                }
+            }
+            else
+            {
+                System.out.println("!!!00h00");
+                System.out.println("ligne 2");
+                writeTab(tb_tv2, heure, min, duree, s.titre, s.type);
+            }
 
-        03A9F4
 
-        CDDC39
-         */
+        }
+
     }
 
 
 }
+
+    private void writeTab(TextView[] tb, int heure, int min, int duree, String titre, String type)
+    {
+
+        //écrire dans la bonne case selon la demi heure de commencement
+       /* heure=heure*2;
+        if(min>=30)
+        {
+            System.out.println("**commence aprés 30m");
+            heure++;
+        }*/
+        System.out.println("**position first ecriture : " + heure);
+        tb[heure].setText(titre);
+        tb[heure].setTextSize(20);
+
+        switch (type) {
+            case "Transport":
+                tb[heure].setBackgroundColor(0xffF44336);
+                break;
+
+            case "Repas":
+                tb[heure].setBackgroundColor(0xff2196F3);
+                break;
+
+            case "Visite":
+                tb[heure].setBackgroundColor(0xff4CAF50);
+                break;
+
+            case "Logement":
+                tb[heure].setBackgroundColor(0xffFFEB3B);
+                break;
+
+            case "Loisir":
+                tb[heure].setBackgroundColor(0xff673AB7);
+                break;
+
+            case "Libre":
+                tb[heure].setBackgroundColor(0x55000000);
+                break;
+        }
+
+
+
+
+
+        //calcul de la durée en heure
+        int ajout=duree/60;
+        System.out.println("**durée de : "+ajout+" heures");
+        //calcul de la durée restantes (sans les heures) en minuttes
+        int minRest = duree-ajout*60;
+        System.out.println("**min restantes : "+minRest);
+        //x2 car 1h = 2 case de tableau (30m+30m)
+        ajout=ajout*2;
+
+        //si les min sont > 30, on utilise la case suivante
+        if(minRest>=30){ajout++;}
+
+        //si la tache dure moins de 30m, on insére quand meme une case
+
+        System.out.println("**durée total en tab : "+ajout);
+
+        //on a déja ecrit 1 fois :
+        ajout--;
+
+        for(int i=1; i<=ajout; i++)
+        {
+            System.out.println("dure +1");
+            tb[heure+i].setTextSize(20);
+            tb[heure+i].setText("_");
+            switch (type) {
+                case "Transport":
+                    tb[heure+i].setBackgroundColor(0xffF44336);
+                    tb[heure+i].setTextColor(0xffF44336);
+                    break;
+
+                case "Repas":
+                    tb[heure+i].setBackgroundColor(0xff2196F3);
+                    tb[heure+i].setTextColor(0xff2196F3);
+                    break;
+
+                case "Visite":
+                    tb[heure+i].setBackgroundColor(0xff4CAF50);
+                    tb[heure+i].setTextColor(0xff4CAF50);
+                    break;
+
+                case "Logement":
+                    tb[heure+i].setBackgroundColor(0xffFFEB3B);
+                    tb[heure+i].setTextColor(0xffFFEB3B);
+                    break;
+
+                case "Loisir":
+                    tb[heure+i].setBackgroundColor(0xff673AB7);
+                    tb[heure+i].setTextColor(0xff673AB7);
+                    break;
+
+                case "Libre":
+                    tb[heure+i].setBackgroundColor(0x55000000);
+                    tb[heure+i].setTextColor(0x55000000);
+                    break;
+            }
+        }
+
+
+    }
 
 
 

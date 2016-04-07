@@ -44,6 +44,7 @@ public class A_jour_Preparation extends MainActivity {
     private String jourID;
     private SimpleDateFormat sdf;
 
+    private C_Projet projet;
     private C_Participant part;
     private C_Options options;
     private C_Jour day;
@@ -79,6 +80,7 @@ public class A_jour_Preparation extends MainActivity {
         //initialisations
         this.options=daoOptions.getOptionByUserId();
         System.out.println("IS ONLINE ="+options.online);
+        this.projet=daoProjet.getProjetByName(options.projetid);
         this.part=daoparticipant.getParticipantById(options.userid);
         this.day=daoJour.getJourById(options.jourid);
 
@@ -87,7 +89,9 @@ public class A_jour_Preparation extends MainActivity {
 
         sdf = new SimpleDateFormat("EEE d MMM");
         setTitle(sdf.format(this.day.jour));
-        //lb_montant.setText("" + this.day.prixJournee + " €");
+
+
+
 
 
         //GESTION VILLE
@@ -382,12 +386,26 @@ View.OnClickListener onClickLayout = new View.OnClickListener() {
         {
             if(s.id==selectedLL.getId())
             {
-                Intent intent = new Intent(A_jour_Preparation.this, A_sujet_Preparation.class);
                 options.sujetid=s.idSujet;
                 daoOptions.modifier(options);
-                //intent.putExtra("idEntry", s.idSujet);
-                //intent.putExtra("userID", userID);
+                Intent intent;
+
+                switch (projet.statut) {
+                    case "Preparation":
+                        intent = new Intent(A_jour_Preparation.this, A_sujet_Preparation.class);
+                        break;
+                    case "Actuel":
+                        intent = new Intent(A_jour_Preparation.this, A_sujet_Work.class);
+                        break;
+                    case "Fini":
+                        intent = new Intent(A_jour_Preparation.this, A_sujet_Preparation.class);
+                        break;
+                    default:
+                        intent = new Intent(A_jour_Preparation.this, A_sujet_Preparation.class);
+                    break;
+                }
                 startActivity(intent);
+
             }
         }
 
@@ -527,6 +545,14 @@ View.OnClickListener onClickLayout = new View.OnClickListener() {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_a_jour__preparation, menu);
+
+        //Cas projet finalisé
+        if(projet.statut.equals("Actuel"))
+        {
+            MenuItem item = menu.findItem(R.id.menu_addSujet);
+            item.setVisible(false);
+        }
+
         return true;
     }
 

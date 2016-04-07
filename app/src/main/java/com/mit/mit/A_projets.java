@@ -291,7 +291,7 @@ public class A_projets extends MainActivity {
 //---------------------------------------------------------------------------------------
 
 
-    //bouton ajouter date debut
+    //click projet
     View.OnClickListener onClickLayout = new View.OnClickListener() {
         public void onClick(View v) {
             LinearLayout selectedLL = (LinearLayout) v;
@@ -303,8 +303,6 @@ public class A_projets extends MainActivity {
                     Intent intent = new Intent(A_projets.this, A_projet_Preparation.class);
                     options.projetid=p.nom;
                     daoOptions.modifier(options);
-                    //intent.putExtra("idEntry", p.nom);
-                    //intent.putExtra("userID", userID);
                     startActivity(intent);
                 }
             }

@@ -1,6 +1,8 @@
 package com.mit.mit;
 
+import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.Image;
@@ -384,6 +386,36 @@ public class A_projet_Preparation extends MainActivity {
             Intent intent = new Intent(A_projet_Preparation.this, MainActivity.class);
             startActivity(intent);
         }
+
+        if(id==R.id.menu_projetPrep_finaliser)
+        {
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which){
+                        case DialogInterface.BUTTON_POSITIVE:
+                            projet.statut="Actuel";
+                            daoProjet.modifier(projet, options.online);
+                            Intent intent = new Intent(A_projet_Preparation.this, A_projets.class);
+                            startActivity(intent);
+
+
+
+
+                            break;
+
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            //No button clicked
+                            break;
+                    }
+                }
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Finaliser le projet ?").setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
+        }
+
 
 
 

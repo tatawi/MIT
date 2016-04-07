@@ -22,6 +22,8 @@
     <string name="title_activity_a_jour__map_view">Map</string>
     <string name="title_activity_a_projet__map_view">Map</string>
     <string name="title_activity_a_jour__vue">A_jour_Vue</string>
+    <string name="title_activity_a_sujet__work">A_sujet_Work</string>
+    <string name="title_activity_a_sujet__add_depense">A_sujet_AddDepense</string>
 
 
 </resources>
