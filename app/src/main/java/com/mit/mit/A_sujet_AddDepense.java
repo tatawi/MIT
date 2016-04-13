@@ -111,7 +111,7 @@ public class A_sujet_AddDepense extends MainActivity
 //	LISTENERS
 //---------------------------------------------------------------------------------------
 
-    //bouton creer
+    //bouton ok
     View.OnClickListener onBtnOk = new View.OnClickListener() {
         public void onClick(View v) {
 
@@ -119,15 +119,17 @@ public class A_sujet_AddDepense extends MainActivity
             //Intent intent = new Intent(A_sujet_Work.this, A_sujet_Map_view.class);
             //startActivity(intent);
 
+            //ini listes
+            sujet.liste_quiApaye.clear();
+            sujet.liste_combienApaye.clear();
+
             for (int i=0; i<tb_tbPrix.length; i++)
             {
                 C_Participant part;
                 String nomCourant = tb_lbNom[i].getText().toString();
                 Double montant = Double.parseDouble(tb_tbPrix[i].getText().toString());
 
-                //ini listes
-                sujet.liste_quiApaye.clear();
-                sujet.liste_combienApaye.clear();
+
 
                 for (C_Participant p :sujet.liste_participent)
                 {
@@ -141,10 +143,12 @@ public class A_sujet_AddDepense extends MainActivity
                     }
                 }
 
-                sujet.creerLesListes(daoMessage, daoparticipant);
-                daoSujet.modifier(sujet, options.online);
-
             }
+
+            sujet.listeToString();
+            System.out.println("qui " + sujet.quiApayeToString);
+            System.out.println("cmb " + sujet.combienApayeToString);
+            daoSujet.modifier(sujet, options.online);
 
             Intent intent = new Intent(A_sujet_AddDepense.this, A_sujet_Work.class);
             startActivity(intent);

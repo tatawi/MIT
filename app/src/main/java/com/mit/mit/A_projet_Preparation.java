@@ -354,6 +354,14 @@ public class A_projet_Preparation extends MainActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_a_projet__preparation, menu);
+
+        //Cas projet finalisé
+        if(projet.statut.equals("Preparation"))
+        {
+            MenuItem item = menu.findItem(R.id.menu_projetPrep_equilibre);
+            item.setVisible(false);
+        }
+
         return true;
     }
 
@@ -377,6 +385,14 @@ public class A_projet_Preparation extends MainActivity {
             Intent intent = new Intent(A_projet_Preparation.this, A_projet_Map_view.class);
             startActivity(intent);
         }
+
+        if(id==R.id.menu_projetPrep_equilibre)
+        {
+            Intent intent = new Intent(A_projet_Preparation.this, A_projet_Equilibre.class);
+            startActivity(intent);
+        }
+
+
 
 
 

@@ -149,6 +149,14 @@
             android:name=".A_sujet_AddDepense"
             android:label="@string/title_activity_a_sujet__add_depense" >
         </activity>
+        <activity
+            android:name=".A_projet_Equilibre"
+            android:label="@string/title_activity_a_projet__equilibre"
+            android:parentActivityName=".A_projet_Preparation" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mit.mit.A_projet_Preparation" />
+        </activity>
     </application>
 
 </manifest>

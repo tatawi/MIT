@@ -318,6 +318,9 @@ public class C_Sujet {
 
         this.messagesToString="";
         this.personnesAyantAccepteToString="";
+        this.participentToString="";
+        this.quiApayeToString="";
+        this.combienApayeToString="";
 
         if(!liste_messages.isEmpty()) {
             for (C_Message m : this.liste_messages) {

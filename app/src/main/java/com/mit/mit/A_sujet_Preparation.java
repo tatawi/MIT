@@ -176,13 +176,16 @@ public class A_sujet_Preparation extends MainActivity {
                     System.out.println("A VOTE");
                 }
             }
+            System.out.println("**PARTICIPANTS  : "+sujet.participentToString);
 
             //si l'user na pas encore voté
             if(pasEncoreVote(sujet.personnesAyantAccepte, part))
             {
                 System.out.println("non présent dans la liste");
+                System.out.println("**personnes deja presentes : "+sujet.personnesAyantAccepteToString);
                 sujet.personnesAyantAccepte.add(part);
                 sujet.listeToString();
+                System.out.println("**apres ajout : " + sujet.personnesAyantAccepteToString);
                 daoSujet.modifier(sujet, options.online);
 
                 progressBar_participations.setProgress(sujet.personnesAyantAccepte.size());
@@ -313,8 +316,12 @@ public void majInterface()
     ll_parts.removeAllViews();
     LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
+    System.out.println("-->users : "+sujet.participentToString);
+
+
     for (C_Participant p : sujet.liste_participent)
     {
+        System.out.println("-->user : "+p.mail);
         //layout
         LinearLayout LLpart = new LinearLayout(this);
         LLpart.setOrientation(LinearLayout.VERTICAL);
